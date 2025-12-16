@@ -667,11 +667,11 @@ It simply has to learn to find values in matrices that don't *do* that when we a
 
 But.. it can't be safe *everywhere*. 
 
-> ~~Let's imagine that we have two close tokens. *Originally* their Q and K vectors are somewhat similar, yet their *first axes* are more like at 80 degrees difference. We take these as compatible ones as the shapes are somewhat similar.
+> ~~Let's imagine that we have two close tokens. *Originally* their Q and K vectors are somewhat similar, yet their *first axes* are more like at 80 degrees difference. We take these as compatible ones as the shapes are somewhat similar.~~
 >
-> Now, imagine the same tokens when they are positioned still *close* to each other, but we have *moved* them within context just enough to make the RoPE rotated K vector cross the line and change the sign. 
+> ~~Now, imagine the same tokens when they are positioned still *close* to each other, but we have *moved* them within context just enough to make the RoPE rotated K vector cross the line and change the sign.~~
 >
-> Suddenly, our shapes *stop being compatible* simply due to their new *absolute position* in context, while their distance didn't change - they are still close!~~
+> ~~Suddenly, our shapes *stop being compatible* simply due to their new *absolute position* in context, while their distance didn't change - they are still close!~~~
 
 I was wrong here, but ironically the point is still valid due to precision loss over long context calculations here :). So in real world engine, the actual precision loss might intervene as we go further into context, due to quantization stuff.
 
