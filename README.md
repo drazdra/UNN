@@ -657,33 +657,16 @@ Once we do 180 degrees rotation due to distance between our tokens, vectors sudd
 
 This is pretty fun, however don't forget that all "disks" rotate, so when our first disk starts to restore similarity, our second disk already half way "distorted". So the overall compatibility is still diminished.
 
-But.. what if one of the axes after applying the rotation crosses the border and *changes the sign*? Like Q result raising from under the X axis horizon and becoming positive? If the K at that kept the old sign, we suddenly get an *opposite* result here. Instead of, say, two negative numbers from Q and K we get one negative and one positive and the result suddenly changes a lot!
+Another thing about RoPE is that due to implementation as our absolute positions of tokens in context become big, the rounding effects in the code may lead to precision loss, digital noise :). So in real world engine, the actual precision loss might intervene as we go further into context, due to quantization stuff. Be it linear logic it wouldn't matter much, but in our case we have non-linear effects where a little change might lead to big consequences, so this thing *may* at times affect results a lot.
 
-When we multiply now y axes of Q and K we get negative value and it suddenly reduces the sum of our "compatibility" even tho we could move it *just a bit*, the distance between tokens didn't change much!
 
-How do we deal with it? Well, we do not, right? The model can just learn to walk around..
-
-It simply has to learn to find values in matrices that don't *do* that when we apply the matrices. So the results should be safe for *certain* distance.
-
-But.. it can't be safe *everywhere*. 
-
-> ~~Let's imagine that we have two close tokens. *Originally* their Q and K vectors are somewhat similar, yet their *first axes* are more like at 80 degrees difference. We take these as compatible ones as the shapes are somewhat similar.~~
->
-> ~~Now, imagine the same tokens when they are positioned still *close* to each other, but we have *moved* them within context just enough to make the RoPE rotated K vector cross the line and change the sign.~~
->
-> ~~Suddenly, our shapes *stop being compatible* simply due to their new *absolute position* in context, while their distance didn't change - they are still close!~~~
-
-I was wrong here, but ironically the point is still valid due to precision loss over long context calculations here :). So in real world engine, the actual precision loss might intervene as we go further into context, due to quantization stuff.
-
-Isn't it wonderful?
-
-A single attention head can lie about tokens "compatibility" score based on *where* tokens are in the context, even if their mutual distance didn't change. And it also can lie if the distance between tokens is out of its "safe" range. 
+A single attention head *may* lie about tokens "compatibility" score based on *where* tokens are in the context, even if their mutual distance didn't change. And it also can lie if the distance between tokens is out of its "safe" range.
 
 And here we get another problem! The longer context we have, the larger amount of disks might lie about the compatibility. At the start only the first disks go outside of the safe zone fast, but later in context a lot of medium speed disks might also show false incompatibility.
 
 So, let's try to predict some consequences of this fun, thanks to RoPE:
  - every attention head is applicable only within of a certain distance between tokens, otherwise it lies
- - at certain positions of tokens in context, attention head lies
+ - at certain relative positions of tokens in context, attention head lies
  - to be able to still understand where there is noise and where signal, model has to *duplicate* attention heads with the same specialization *for various distance ranges*. So multiple heads catch the same traits just over different distance ranges
  - this redundancy is the only way for neural network later to understand which attention head lies and which ones are telling the truth
 
