@@ -281,7 +281,7 @@ Each of these basic data elements is called: token.
 Note, i made examples for text only transformers, but in fact it can be *any* type of data: images (where tokens are typical combination of pixels), audio (typical frequencies combinations), motion (typical coordinate changes) and so on.
 
 ### How is this list of tokens created?
-Before the training, a special software takes all the training data and splits it up into the smallest list of basic elements. So if our whole training consists of the words "Milk" and "Cat", we get only two tokens: "Milk" and "Cat". But if our training dataset also has "Catie" and "Milkie", our tokens list would get a third token: "ie". 
+Before the training, a special software takes all the training data and splits it up into the list of basic elements that would provide the smallest text representation. So if our whole training consists of the words "Milk" and "Cat", we get only two tokens: "Milk" and "Cat". But if our training dataset also has "Catie" and "Milkie", our tokens list would get a third token: "ie". 
 
 On the inside, every token consists of a personal list of numbers, where every number has its position (#1, #2, etc). Every position (column) works as a separate axis or, in other words, as a dimension. Since every token has the same amount of values, all tokens together make a single table (matrix) where every row describes one token. 
 
