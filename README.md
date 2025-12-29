@@ -172,39 +172,39 @@ Under the hood, we may have scary matrix multiplications, sigmoid functions, nor
 
 So you can change the sigmoid function to something else, you can replace the dot-product with qubits, you can do lots of other things, but conceptually it will be the same - implementing the pattern matching and growing it further according to the rules of our learned pattern :).
 
-### How does it know which patterns are there and which do match?
+### How does it know which patterns are there and which ones match?
 
-Modern training is not really intelligent. Usually, during the training our functions just try to change the values in the neural network's structures, until they finally amend the internal pattern so that it can reproduce the new pattern you gave it.
+Modern training is not really intelligent. Usually, during training, our functions just try to change the values in the neural network's structures until they finally adjust the internal pattern so that it can reproduce the new pattern you gave it.
 
-The check up here is if neural network can match (detect context) and continue the pattern properly, giving you a fitting reply. After all, the reply is just a pattern made of words :).
+The check-up here is whether a neural network can match (detect context) and continue the pattern properly, giving you a fitting reply. After all, the reply is just a pattern made of words :).
 
-Under the hood we usually just use gradient descent algo that tries to find which values and how to change to reflect your own pattern the best. 
+Under the hood, we usually just use gradient descent algo that tries to find which values to change and how to change them to best reflect your own pattern. 
 
-Getting back to a starry sky example, we can see it as changing the stars position so that when viewed from the correct viewpoint (context), we can see only the fitting neighboring stars at the right distances, giving us only the fitting possible constellation that can tell us which star comes next.
+Getting back to the starry sky example, we can see it as changing the stars' positions so that when viewed from the correct viewpoint (context), we can see only the fitting neighboring stars at the right distances, giving us only the fitting possible constellation that can tell us which star comes next.
 
-Of course, for every *next* desired output we still may change *the same* values we changed for *previous* desired output.. Which means that whenever model learns something new, it may distort whatever it learnt before.
+Of course, for every *next* desired output we still may change *the same* values we changed for the *previous* desired output.. Which means that whenever the model learns something new, it may distort whatever it has learned before.
 
-And that's exactly why training is lossy by definition. We use the same parameters to reflect multiple patterns, imprinting into a single wooden frame immense amount of sub-patterns, which can be seen from various angles or in a different light.
+And that's exactly why training is lossy by definition. We use the same parameters to reflect multiple patterns, imprinting an immense amount of sub-patterns into a single wooden frame, which can be seen from various angles or in a different light.
 
-And this is basically how the whole training works.
-(I omit here various tricks helping models to reproduce the pattern faster than just by super slow trying of all possible combinations)
+And this is basically how the whole training process works.
+(I am omitting here various tricks that help models to reproduce the pattern faster than by naively trying all possible combinations)
 
-So, again, neural networks do not store the data you show it, it stores only the approximation of your data structure, the internal organization of your data, not your data itself. And to do it, it forms patterns..
+So, again, neural networks do not store the data we show them, they store only an approximation of the data structure, the internal organization of the data, not the data itself. And to do this, they form patterns..
 
-Which means - neural network is a *pattern processor* :).
+Which means - a neural network is a *pattern processor* :).
 
-And that's exactly why we can use it for understanding and development of *anything*, apart from pure Chaos :).
+And that's exactly why we can use it for the understanding and development of *anything*, apart from pure Chaos :).
 
 Because understanding something means *being able to predict* it. 
 
-To understand something we first analyze it by trying to grasp the specific pattern of the process and then we correctly predict that very pattern's development over time, which proves we have grasped the pattern adequately. 
+To understand something we first analyze it by trying to grasp the specific patterns of the process and then we correctly predict the development of these very patterns over time, which proves we have grasped them adequately. 
 
-If we can not predict its continuation, it means we do *not* understand something that goes on, we don't see the whole pattern. 
+If we cannot predict its continuation, it means we do *not* understand something that goes on - we don't see the whole pattern. 
 (or there is no pattern and there is the pure Chaos factor).
 
-That's why there is no difference for neural networks if it is DNA, sound, text, images, laws of physics, traffic, human's face or weather forecast. The way they work can grasp any patterns in any system all the same way.
+That's why there is no difference for neural networks whether it is DNA or sound or text or images or the laws of physics or traffic or human faces or a weather forecast. They work in a way that grasps any patterns in any system in the same way.
 
-### So, what does this understanding gives us?
+### So, what does this understanding give us?
 
 It provides a basic concepts for building a good AI.
 1. It should allow forming the patterns in the fastest, easiest and most flexible manner.
