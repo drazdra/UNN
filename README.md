@@ -22,11 +22,11 @@ Content:
 #### Preface.
 This text is just an attempt to explain things about neural networks and transformers without any confusing ML slang, without any math, without any code. It doesn't mean it's shallow or simplified, more like the opposite.
 
-Its goal is to make you understand what's actually happening, why, and what for, without having any special knowledge in the field. Transformers are pretty simple if you understand what they actually do :).
+Its goal is to make you understand what's actually happening, why, and what for, without having any special knowledge in the field. Transformers are pretty simple, if you understand what they actually do :).
 
 I recommend reading the whole thing before getting back at me :). 
 
-So, if you like neural networks..
+So, if you like neural networks...
 
 # Chapter 1.
 ## Neural networks and inference: ontological methodology.
