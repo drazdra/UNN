@@ -206,16 +206,16 @@ That's why there is no difference for neural networks whether it is DNA or sound
 
 ### So, what does this understanding give us?
 
-It provides a basic concepts for building a good AI.
+It provides basic concepts for building good AI.
 1. It should allow forming the patterns in the fastest, easiest and most flexible manner.
-2. It should allow forming the meta patterns - patterns for the built patterns, with any amount of reflection levels.
-3. It should allow rewriting the patterns - updating.
+2. It should allow forming the meta-patterns - patterns for the previously formed patterns, with any number of reflection levels.
+3. It should allow for rewriting the patterns - updating them.
 4. It should be able to match patterns (and find the perspectives).
 5. Updates should be minimally functionally degrading for existing patterns.
 
-This is valid for *both* ML part when it creates a reflection of data organization AND for inference, where it creates a prediction pattern.
+This is valid for *both* the training part when it creates a reflection of data organization AND the inference part, where it creates a prediction pattern.
 
-Simple, isn't it. You want to have progress? Add dimensions, *add reflection layers*, add update mechanics.
+Simple, isn't it? You want to have progress? Add dimensions, *add reflection layers*, add update mechanisms.
 
 # Chapter 2: explaining transformers with ponies.
 Now, let's do some understanding of what transformers are. We will talk about decoder only transformers that we all use now for text generation.
