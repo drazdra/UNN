@@ -241,7 +241,7 @@ These blocks play different roles and we will take a good look at each of them.
 ### Part 1 - The input block
 The role of the input block is to translate your words into the "brain signals" of the model.
 
-The input just translates each element of the text we send into the patterns your model knows. These patterns define the place of the text element you provided in the grand pattern the model has. 
+The input just translates each element of the text we send into the patterns your model knows. These patterns define the place of the text element you provided within the grand pattern the model has learned. 
 
 It's the internal *interpretation* of our data the model has learned. It allows the model to *relate* your text to everything else it has seen and to find a probable continuation to it, something that can *happen next* in your text.
 
@@ -281,23 +281,23 @@ Each of these basic data elements is called a token.
 Note: i made examples for text-only transformers, but in fact it can be *any* type of data: images (where tokens are typical combinations of pixels), audio (typical frequency combinations), motion (typical coordinate changes) and so on.
 
 ### How is this list of tokens created?
-Before the training, a special software takes all the training data and splits it up into the list of basic elements that would provide the smallest text representation. So if our whole training consists of the words "Milk" and "Cat", we get only two tokens: "Milk" and "Cat". But if our training dataset also has "Catie" and "Milkie", our tokens list would get a third token: "ie". 
+Before training, special software takes the entire training dataset and splits it up into a list of basic elements that would provide the smallest text representation. So if our whole training consists of the words "Milk" and "Cat", we get only two tokens: "Milk" and "Cat". But if our training dataset also has "Catie" and "Milkie", our token list would get a third token: "ie". 
 
-On the inside, every token consists of a personal list of numbers, where every number has its position (#1, #2, etc). Every position (column) works as a separate axis or, in other words, as a dimension. Since every token has the same amount of values, all tokens together make a single table (matrix) where every row describes one token. 
+On the inside, every token consists of a certain list of numbers, where every number has its position (#1, #2, etc). Every position (column) works as a separate axis or, in other words, as a dimension. Since every token has the same amount of values, all tokens together make a single table (matrix) where every row describes one token. 
 
-If we take all of these tokens of a neural network together, they make *the vocabulary* of a neural network. A list of all elements it knows, even tho most of this list is not *our* human words but the text chunks.
+If we take all of these tokens of a neural network together, they make *the vocabulary* of a neural network. A list of all elements it knows, even though most of them are not *our* human words but the text chunks.
 
-A numeric list representation of a token is called "embedding". Further, when i say "token" it usually means "embedding". But to avoid complicating the story i will just say "tokens". Why? Because "embedding" is just an *internal representation* of a token.
+A numeric list representation of a token is called an "embedding". Further, when i say "token", i usually mean "embedding". But to avoid complicating the story i will just say "tokens". Why? Because "embedding" is just an *internal representation* of a token.
 
-When you send your text, it gets split into these tokens. Then neural network looks up a tied list of numbers in its vocabulary for every token and just replaces the text with numbers. It puts every token onto a separate row, so instead of a block of text we get a table/matrix where every row is a single token of our text, represented as a row of numbers.
+When you send your text, it gets split into these tokens. Then the neural network looks up a tied list of numbers in its vocabulary for every token and just replaces the text with numbers. It puts every token onto a separate row, so instead of a block of text, we get a table/matrix where every row is a single token of our text, represented as a row of numbers.
 
-You can visualize every column (position) of rows as a separate *axis* of the token's pattern. Like, first number in the row represents the horizontal coordinate, second number is vertical coordinate and so on. 
+You can visualize every column (position) of the rows as a separate *axis* of the token's pattern. Like, the first number in the row represents the horizontal coordinate, the second number is the vertical coordinate and so on. 
 
-But it has so many columns! Like thousands! How to imagine that?!
+But it has so many columns! Like thousands! How can we even imagine that?!
 
-That's easy. To imagine more dimensions just think about pages in a book where each new page carries a subpattern of just 1 or 2 axes. Then a single whole pattern is a *whole* book of these sub-pattern pages. So every token is a book of sub-patterns.
+That's easy. To imagine more dimensions just think about the pages in a book where each new page carries a sub-pattern of just 1 or 2 axes. Then a single whole pattern is a *whole* book of these sub-pattern pages. So every token is a book of sub-patterns.
 
-How many axes/dimensions/pages these books have? Just as many as developers decide to give it. It's something they decide upon before training, as the more axes you have, more time you spend to train the model, more money you need to pay.
+How many axes/dimensions/pages do these books have? Just as many as developers decide to give them. It's something they decide upon before training, as the more axes you have, the more time you spend to train the model, and the more money you need to pay.
 
 #### What do these columns/axes in the tokens actually mean? How are they used?
 And here i could go an easy route and say that every axis has a specific meaning. Like the first axis represents everything "white", second axis groups everything "curvy", another one can mark everything related to "name" and so on. And if you have a high value in the first position for some word/token, it would mean it relates strongly to the "whiteness", while the "black" at the first position would have a very low value, showing how far it is from the "white". 
