@@ -2,96 +2,96 @@
 Understanding neural networks
 
 ## Preface
-Most people here don't know me, as i mainly live in Ollama discord server, under the nick "Drazdra". That is the easiest way to contact me. I rarely visit github (may do several times a year). 
+Most people here don't know me, as i mainly live on the Ollama Discord server, under the nick "Drazdra". That is the easiest way to contact me. I rarely visit Github (maybe several times a year). 
 
 #### First warning
 This is top abstract stuff, if you are not into it, don't go further. There is no empirical research data or code.
 
 #### Second warning
-This field develops too fast, so i might not know a lot of already existing researches as i don't read these and don't work on inference engines.
+This field develops too fast, so i might not know a lot of already existing research papers as i don't read them and don't work on inference engines.
 
 #### Third warning
 Forgive me if it's all too simple or naive for you :). The truth is.. that was my goal :).
 
 Content:
 1. A very abstract understanding of what neural networks are in general.
-2. An overview of the way transformers made conceptually, easy for understanding
+2. An overview of the way transformers are made conceptually, easy to understand
 3. Several of my own ideas on how to make AGI :).
 4. ...
 
 #### Preface.
 This text is just an attempt to explain things about neural networks and transformers without any confusing ML slang, without any math, without any code. It doesn't mean it's shallow or simplified, more like the opposite.
 
-Its goal is to make you understand what's actually happening and why/what for, without having any special knowledge in the field. Transformers are pretty simple if you understand what they actually do :).
+Its goal is to make you understand what's actually happening, why, and what for, without having any special knowledge in the field. Transformers are pretty simple if you understand what they actually do :).
 
-I recommend to read the whole thing before getting back at me :). 
+I recommend reading the whole thing before getting back at me :). 
 
 So, if you like neural networks..
 
 # Chapter 1.
 ## Neural networks and inference: ontological methodology.
 
-I'm sure everyone here knows how neural networks work.. yet please allow me to share my own way of seeing these, as i believe my view provides a clear, intuitive and effective way to see and engineer neural networks. After all, i was arguing about this for years now :).
+I'm sure everyone here knows how neural networks work.. yet please allow me to share my own way of seeing them, as i believe my view provides a clear, intuitive and effective way to see and engineer neural networks. After all, i have been arguing about this for years now :).
 
 Yes, i oversimplify certain things but not to the point of making them wrong *conceptually*.
 
-Actually, the whole point here is moving up from the implementation plane to the conceptual plane and to make it as abstract as possible.
+Actually, the whole point here is moving up from the implementation plane to the conceptual plane and to making it as abstract as possible.
 
-We can have any amount of implementations but *conceptually* all neural network are still the same :).
+We can have any amount of implementations but *conceptually* all neural networks are still the same :).
 
-Let's start with the most naive question ever, that nearly everyone can answer: how neural networks differ from regular software? 
+Let's start with the most naive question ever, that nearly everyone can answer: how do neural networks differ from regular software? 
 
-To answer that, i suggest seeing neural network as a "mind" *of a kind* :). But please, don't get triggered here, i don't mean it's a *human* mind :). But it's certainly a mind as it can *analyze and predict*.
+To answer that, i suggest seeing a neural network as a "mind" *of a kind* :). But please, don't get triggered here, i don't mean it's a *human* mind :). Although it's certainly a mind as it can *analyze and predict*.
 
-Yes, it's most primitive type of analysis and it processes data not the way we do, but it still can do both. It can analyze data to detect where the cat is and where the cup is and it can predict words well enough even to write essays, it even creates videos now predicting next frames.
+Yes, it's the most primitive type of analysis and it processes data not the way we do, but it can still do both. It can analyze data to detect where the cat is and where the cup is and it can predict words well enough even to write essays, it even creates videos now by predicting the next frames.
 
-To create this mind, we, as humans, code only its brain structure and functions. While the actual content of the mind gets structured on itself, automatically, with the help of these structures and functions we have created. 
+To create this mind, we, as humans, code only its brain structure and functions, while the actual content of the mind is structured on its own, automatically, with the help of the structures and functions we have created. 
 
-And, *for now*, it's the same as it is with humans: we just can't add skills or knowledge right in. We can not take a person and transfer our ready skills or knowledge right into their mind. 
+And, *for now*, it's the same as it is with humans: we just can't inject skills or knowledge right in. We cannot take a person and transfer our existing skills or knowledge right into their mind. 
 
-In other words, in fact we just can't teach anybody anything :).
+In fact, we literally just can't teach anybody anything :).
 
-What we *can* do is to provide the *conditions (including the information)* for the mind to learn. 
+What we *can* do is provide the *conditions (including the information)* for the mind to learn. 
 
-And even then it may still not end well.. *like me and solfeggio* :).
+And even then, it may still not end well.. *like solfeggio and me* :).
 
-So what's teaching then? Teaching is merely creating the *conditions* where one has higher chances to *form structures* that embed new understanding and new skills. 
+So what's teaching then? Teaching is merely creating the *conditions* under which one has higher chances to *form structures* that embed new understanding and new skills. 
 
-When you "learn" a foreign language, your brain forms new structures. When you "learn" playing guitar, your brain forms new patterns for controlling your fingers and for new type of hearing.
+When you "learn" a foreign language, your brain forms new structures. When you "learn" to play the guitar, your brain forms new patterns for controlling your fingers and for a new type of hearing.
 
-Why the "learn" in quotation marks? For the same very reason! 
+Why is "learn" in quotation marks? For the very same reason! 
 
 Can you even say it's *you* learning it? Not really, you just spend time trying something and then *something* emerges. Or does not emerge :).
 
-You do not patch the connections in your brain manually, they just emerge somehow, if you try hard.
+You do not patch the connections in your brain manually. They just emerge somehow, if you try hard.
 
-It's the hidden work of internal implementation of the brain structures and functions, that we don't either control or feel. We just get new patterns created in our brain that we can use when they are there.
+It's the hidden work of the internal implementation of brain structures and functions, which we neither control nor feel. We just get new patterns created in our brain that we can use when they are there.
 
-Same goes for neural networks, they don't control *training*, it just forms some new patterns inside with the help of algorithms we have created for the goal.
+Same goes for neural networks. They don't control *training*. New patterns just form inside with the help of algorithms we have created for that purpose.
 
-One more time: it's all about just getting new patterns somehow created inside of the info space. That's how "learning" happens.
+One more time: it's all about just getting new patterns somehow created inside the info space. That's how "learning" happens.
 
-Patterns capable of new functions. Emerging capabilities.
+We get the patterns capable of new functions. And we get emerging capabilities.
 
 ### But what do these patterns reflect? 
 
-It's easy, just think how models get trained: we feed them with an ordered list of repeatable elements (patterns) and we want them to reproduce something specific in result - certain wanted patterns.
+It's easy. Just think about the way models get trained: we feed them with an ordered list of repeatable elements (patterns) and we want them to reproduce something specific as a result - certain wanted patterns.
 
-So, what can they do to achieve that? Of course they simply have to learn the mutual compatibility of all these elements we show to them. How every element goes with every other one, and what are the chances for it to go there depending on what we already have in our pattern.
+So, what can they do to achieve that? Of course, they simply have to learn the mutual compatibility of all these elements we show them. How every element fits with every other one, and what the chances are for it to appear there, depending on what we already have in our pattern.
 
 Isn't it simple?
 
-Let's rephrase it: neural networks form patterns that reflect the *chances* for every data element to be around any other element.. and that depending on other elements around (which we call: the context).
+Let's rephrase it: neural networks form patterns that reflect the *chances* for every data element to happen next to any other element.. all depending on other elements around (which we call "the context").
 
 Or, you can say they reflect how closely certain elements (pieces of data) relate to each other, depending on the surrounding elements.
 
-Think about taste for fashion :). It is not about specific fashion pieces, it's about feeling what goes well with what, depending on the whole ensemble and surroundings. See? Simple.
+Think about a taste for fashion :). It is not about specific fashion pieces, it's about feeling what goes well with what, depending on the whole ensemble and surroundings. See? Simple.
 
-And that's it. Nothing else. It does NOT store any facts or any information. It doesn't have any texts inside, it doesn't do "cryptography" of your information. There is no text, no images, no videos, no sounds inside. It's not a fancy encoding of your information as such, it doesn't encode any single data elements sequence.
+And that's it. Nothing else. It does NOT store any facts or any information. It doesn't have any texts inside. It doesn't do "cryptography" of your information. There is no text, no images, no videos, no sounds inside. It's not a fancy encoding of your specific information, it doesn't encode any single sequence of data elements.
 
-What it has, is merely a huge amount of reflected patterns, embodying a cloud of relations probabilities. 
+What it has is merely a huge amount of reflected patterns, embodying a cloud of relations probabilities. 
 
-And that for all the elements' configurations it saw - for all patterns.
+And that is for all the elements' configurations it has seen - for all patterns.
 
 In other words, neural networks do not reflect the data itself the way storage systems do. Neural networks reflect how data is organized, the possible relative distribution of its elements.
 
