@@ -89,7 +89,7 @@ Think about a taste for fashion :). It is not about specific fashion pieces, it'
 
 And that's it. Nothing else. It does NOT store any facts or any information. It doesn't have any texts inside. It doesn't do "cryptography" of your information. There is no text, no images, no videos, no sounds inside. It's not a fancy encoding of your specific information, it doesn't encode any single sequence of data elements.
 
-What it has is merely a huge amount of reflected patterns, embodying a cloud of relations probabilities. 
+What it has is merely a huge amount of reflected patterns, embodying a cloud of relation probabilities. 
 
 And that is for all the elements' configurations it has seen - for all patterns.
 
