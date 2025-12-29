@@ -218,67 +218,67 @@ This is valid for *both* the training part when it creates a reflection of data 
 Simple, isn't it? You want to have progress? Add dimensions, *add reflection layers*, add update mechanisms.
 
 # Chapter 2: explaining transformers with ponies.
-Now, let's do some understanding of what transformers are. We will talk about decoder only transformers that we all use now for text generation.
+Now, let's do some understanding of what transformers are. We will talk about decoder-only transformers, the ones that we all use now for text generation.
 
-In this chapter we go down one level of abstraction to talk about a specific neural network architecture. It is going to be a bit less abstract and to have a bit more of actual architecture implementation specifics. But not to the level of actual engines, implementing the architecture.
+In this chapter, we go down a level of abstraction to talk about a specific neural network architecture. It is going to be a bit less abstract and will provide a bit more detail on actual architectural implementation specifics. But we won't go to the level of actual engines implementing the architecture.
 
-First, i believe the term transformers itself might sound fun and is right in technical terms, but it doesn't really help much to understand what they do.
+First, i believe the term "transformers" itself might sound fun and is correct in the domain of *mathematical implementation*, but it doesn't really help much to understand what they do.
 
-What i would actually call "transformers" is _incremental associative morphers_. 
+What i would actually call "transformers" is the _incremental associative morphers_. 
 
-Doesn't sound that cool? :) 
-Yet this naming is way closer to what they do on a high level and less confusing. To me, at least, and i believe soon for you.
+Does it not sound that cool? :) 
+Yet this naming is way closer to what they do at a high level and less confusing. To me, at least - and, i believe, soon for you too.
 
 So, let's unpack it a bit.
 
-Transformers have 3 main conceptual blocks:
+Transformers have three main conceptual blocks:
 1. Input
-2. Copy-pasted group of certain layers repeating over and over - "repeating" blocks
+2. A copy-pasted group of certain layers repeating over and over - the "repeating" blocks
 3. Output
 
-These blocks play different roles and we shall take a good look at each of them.
+These blocks play different roles and we will take a good look at each of them.
 
-### Part 1 - Input block
+### Part 1 - The input block
 The role of the input block is to translate your words into the "brain signals" of the model.
 
-Input just translates each element of the text we send into the patterns your model knows. These patterns define the place of the text element you sent in the grand pattern model has. 
+The input just translates each element of the text we send into the patterns your model knows. These patterns define the place of the text element you provided in the grand pattern the model has. 
 
-It's the internal *interpretation* of our data the model has learnt. It allows model to *relate* your text to everything else it saw and to find something probable to it, something that can *happen next* in your text.
+It's the internal *interpretation* of our data the model has learned. It allows the model to *relate* your text to everything else it has seen and to find a probable continuation to it, something that can *happen next* in your text.
 
-In text transformers these input patterns are limited to a *fixed* list after learning. So the model has no access to the "raw" sensory data anymore - it can't see anything *new* it didn't see during the training. You can't send a word in some alphabet the model doesn't know. You can not send an image of hand written text. It will just have no idea what it means in the grand pattern, where its place, what goes next. 
+In text transformers, these input patterns are limited to a *fixed* list after training. So the model has no access to the "raw" sensory data anymore - it can't see anything *new* that it didn't see during training. You can't send a word in an alphabet the model doesn't know. You cannot send an image of handwritten text. It will just have no idea what it means in the grand pattern, where its place is or what goes next. 
 
-Does it mean that input should *always* be split into fixed pre-learnt patterns? 
+Does it mean that the input should *always* be split into fixed pre-learned patterns? 
 
-Nope. For example, for images and sounds it can be different. A brighter image can make the input pattern have certain values be higher. This way model doesn't have to see the every possible combination of brightness at training, to learn how to understand the "brightness". The input becomes variable and the model can still match it because it's still similar to what it had learnt. And so it can react to the raw data variations, instead of just having a fixed list of patterns.
+Nope. For example, for images and sounds it can be different. A brighter image can result in higher values within the input pattern. This way during training the model doesn't have to see every possible combination of brightness to learn how to understand the "brightness". The input becomes variable and the model can still match it because it's still similar to what it has learned. And so it can react to the raw data variations, rather than just having a fixed list of patterns.
 
 #### How do they learn to convert text into.. patterns?
-During the training, neural networks learn to represent every possible element we send to them as a specific internal pattern, recorded as a long list of numeric values. Just the way image files are stored as numbers on the inside.
+During training, neural networks learn to represent every possible element we send to them as a specific internal pattern, recorded as a long list of numeric values. Just the way image files are stored as numbers on the inside.
 
-Every single "row" of such values is called a *vector*. We call it a vector simply because of the way we deal with its numbers - how we add them and compare. But as this is not a mathematical text, i will just use the word *row*, and for its content i will say values, and for their position in the list i will use *axes/dimensions*.
+Every single "row" of such values is called a *vector*. We call it a vector simply because of the way we deal with its numbers - how we add and compare them. But as this is not a mathematical text, i will just use the word *row*, and for its content i will say values, and for their position in the list, i will use *axes* or *dimensions*.
 
-A table of these is usually called "matrix" and a single "book" of many matrices is called "tensor", but i will just say "matrix*.
+A table of these is usually called a "matrix" and a single "book" of many matrices is called a "tensor", but i will just say *matrix*.
 
 And *pattern* here is any single numeric representation, be it a vector, a matrix or a multidimensional tensor.
 
-Now, when i've triggered serious ML scientists and they have closed the page, let's go on :).
+Now that i've triggered the serious ML scientists and they have closed the page, let's go on :).
 
 So we have a text to process and we need to split it into a list of basic elements. 
 
-Could we split it per character? Yes, but in the current architecture it produces so many combinations that it becomes too slow and expensive to use. One token in average equals to 3-4 characters, so be it 1 character the text generation would slow down for at least 3-4 times. And i don't even mention the training costs! Just imagine how many more combinations it would create!
+Could we split it per character? Yes, but in the current architecture it produces so many combinations that it becomes too slow and expensive to use. One token on average equals 3-4 characters. If it were 1 character per token the text generation would slow down by at least 3-4 times. Not to mention the training costs! Just imagine how many more combinations it would create!
 
-Then, could we split it by words? Nope. Words in many languages often morph, so it is not an efficient way - too many of them. Also, we have other things in text, like numbers.. 
+Then, could we split it into words? Nope. Words in many languages often inflect, so it is not an efficient way to do it - there are too many of them. Also, we have other things in a text, like numbers.. 
 
-And we decide to do something in-between - to split the text into a most common combinations of chars. That is:
- - common word parts: hi, under, sta, pro, num, li, etc
- - static common words: Hi/Hello/hello/HELLO/car/etc
- - common numbers 1.. 9, 13, 1111, 12345, etc.
- - punctuation
- - emojis
- - and so on
+And we decide to do something in-between - to split the text into the most common combinations of characters. That is:
+ - Common word parts: hi, under, sta, pro, num, li, etc
+ - Static common words: Hi/Hello/hello/HELLO/car/etc
+ - Common numbers 1.. 9, 13, 1111, 12345, etc.
+ - Punctuation
+ - Emojis
+ - And so on
 
-Each of these basic data elements is called: token.
+Each of these basic data elements is called a token.
 
-Note, i made examples for text only transformers, but in fact it can be *any* type of data: images (where tokens are typical combination of pixels), audio (typical frequencies combinations), motion (typical coordinate changes) and so on.
+Note: i made examples for text-only transformers, but in fact it can be *any* type of data: images (where tokens are typical combinations of pixels), audio (typical frequency combinations), motion (typical coordinate changes) and so on.
 
 ### How is this list of tokens created?
 Before the training, a special software takes all the training data and splits it up into the list of basic elements that would provide the smallest text representation. So if our whole training consists of the words "Milk" and "Cat", we get only two tokens: "Milk" and "Cat". But if our training dataset also has "Catie" and "Milkie", our tokens list would get a third token: "ie". 
