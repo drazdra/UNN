@@ -96,38 +96,38 @@ And that is for all the elements' configurations it has seen - for all patterns.
 In other words, neural networks do not reflect the data itself the way storage systems do. Neural networks reflect how data is organized, the possible relative distribution of its elements.
 
 For example:
-How closely kitten is related to cute and to milk. How closely snow is related to cold and blanket. 
-And how closely blanket is related to coziness and coziness to a cat :). 
-And that is within the context of winter and within the context of underwater swimming.
+How closely a kitten is related to "cute" and "milk". How closely snow is related to "cold" and a "blanket". 
+And how closely a blanket is related to coziness and coziness to a cat :). 
+And that is within the context of the winter and within the context of underwater swimming.
 
 But don't get me wrong, neural networks can go beyond just human ideas or words. They can process any data elements - sounds, syllables, numbers, images, weather, galaxies, anything.
 
-Based on this, let's write down what defines any neural network architecture, what makes it *to be* one:
- - how they represent (store) these patterns 
- - how they actually find/match these patterns 
- - how they process these patterns (inference, classification, distillation, etc)
- - how they update these patterns
+Based on this, let's write down what defines any neural network architecture, what *makes* it one:
+ - how it represents (stores) these patterns 
+ - how it actually finds/matches these patterns 
+ - how it processes these patterns (inference, classification, distillation, etc)
+ - how it updates these patterns
 
-If you go down one abstract level and define how these should be structured and work, you get a specific neural network architecture.
+If you go down one abstract level and define how all that should be structured and work, you get a specific neural network architecture.
 
-If you go down one more abstract level, you implement these structures in a certain form, like in code or with a physical device and get a specific model/engine pair.
+If you go down one more abstract level, you implement these structures in a certain form, like in code or with a physical device, and get a specific model/engine pair.
 
 But at the top level, all of *machine learning is simply creating these patterns*. 
 
 Inference is simply an algorithm that can *continue* the pattern, by finding the best fitting continuation based on all the patterns it knows.
 
-Classification is simply finding the best fitting pattern within stored ones.
+Classification is simply finding the best fitting pattern within the stored ones.
 
-And memory, learning and thinking are *matching*+*processing*+*updating* the patterns.
+And memory, learning, and thinking are *matching*+*processing*+*updating* the patterns.
 
-Very simple, isn't it. It's all about beautiful patterns :). 
+Very simple, isn't it? It's all about beautiful patterns :). 
 
-Before moving on, let's devote a bit more attention to the matching part as it has a trick up its sleeve :).
+Before moving on, let's devote a bit more attention to the matching part, as it has a trick up its sleeve :).
 
-That trick is in treating the existing context as a specific *point of view* to find the best matching one. So that within a single huge pattern we can find/pack various multiple patterns, depending on the perspective we take to look at it.
+That trick is in treating the existing context as a specific *point of view* to find the best matching pattern. So that within a single huge pattern we can find/pack a variety of patterns, depending on the perspective we take.
 
-You can visualize it as a starry sky. When a neural network gets trained it creates a starry sky pattern.
-You can see the constellations forming certain specific patterns but if you move to another star system, same stars now form a different pattern.
+You can visualize it as a starry sky. When a neural network gets trained, it creates a starry sky pattern.
+You can see the constellations forming certain specific patterns but if you move to another star system, the same stars now form a different pattern.
 
 Seeing multiple patterns within one single pattern is just a matter of perspective or, in other words, of the context.
 
@@ -135,42 +135,42 @@ Now, let's move on.
 
 ### How can it store and process all these probabilities? 
 
-it just uses a hell lot of conditional "if/then/else" statements.. 
+It just uses a hell of a lot of conditional "if/then/else" statements... 
 
-Sorry, i just couldn't resist making this joke :). It's not literally the case of course. 
+Sorry, i just couldn't resist making this joke :). It's not literally the case, of course. 
 
-Mostly, in the modern neural networks we just use the math instead of actual code branching/logical rules, etc. 
+Mostly, in modern neural networks, we just use math instead of actual code branching/logical rules, etc. 
 
-The patterns inside are represented as numeric values, so the math operations naturally process these patterns and everything just flows natively. By "comparing" these numbers, neural networks can find how similar the patterns are, by "adding up" numbers they can just mingle any patterns together. 
+The patterns inside are represented as numeric values, so math operations naturally process these patterns and everything just flows natively. By "comparing" these numbers, neural networks can find how similar the patterns are. By "adding up" numbers they can just mingle any patterns together. 
 
-In a way, you can see it as merging two images within your image editor. The image files on the inside are just lists of numbers that represent the brightness of the every dot, so we can simply add up values from both files to get a new image - a mingled image uniting both patterns. 
+In a way, you can see it as merging two images within your image editor. The image files on the inside are just lists of numbers that represent the brightness of every dot, so we can simply add up the values from both files to get a new image - a mingled image uniting both patterns. 
 
-In a way, neural networks do the same, they just know how to properly merge numbers to get a new pattern or to match these and find how similar these are.
+In a way, neural networks do the same. They just know how to properly merge numbers to get a new pattern or to match them and find how similar they are.
 
-(we still may have certain hard conditions like in ReLU or in samplers but more about it later)
+(we still may have certain hard conditions like in ReLU or samplers but more on that later)
 
 Once again:
 
-a) Neural networks usually do not operate by stuff like true or false but rather work with a floating values whose "trueness" evaluates within context my "matching similarity" and most of the time it just changes the existing state (changing patterns), not choosing between different code blocks. Patterns just merge naturally through mathematical language.
+a) Neural networks usually do not operate with stuff like pure true or false conditions in the code but rather work with floating-point values whose "trueness" is evaluated within the context by "matching similarity". Most of the time, the result of matching just changes the existing state (changing patterns), not choosing between different code blocks. Patterns just merge naturally through mathematical language.
 
-b) There is a huge amount of the values in neural networks, which makes it possible to create an immense pattern and to store immense amount of possible *perspectives*, to see any required part of this pattern, to match the best fitting part.
+b) There is a huge amount of values in neural networks, which makes it possible to create an immense pattern and to store vast amount of possible *perspectives*, to see any required part of this pattern, to match the best fitting part.
 (to repeat once again, it's a pattern of probabilities of what goes well with what)
 
-c) Any value in the "dimensions" can work as one more perspective to the same pattern, it can be used to find a required sub-pattern, serving as a "branching condition" to the concepts extraction.
+c) Any value in the "dimensions" can work as one more perspective on the same pattern, it can be used to find a required sub-pattern, serving as a "branching condition" for concept extraction.
 
-This is a very hard thing to grasp (high-dimensional geometry in the semantic space) so i will explain it in a way that anybody can understand :). 
+This is a very hard thing to grasp (high-dimensional geometry in the semantic space), so i will explain it in a way that anybody can understand :). 
 
-> How a single value in a single dimension can have a drastic decisive effect on a pattern consisting of 10000000 other values? Just imagine a picture of a statue in a textbook. It's a beautiful piece of ancient work, it has tons of dimensions - weight, color, material, age, complex shape, history, art school, author, etc. And now, a bad student takes a pencil and draws upon it.. well.. let's say a mustache. The whole thing suddenly changes :). That's how a single new value can affect the whole big concept and its perception.
+> How can a single value in a single dimension have a drastic decisive effect on a pattern consisting of 10000000 other values? Just imagine a picture of a statue in a textbook. It's a beautiful piece of ancient work, it has tons of dimensions - weight, color, material, age, complex shape, history, art school, author, etc. And now, a bad student takes a pencil and draws on it.. well.. let's say a mustache. The whole thing suddenly changes :). That's how a single new value can affect the entire concept and its perception.
 
-> Or, imagine a great tasty nice looking fruit - it's a good food category. Now just add a worm to it - and the category is all different now :).
+> Or, imagine a great, tasty, nice-looking fruit - it's in the "good food" category. Now just add a worm to it - and the category is all different now :).
 
-d) neural networks can have multiple separate "big" patterns with sub-patterns.
+d) Neural networks can have multiple separate "big" patterns with sub-patterns.
 
-e) the way neural networks process patterns is non-linear, which is a fancy way to say that one more single tiny dot in a pattern can cause an avalanche and taifun at once! So, *in a way*, it *does* have these if/then/else blocks.. *runs away giggling*
+e) The way neural networks process patterns is non-linear, which is a fancy way to say that one more single tiny dot in a pattern can cause an avalanche and a typhoon at once! So, *in a way*, they *do* have these if/then/else blocks.. *runs away giggling*
 
 Under the hood, we may have scary matrix multiplications, sigmoid functions, normalizations and so on, yet conceptually they all just serve as means to match the patterns and to mingle the patterns :).
 
-So you can change sigmoid function to something else, you can replace dot-product with qubits, you can do lots of other things but conceptually it will be the same - implementing the pattern matching and growing it further according to the rules of our learnt pattern :).
+So you can change the sigmoid function to something else, you can replace the dot-product with qubits, you can do lots of other things, but conceptually it will be the same - implementing the pattern matching and growing it further according to the rules of our learned pattern :).
 
 ### How does it know which patterns are there and which do match?
 
