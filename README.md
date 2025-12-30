@@ -406,59 +406,59 @@ And upon this, we finish the "input" block.
 
 I think this part was pretty easy, wasn't it? :).
 
-#### Part 2 - repeating blocks
-This is the core of the transformers, so it will be the longest part with loads of sub parts. Let's start.
+#### Part 2 - the repeating blocks
+This is the core of the Transformer, so it will be the longest section, with loads of sub-parts. Let's start.
 
-It consists of a repeating structure, where every repeated block consists of the same set of layers, yet with a different content. As if somebody copy-pasted one block many times before the training and they all now hold different patterns but structurally the same.
+It consists of a repeating structure where each repeated block comprises the same set of layers, yet with different content. As if somebody copy-pasted one block many times before training. And while they are structurally the same, they all now hold different patterns.
 
-The way they work, is like a one way conveyor where every next block does its specific changes to the pattern.
+The way they work is like a one-way conveyor where each next block does its specific changes to the pattern.
 
-Each of these repeated blocks of layers is "isolated" from the other ones, they do not cross talk in any way, they process data consecuitively, a block after block.
+Each of these repeated blocks of layers is "isolated" from the others, they do not cross-talk in any way; they process data consecutively, block by block.
 
-We can repeat this whole conveyor many times, each time creating a one more new pattern/token, adding these to the original text, making the text/pattern longer and longer.
+We can run this whole conveyor many times, each time generating one more new pattern/token, adding it to the original text, making the text pattern longer and longer.
 
-We call this process: inference - creating a new pattern (token) from the existing pattern (tokens). 
+We call this process inference: creating a new pattern (token) from the existing pattern (tokens). 
 
-In a way, you can see the work of transformers as a line of people. 
+In a way, you can see the work of a Transformer as a line of people. 
 
-1. First guy splits your request into chunks and writes your request on a piece of paper using their internal pattern language. Then "adds" a space for the new part of the pattern.
+1. The first person splits your request into chunks and writes it down on a piece of paper using an internal pattern language. Then, they "add" a space for the new part of the pattern.
 
-2. Every next person in the line (repeating block) interprets the input pattern and mingles its summary into the new part. The original text also changes as the person also mingles-in one's own new interpretation. Then the person passes the paper to the next person and so on.
+2. The next person in line (a repeating block) interprets the input pattern and mingles their summary into the new part. The original text also changes as the person also mingles in their own new interpretations. Then the person passes the paper to the next person, and so on.
 
-3. The last guy takes this paper and translates only that very last pattern part they made to a human language. Adds it to the original human language text and.. feeds the paper back to the first guy, to translate it back into patterns..
+3. The last person takes this paper and translates only that very last pattern part they've created back into human language. They add it to the original text and... feed the paper back to the first person, to be translated back into patterns...
 
-4. The only thing kept between these cycles is the text interpretation, so from the second cycle people do not interpret the existing text, they reuse their own past interpretation and work only on the newly added part and the one to create. That's called kv cache.
+4. The only thing retained between these cycles is the text interpretation, so from the second cycle people don't have to re-interpret the existing text. They reuse their own past interpretation and work only on the newly added part and the one they need to create. That's called the KV cache.
 
-5. Whole operation repeats from the step 1. 
+5. The whole operation repeats from step 1. 
 
-I mean, even if you tried, it's hard to make things more weird. Doesn't it remind you a telephone game? :)
+I mean, even if you tried, it would be hard to make things any weirder. Doesn't it remind you of the telephone game? :)
 
-They were trained together to produce certain result but they never talk to each other, they can't go back, they do not have a separate paper to do calculations or thinking, etc. They have no plan. They just mingle-in the very first associations they have to all the text they have by now, on a token by token basis.
+They were trained together to produce a certain result, but they never talk to each other, they can't go back, they do not have a separate scratchpad for calculations or "thinking", etc. They have no plan. They just mingle in the very first associations they have with the entire text they have by now, on a token-by-token basis.
 
 #### But how exactly can they interpret the data? 
 
-Spoiler: the whole approach to the implentation feels very much like "let's just put several more similar blocks and see what happens" :).
+Spoiler: the whole approach to the implementation feels a lot like, "let's just put several more similar blocks and see what happens" :).
 
-Let's talk about the internal parts of the repeating blocks now. Every one of these consists of 2 main things:
- 1. Attention block.
+Let's talk about the internal parts of the repeating blocks now. Each one consists of two main things:
+ 1. The attention block.
 
-    It has one O matrix and multiple identical sub-blocks consisting of their own Q, K and V matrices. Every of these identical sub-blocks works separately in parallel on the same input and is called: "attention head".
+    It has a single O matrix and multiple identical sub-blocks consisting of their own Q, K, and V matrices. Each of these sub-blocks works independently, in parallel on the same input, and is called "Attention head".
 
-    V matrix per attention head learns a rough idea of how to extract useful data from token patterns, so their traits could be mingled together in a unique way, without adding too much distortion. In other words, how to interpret tokens.
+    The V matrix in each attention head learns a rough idea of how to extract useful data from token patterns, so that their traits can be mingled together in a unique way, without introducing too much distortion. In other words, it determines how to interpret tokens.
     
-    Q and K matrices during the training learn to decide upon the compatibility of the tokens with the attention head, which results in measuring "relatedness" of tokens to each other. 
+    During the training, the Q and K matrices learn to decide upon the compatibility of the tokens within the attention head, which results in measuring the "relatedness" of tokens to one another. 
     
-    O matrix stands above these and knows how to extract useful data from the *united results* of all attention heads. In other words, it knows how to create a new single pattern from separate smaller patterns produced by individual attention heads. This way after the whole attention block we have a single representation of data. It also tries to filter some noise produced by attention heads.
+    The O matrix sits above these and learns how to extract useful data from the *united results* of all attention heads. In other words, it knows how to create a new single pattern from separate, smaller patterns produced by individual attention heads. This way, after the whole attention block, we have a single mingled representation of data. It also tries to filter out the noise produced by attention heads.
 
-    Whole attention block produces an *overlay* pattern that is blended later into the original token once the attention is processed. This overlay is a *change* to our old pattern and doesn't have to contain all of the information required for a full token pattern.
+    The entire attention block produces an *overlay* pattern that is blended later into the original token once the attention step is complete. This overlay is a *change* to our old pattern and doesn't have to contain all of the information required for a full token pattern.
  
- 2. The FFN block, goes after the attention block.
+ 2. The FFN block, which goes after the attention block.
     
-    This block learns to "*fix*" things after we add attention results to the original token :). It works like typization in a way, with the difference that it produces *changes* that should be applied to the token as it comes from the attention block.
+    This block learns to "*fix*" things after the attention results are added to the original token :). It works like typization in a way, with the difference that it produces the *changes* to be applied to the token as it comes from the attention block.
 
-    So it's like typization *to a degree* that can introduce new and dampen existing traits of the new token's pattern, making it better matching the fitting typical token clouds.
+    So it's like typization *to a degree* of the new token's pattern, that can introduce new traits or dampen existing ones, making it match the fitting typical token clouds better.
 
-    While attention infuses traits of past tokens into all tokens, this block makes every separate token more *identifiable*.
+    While attention infuses traits from past tokens into every token, this block makes each separate token more *identifiable*.
 
 #### Starting with the attention block: Q and K.
 
