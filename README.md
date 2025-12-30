@@ -462,60 +462,60 @@ Let's talk about the internal parts of the repeating blocks now. Each one consis
 
 #### Starting with the attention block: Q and K.
 
-As explained above, on start we split the data into tokens, translate these with the input block and go over it.
+As explained above, at the start, we split the data into tokens and translate them with the input block.
 
-So we have whole context represented as a table where every row is a token, and we start by sending it to the first repeating block's attention. Literally, the whole table goes to each of the attention heads in there.
+So, here we have the entire context represented as a table where each row is a token, and we start by sending it to the first repeating block's attention. Literally, the whole table goes to each of the attention heads in there.
 
-Every of the attention heads has its own single Q, K and V matrices it has learnt during the training. Basically, that's what attention head is: Q, K and V matrices and some logic of using these.
+Each of the attention heads has its own single Q, K, and V matrices it has learned during the training. Basically, that's what an attention head is: the Q, K, and V matrices and some logic for using them.
 
-The goal of attention is to find all *related* tokens in our context and to fuse their traits, so we could find something that is related *to all of them* together, that is to their context. By idea, we could just try to combine traits from *all* of the tokens together. But this is impossible as our token's pattern has a fixed length and can't encompass infinite information. Trying to add everything into one little thing would just ruin its internal structure, it would be a cacophony.
+The goal of attention is to find all *related* tokens in our context and to fuse their traits. This allows us to find something that is related *to all of them* together - that is to their context. In theory, we could just try to combine traits from *all* of the tokens together. But this is impossible, as our token's pattern has a fixed length and can't encompass infinite information. Trying to add everything into one little thing would just ruin its internal structure, it would be a cacophony.
 
 So we need to find only the tokens that actually often come together and so are related. Then we could unite their traits and see what else usually comes together - what else is from that cloud.
 
-These Q and K during the training learn to *detect* certain specific traits that model sees as stable and relevant figures. So each attention head gets its own specialization - reacting to specific cloud(s) of tokens.
+These Q and K during the training learn to *detect* certain specific traits that the model sees as stable and relevant figures. So each attention head gets its own specialization - reacting to the specific cloud(s) of tokens.
 
 But more than that, both Q and K learn to express the result of their findings in a *compatible way*, so their results could be *compared*. 
 
-This makes them be two parts of the same function, as only the *comparison* of their results is used in the system.
+This makes them two parts of the same function, as only the *comparison* of their results is used in the system.
 
-And the goal here is to find out which tokens are compatible, so we can mingle them, and how much we can mingle them without breaking the proportions.
+And the goal here is to find out which of the tokens are compatible, so we can mingle them, and how much we can mingle them without breaking the proportions.
 
 Which tokens do we actually compare?
-Well, of course all of them, we need to know which tokens this attention head can mingle, so we just go over every pair of tokens - comparing each next token to every preceeding token.. *and over itself too*. 
+Well, of course all of them. We need to know which tokens the attention head can mingle, so we just go over every pair of tokens - comparing each next token to every preceding token.. *and with itself too*. 
 
-So a word chunk #2 is tested against #1 and.. #2, chunk #3 is tested against #1, #2 and.. #3, and so on for every pair.
+So the word chunk #2 is tested against #1 and.. #2, chunk #3 is tested against #1, #2, and... #3, and so on, for every pair.
 
-> By the way, on ML slang this is called "causal" attention, as in "cause and effect", causal here is literary - "preceeding/determining the future". And all of that is done in batches, doing math simultaneously, to utilize full power of gpu parallel processing
+> By the way, in ML slang this is called "causal" attention, as in "cause and effect", causal here is literal - "preceding/determining the future". And all of that is done in batches, doing math simultaneously, to utilize the full power of gpu parallel processing
 
-Why we need to compare a token to *itself*? 
- - traits we extract *from* some token might break the proportions of the whole token, when added back (remember, in the end we mingle everything back into the original tokens)
- - we need to know how much to scale the traits of *all* mingled tokens relatively to each other
+Why do we need to compare a token to *itself*? 
+ - The traits we extract *from* the token might break the proportions of the whole token when added back (remember, in the end we mingle everything back into the original tokens).
+ - We need to know how much to scale the traits of *all* mingled tokens relative to each other.
 
-As the final purpose of comparison is mingling of tokens, in every pair we have a token we mingle-into and token we extract the traits from. Let's call them:
- - the token we mingle-into: a target token
- - the token we extract the traits from: a donor token.
+As the final purpose of comparison is the mingling of tokens, in every pair we have a token we mingle into and the token we extract the traits from. Let's call them:
+ - The token we mingle into: a target token
+ - The token we extract the traits from: a donor token.
 
 So, how exactly do we compare them?
 
-First thing to understand is that we use the "input" version of every token in the sense of "as it came" to the attention, *before* we changed it here. So the first repeating block's q/k see the tokens as they are from the input vocabulary, and every next repeating block's q/k already see the tokens after they were processed by all preceeding blocks.
+The first thing to understand is that we use the "input" version of every token in the sense of "as it came" to the attention block, *before* we changed it here. So the first repeating block's Q/K see the tokens as they are from the input vocabulary, and every next repeating block's q/k already see the tokens after they were processed by all preceding blocks.
 
-Second thing to understand is that before comparing the tokens, every attention head goes over every token and creates its own Q, K and V *results*/vectors. These are created by multiplying the token content by the content of attention head's Q matrix, K matrix and V matrix. So we get 3 new different patterns/rows/vectors per each token, per each attention head. And each of these patterns is just a single row of numbers.
-> i will explain "multiplication later in the ffn block, this section is too dense as it is
+The second thing to understand is that before comparing the tokens, every attention head goes over every token and creates its own Q, K, and V *results*/vectors. These are created by multiplying the token content by the content of the attention head's Q matrix, K matrix, and V matrix. So we get three new different patterns/rows/vectors for each token, for each attention head. And each of these patterns is just a single row of numbers.
+> I will explain "multiplication" later in the FFN block; this section is too dense as it is
 
-Attention heads care only about *their own* token "interpretations", their own created rows - they do not interchange their data at all.
+The attention heads care only about *their own* token "interpretations" - their own created rows - they do not interchange their data at all.
 
 So now, when we have this extra data per token, we can actually compare the tokens by these created patterns. 
 
-Specifically for the comparison we need the patterns created by Q and K matrices. But.. which ones do we use to compare?
+Specifically for the comparison, we need the patterns created by the Q and K matrices. But... which ones do we use to compare?
 
 Whenever we compare two tokens, we always take:
- - Q row from the the target token
- - K row from the donor token
+ - Q row from the target token
+ - K row from the donor token.
 
 What do these rows actually *mean* conceptually? My own interpretation of this process is:
- - Q detects if the target is compatible with the extracted traits *this attention head typically produces*
+ - Q detects if the target token is compatible with the extracted traits *this attention head typically produces*
  - K detects if the donor has traits compatible for extraction *by this attention head*  
- - And Q+K together learn how much to *scale* tokens' extracted traits, relatively to the target token
+ - And Q+K together learn how much to *scale* the tokens' extracted traits, relative to the target token
 
 So if they are not compatible in some way, the extracted traits are just scaled to near zero and ignored.
 
