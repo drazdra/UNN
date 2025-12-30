@@ -341,66 +341,68 @@ So there are no "characters" on the inside, no "words", and no facts of any kind
 How do most people interpret this? 
 "If the words are linked sensibly, it must mean it's has ideas! It stores facts! It has knowledge!" :)
 
-Sounds fun, but.. what it stores is just chances for data to be organized in some way :). 
+Sounds fun, but... what it stores are just the chances for data to be organized in certain ways :). 
 
-But i said it's a concept.. Concepts? Ideas? What a concept even is?
+But i said it's a concept... Concepts? Ideas? What is a concept, even?
 
-"Concept" means a combination of basic elements into a single new basic compound element. A concept car is a car built of a new set of basic components: electric engine, propellers, carbon, steam machine, ai, paws, etc. In our case we speak of thinking, so it's about data elements, and for the language it's words. When we *think in language* we operate by meaningful semantic units. We can build concepts based on functional understanding, on traits, on abstractions, etc expressed *in words*. A concept of "comfort" includes a lot of basic ideas - where every idea is expressed in a certain word - warm, convenient, safe, relaxing, pleasurable, etc. And we can think about its *words* as its compound elements - basic concepts making a new concept.
+"Concept" means a combination of basic elements into a single new basic compound element. A concept car is a car built from a new set of basic components: an electric engine, propellers, carbon, a steam machine, AI, and paws, etc. In our case we are speaking of thinking, so it's about data elements, and for language, it's words. When we *think in language*, we operate with meaningful semantic units. We can build concepts based on functional understanding, traits, or abstractions, all expressed *in words*. The concept of "comfort" includes a lot of basic ideas, where each idea is expressed by a certain word: warm, convenient, safe, relaxing, pleasurable, etc. And we can think about these *words* as its compound elements - basic concepts forming a new concept.
 
-But transformers form *concepts* based on mere symbols sequences grouping! So the concept of "comfort" might be additionally tied for them to "concepts" of "like ", "ed", "ing", "car", "dis" and even to the comma ",". 
+But transformers form *concepts* based merely on the grouping of symbol sequences! So, for them, the concept of "comfort" might be additionally tied to the "concepts" of "like ", "ed", "ing", "car", "dis" and even the comma ",". 
 
-They don't have *any* other experience than text.. they unite into concepts the grouping statistics of chunks left after the tokenizer.
+They don't have *any* experience other than text... They make concepts out of the grouping statistics of chunks left by the tokenizer.
 
-*Transformers *lack* a whole necessary layer that makes humans humans - language representation.*
+*Transformers *lack* the entire necessary layer that makes humans human - language representation.*
 
-We do not relate the *semantic units* in neural networks, we relate altogether both: meaningless chunks and the proper words that carry the meaning as we mean it :). 
+We don't just relate the *semantic units* in neural networks, we relate both: meaningless chunks and the proper words that carry the meaning as we mean it :). 
 
-That is, transformers on the raw level often do not manipulate on concepts made of *semantically meaningful ideas*, they work with *concepts* made of tokens which may show mere statistical distribution of the *chars*, not human *ideas*. It's like humans *partially* trying to make sentences based on most common *sounds* pronounced together, not just on *words*.
+That is, transformers at the raw level often do not manipulate concepts made of *semantically meaningful ideas*, they work with *concepts* made of tokens which may reflect the mere statistical distribution of the *characters*, rather than human *ideas*. It's like humans *partially* trying to form sentences based on most common *sounds* pronounced together, not just on *words*.
 
-That's why tokens are a paradox, on one hand neural networks have to use these to create the clouds of related tokens - to "conceptualize" the data. But on the other hand these tokens often are *not* meaningful as we mean it..
+That's why tokens are a paradox: on the one hand, neural networks have to use them to create the clouds of related tokens - to "conceptualize" the data. But on the other hand these tokens are often *not* meaningful as we mean it...
 
-..and something tells me, the guy who invented tokenization was a programmer :). It perfectly *optimizes* the encoding of any language and at the same time *muddles up* the whole conceptual purpose of doing it :).
+...and something tells me, the person who invented tokenization was a programmer :). It perfectly *optimizes* language encoding while simultaneously *muddling up* the whole conceptual purpose of doing it :).
 
-> *..or maybe the person just didn't tell us the whole system? more about it later*
+> *..or maybe even a mathematician?*
 
-And at that, neural models manage to do the trick of imitating humanlike *concepts*. How?! Why? Three things:
- - tokenizers also have a lot of full words and word roots, that are *our* concepts
- - the attention implementation doesn't process learnt patterns *separately* but rather always mingles these into a single big pattern, working as a *semantic constructor*
- - the amount of statistical data is immense, making it learn to translate their conceptualization into our one (remember, transformers started as *translation* neural networks)
+> But more on the tokenization solution later :).
+
+Even so, neural models manage the trick of imitating human-like *concepts*. How?! Why? There are three reasons:
+ - tokenizers also contain many full words and word roots which are *our* concepts
+ - the attention implementation doesn't process learnt patterns *separately* but rather always mingles these into a single large pattern, working as a *semantic assembler*
+ - the amount of statistical data is immense, allowing the model to learn to translate its conceptualization into ours (remember, transformers started as *translation* neural networks)
 
 These three things partially patch the initial "flaw".
 
-Now, when we see how "concepts" emerge in the transformers (as a typical traits clouds - tokens) let's take a look at the classic example with the "King" and "Queen" tokens. 
+Now that we see how "concepts" emerge in transformers (as typical trait clouds - tokens), let's take a look at the classic example of the "King" and "Queen" tokens. 
 
-There was a talk that if we apply the pattern difference between "King" and "Qween" to the "Man" token, we somehow get a "Woman" token. Or vice versa. And the conclusion that it must mean this specific pattern change (vector shift) encodes the "gender" information :).
+There is a talk that if we apply the pattern difference between "King" and "Queen" to the "Man" token, we somehow get the "Woman" token. Or vice versa. Leading to the conclusion that this specific pattern change (vector shift) encodes "gender" information :).
 
-However, it's not. It's because "Man" pattern is *already* associated with a certain cloud of related ideas (man, dirty, socks) and has a certain shape. By introducing these specific pattern *changes* *to that specific* shape we make it partially closer to that *other* queen cloud (woman, pretty, stockings) and more distant from certain tokens of its original cloud (man, stinky). 
+However, it's not. It's because the "Man" pattern is *already* associated with a certain cloud of related ideas (man, dirty, socks) and has a specific shape. By introducing these specific pattern *changes* *to that specific* shape, we make it partially closer to that *other* "Queen" cloud (woman, pretty, stockings) and more distant from certain tokens within its original cloud (man, stinky). 
 
-It may seem we encode "gender" in these changed proportions but in fact we just change the strength of ties to other *multiple* tokens by amending the existing pattern. And weren't these patterns already *similar* or.. *compatible*? :) And the *change* we introduce may in fact bring way more than just gender. Potentially, it can change relatedness to *all* of the tokens. 
+It may seem like we encode "gender" in these changed proportions, but in fact, we just change the strength of the ties to *multiple* other tokens by modifying the existing pattern. And weren't these patterns already *similar* or... *compatible*? :) And the *change* we introduce may, in fact, bring way more than just gender. Potentially, it can change the relatedness to *all* tokens. 
 
-More than that, if we apply the same change to some irrelevant token (with a very different pattern), the change may not introduce anything gender specific at all because resulting related figure still will be very different. It would just move it closer to some different cloud of related tokens
- ..*and who knows what dragons live there!*
+More than that, if we apply the same change to an irrelevant token (with a very different pattern), it may not introduce anything gender-specific at all because the resulting figure will still be very different. It would just move the token closer to a different cloud of related tokens
+ ...*and who knows what dragons live there!*
 
-Summarizing it all, this is how training creates patterns that capture tokens' mutual relatedness in their probable combinations. 
+Summarizing it all, this is how training creates patterns that capture the tokens' mutual relatedness within their probable combinations. 
 
-Once training is finished, all these token/patterns are "frozen" and neural network only reads this learnt vocabulary but never changes it. Whatever text we send, it immediately *knows* which of the tokens/words go well together next and which do not. It can compare, it can match, it can mingle - all because the text elements are just patterns written in one internal "language". 
+Once training is complete, all these token patterns are "frozen", and the neural network only reads this learned vocabulary but never changes it. Whatever text we input, it immediately *knows* which tokens go well together next and which do not. It can compare, it can match, it can mingle - all because the text elements are just patterns written in one internal "language". 
 
-And for the same reason it can easily translate back into human words any *new* mingled pattern. It just finds a most similar pattern in the vocabulary and looks up an associated token. Then it just takes the word/chunk of that token and prints it back for us. And yes, note the "*A*", as there are always multiple similar patterns/tokens :). But more about that later.
+And for the same reason, it can easily translate back into human words any *new* mingled pattern. It just finds the most similar pattern in the vocabulary and looks up the associated token. Then it just takes the textual chunk of that token and prints it back for us. And yes, note the "*A*", as there are always multiple similar patterns/tokens :). But more about that later.
 
-Last thing is, what if we send to neural network a long text consisting of random characters? No template, just that.
+One last thing: what if we send the neural network a long text consisting of random characters? No template, just that.
 
-In that case our model will just *continue* this list of lowly related meaningless garbage, sticking to this weird pattern we have made. Because the mingled pattern will be super noisy and won't have any figures a model could detect, so it won't fall into any sensible pattern. It will match only itself, and the continuation will reflect its own configuration, not the learnt probable patterns.
+In that case, our model will just *continue* this list of loosely related, meaningless garbage, sticking to the weird pattern we have made. Because the mingled pattern will be extremely noisy and won't contain any figures the model can detect. It won't align with any sensible pattern. It will match only itself, and the continuation will reflect its own configuration, rather than the learned probable patterns.
 
-Until.. it finally stumbles upon some familiar pattern. And then it will just continue it, forming sensible sentences. 
+Until.. it finally stumbles upon a familiar pattern. And then, it will simply continue that pattern, forming sensible sentences. 
 
-For example, if you end your long garbage string with a single question mark, that alone might be enough to make model continue with a sensible text. That is because:
- - garbage = "weird pattern not matching anything from the common sensible patterns, not even to a garbage as all garbage examples look different. it matches only its own parts"
- - ? = "a known pattern related to a typical normal reply"
- - "garbage+?" = "tokens typically coming as a reply when nothing else familiar detected". 
+For example, if you end your long garbage string with a single question mark, that alone might be enough to make the model continue with a sensible text. That is because:
+ - garbage = "weird pattern not matching anything from the common sensible patterns, not even other garbage, as all garbage examples look different. It matches only its own parts"
+ - ? = "a known pattern related to a typical, normal reply"
+ - "garbage+?" = "tokens typically coming in a reply when nothing else familiar is detected". 
 
-If you send a typical *templated* request with garbage, the neural network will generate a sensible reply right away, because the template tokens will work in the same way as "?", model was already trained how to reply when the only detectable pattern is the template pattern and some noise.
+If you send a typical *templated* request with garbage, the neural network will generate a sensible reply right away, because the template tokens act in the same way as "?". The model was already trained on how to reply when the only detectable pattern is the template pattern amidst some noise.
 
-And upon this we finish the "input" block. 
+And upon this, we finish the "input" block. 
 
 I think this part was pretty easy, wasn't it? :).
 
