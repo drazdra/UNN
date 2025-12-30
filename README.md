@@ -5,10 +5,10 @@ Understanding neural networks
 Most people here don't know me, as i mainly live on the Ollama Discord server, under the nick "Drazdra". That is the easiest way to contact me. I rarely visit Github (maybe several times a year). 
 
 #### First warning
-This is top abstract stuff, if you are not into it, don't go further. There is no empirical research data or code.
+This is top abstract stuff, if you are not into that, don't go any further. There is no empirical research data or code.
 
 #### Second warning
-This field develops too fast, so i might not know a lot of already existing research papers as i don't read them and don't work on inference engines.
+This field develops too fast, so i might not know about a lot of already existing research papers as i don't read them and don't work on inference engines.
 
 #### Third warning
 Forgive me if it's all too simple or naive for you :). The truth is.. that was my goal :).
@@ -517,45 +517,45 @@ What do these rows actually *mean* conceptually? My own interpretation of this p
  - K detects if the donor has traits compatible for extraction *by this attention head*  
  - And Q+K together learn how much to *scale* the tokens' extracted traits, relative to the target token
 
-So if they are not compatible in some way, the extracted traits are just scaled to near zero and ignored.
+So, if the tokens are not compatible in some way, the extracted traits are just scaled to near zero and ignored.
 
-Which *traits* every attention head actually detects? We don't really know, it just automatically happens during the training. Neural network just has to develop some way to relate most common token clouds by some traits and this makes attention heads specialize on some of these. 
+Which *traits* does every attention head actually detect? We don't really know. It just automatically happens during the training. The neural network just has to develop some way to relate the most common token clouds by some traits and this makes attention heads specialize on some of these. 
 
-But let me make myself clear here, i believe that Q and K don't just project two tokens *to compare them through tokens "distilled" traits*. It's not about intersection of *tokens*.
+But let me make myself clear here: i believe that Q and K don't just project the two tokens *to compare them through the tokens' "distilled" traits*. It's not about the intersection of *tokens*.
 
-Q and K project "validation" pattern showing if this token is compatible with the *attention head*. Like a green lamp showing this token *can* be processed with *this* attention head. Q lights the green lamp if token can *accept* traits this attention head usually extracts. And K green lamp lights if token *has* traits this attention head extracts. So they are "compared" against *attention head* in the first hand and then the results of these two detections is what we actually compare.
+Q and K project a "validation" pattern showing if the token is compatible with the *attention head*. It's like a green lamp showing this token *can* be processed with *this* attention head. Q lights the green lamp if the token can *accept* traits that the attention head usually extracts. And the K green lamp lights if the token *has* traits that this attention head extracts. So they are "compared" against the *attention head* first, and then the results of these two detections are what we actually compare.
 
 If attention head could detect both:
- - compatibility of the target with the common extracted traits by this head
- - compatible traits in the donor with this head's extraction
+ - compatibility of the target token with the common extracted traits by this head
+ - compatible traits in the donor token with this head's extraction
 
-the matrices learn to produce *similarly shaped* results - green light.
+these matrices learn to produce *similarly shaped* results - a green light.
 
-So the similar *shape* expresses their compatibility, while the shapes combined *size* (brightness) expresses the *proportions* that mingled-in patterns should take.
+So their similar *shape* expresses their compatibility, while the shapes' combined *size* (the brightness) expresses the *proportions* that the mingled-in patterns should take.
 
-> Shape here means that their comparison produces a positive number and size/magnitude is how big this number is. We will talk about it soon.
+> The shape here means that their comparison produces a positive number, while the size/magnitude is a measure of how large this number is. We will talk about it soon.
 
-How can it even work? Well, the thing is, that these 2 matrices are all tied to the work of the third matrix - V one. The one that actually learns how to extract certain traits from the tokens. And so our "green light" is the emergent feature of all *3 matrices trained together*: Q, K and V. They learn to be *compatible* with each other through being *trained together*. That's how they develop their specialization.
+How can it even work? Well, the thing is, that these two matrices are all tied to the work of the third matrix - the V one. The one that actually learns how to extract certain traits from the tokens. And so our "green light" is the emergent feature of all *three matrices trained together*: Q, K and V. They learn to be *compatible* with each other through being *trained together*. That's how they develop their specialization.
 
-But.. why we need *two* matrices to detect the compatibility of the token with V matrix? Why couldn't we detect it with just one matrix?
+But... why do we need *two* matrices to detect the compatibility of a token with the V matrix? Why couldn't we detect it with just one matrix?
 
-The thing is, Q and K quite well can look for *different traits* in the tokens, because we may mingle here *different* clouds of tokens. Yet, the matrices produce results (green light) that should be *similar* for mingling to happen, despite *what* they *look at*. 
+The thing is, Q and K can perfectly look for *different traits* in the tokens, because we may mingle *different* clouds of tokens here. Yet, these matrices produce results (green light) that should be *similar* for mingling to happen, regardless of *what* they *look at*. 
 
-> Being compatible with traits *as a target* doesn't mean having the traits as a donor and vice versa. Even more, extracted traits from A token can fit B fine, but extracted traits from B token might *not* fit A token. This thing is not symmetrical, and we look for *different compatibilities* here. 
+> Being compatible with traits *as a target token* doesn't mean having donor traits and vice versa. Even more, traits extracted from token A can fit token B fine, but extracted traits from token B might *not* fit token A. This thing is not symmetrical, and we look for *different compatibilities* here. 
 
-And considering that they look for potentially different things, yet their results should match in comparison,  they just *have* to abstract their findings into a different resulting pattern language *common for both matrices* - "green lamp". 
+And considering that they look for potentially different things, yet their results should match in comparison, the matrices just *have* to abstract their findings into a different resulting pattern language *common to both matrices* - the "green lamp". 
 
 In that language they need to retell two things:
- - if they succeeded or not to find the right traits in the tokens
- - how to scale the traits to avoid distortions
+ - whether or not they succeeded in finding the right traits in the tokens
+ - how to scale the traits to avoid distortion
 
-Suddenly, relatedness of tokens becomes a level of compatibility with the attention head's "preferences" :).
+Suddenly, the relatedness of the tokens becomes a level of compatibility with the attention head's "preferences" :).
 
 And here you can exhale, as this is the whole concept of "relatedness" :). I've turned everything upside down here to explain, but i think it worked well :).
 
-Now, let's go into more gore details and see *how* exactly we compare. You may safely skip this section.
+Now, let's go into more gory details and see *how* exactly we compare. You may safely skip this section.
 
-As i said above, after comparing Q and K resulting rows we end up with a *single number*. Yep, it all goes down to just one numeric value that we use to scale the traits (V results).
+As i said above, after comparing the Q and K resulting rows we end up with a *single number*. Yep, it all goes down to just one numeric value that we use to scale the traits (the V results).
 
 But how exactly do we get this single number? 
 
