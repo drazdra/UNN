@@ -559,36 +559,36 @@ As i said above, after comparing the Q and K resulting rows we end up with a *si
 
 But how exactly do we get this single number? 
 
-We do it with a method called *dot-product* comparison. I wonder who makes these names. Whatever. So, to do it we just:
- - put Q resulting row of numbers over K resulting row of numbers
- - multiply overlapping numbers of two layers
- - sum the resulting numbers up
+We do this using a method called *dot-product* comparison. I wonder who comes up with these names... So, to do it we just:
+ - Place the resulting Q row of numbers over the resulting K row.
+ - Multiply the overlapping numbers of these two "layers".
+ - Sum all those results up to get a total value.
 
-In a pattern way of thinking, we just multiple symmetrical rays of two patterns and then add up their final lengths.
+In a pattern-based way of thinking, we just multiply the symmetrical rays of the two patterns and then add up their final lengths.
 
-If the value we have got is high, it means that patterns are compatible - their pairs of rays mostly were pointing the same way - into a positive or negative direction. If not, it means this head can't merge them. Literally, here are 3 examples for a two "axed" patterns: 
+If the value we get is high, it means that patterns are compatible - the pairs of their rays mostly were pointing the same way - either both positive or both negative. If not, it means this head can't merge them. Here are 3 examples of "two-axed" patterns: 
 
 ```
    Q1   K1     Q2  K2   Result
  - 2  * 2   +  1 * 3  = 7  = match (green)
- - 2  * -2  +  1 * 3  = -1 = do not match (red)
+ - 2  * -2  +  1 * 3  = -1 = no match (red)
  - -2 * -2  +  1 * 3  = 7  = match (green)
 ```
-Everything below zero we turn into a very small positive value, so after scaling the traits of a donor token that produced negative result are turned miniscule and don't change anything in the amalgamation.
+Then we turn everything below zero into a very small positive value. This way, after scaling, any traits of a donor token that produced a negative result become miniscule and don't change anything in the amalgamation.
 
-Everything positive we first proportionally reduce (to get smaller numbers) and then normalize to fit the >0 and <1 range, so our comparison can scale the traits down only. 
+Everything positive is first proportionally reduced (to get smaller numbers) and then normalized to fit the range between 0 and 1, so our comparison can only scale the traits down. 
 
-Basically, that's all of the explanation on how we compare the shapes (sign of all axes) and the magnitude (final number value).
+Basically, that's all. That is how we compare the shapes (the signs of all axes) and the magnitude (the final numeric value).
 
-> The question is - does Q or K matrice *always* produce more or less the same shape when detects a good compatibility? Or in different comparisons they may produce different shapes for compatible tokens, yet these shapes are simultaneously similar from both matrices? I did some web search and tho i didn't find any specific research data, it seems that yes, it's more correct than incorrect :). And in part i believe it's tied to RoPE that we will discuss later. But it's just a side interest that doesn't change much conceptually.
+> The question is - do the Q or K matrices *always* produce more or less the same shape when detecting good compatibility? Or might they produce different (per pair) yet similar (within the pair) shapes for compatible token pairs? I did some web search and, although i didn't find any specific research data, it seems that yes, it's more correct than not :). And i believe it's partly tied to RoPE that we will discuss later. But it's just a side interest that doesn't change much conceptually.
 
 #### Unnecessary details about the actual comparison process that you can skip :)
  
-Once we have summed up two vectors we do some more operations that do not change the meaning conceptually, but  make them more stable, convenient and relatable across all tokens.
+Once we have summed up the results we do a few more operations. These do not change the meaning conceptually, but they make the results more stable, convenient and easier to compare across all tokens.
 
-First, we just scale down the final value by the amount of axes there were: divide the result by a square root of total axes number. We do it to avoid turning most values to ~zero after softmax. 
+First, we just scale down the final value by the number of axes there were: we divide the result by the square root of the total number of axes. We do it to avoid turning most values into ~zeros after the softmax. 
 
-Second, we normalize it with softmax, which means we take the comparison results *of all token donors and our target* and use these to rank every comparison score against them all. Here we lose the original proportions of the scores, as this function is exponential.
+Second, we normalize it with the softmax, which means we take the comparison results *of all donor tokens and our target token*, and use these to rank each score against them all. Here we lose the original proportions of the scores, as this function is exponential.
 
 How do we calculate softmax? 
 For every token pair we take the constant value of 2.71828 (Euler's number) as a base and raise it to a power of the "reduced" comparison score: if the score is 6 we do 2.71828^6. 
