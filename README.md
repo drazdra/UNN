@@ -297,49 +297,49 @@ But it has so many columns! Like thousands! How can we even imagine that?!
 
 That's easy. To imagine more dimensions just think about the pages in a book where each new page carries a sub-pattern of just 1 or 2 axes. Then a single whole pattern is a *whole* book of these sub-pattern pages. So every token is a book of sub-patterns.
 
-How many axes/dimensions/pages do these books have? Just as many as developers decide to give them. It's something they decide upon before training, as the more axes you have, the more time you spend to train the model, and the more money you need to pay.
+How many axes/dimensions/pages do these books have? Just as many as developers decide to give them. It's something they decide upon before training, as the more axes you have, the more time you spend training the model, and the more money you have to pay.
 
-#### What do these columns/axes in the tokens actually mean? How are they used?
-And here i could go an easy route and say that every axis has a specific meaning. Like the first axis represents everything "white", second axis groups everything "curvy", another one can mark everything related to "name" and so on. And if you have a high value in the first position for some word/token, it would mean it relates strongly to the "whiteness", while the "black" at the first position would have a very low value, showing how far it is from the "white". 
+#### What do these columns/axes within the tokens actually mean? How are they used?
+And here i could take the easy route and say that every axis has a specific meaning. Like, the first axis represents everything "white", the second axis groups everything "curvy", another one can mark everything related to "names" and so on. And if you have a high value in the first position for a word/token, it would mean it relates strongly to "whiteness", while "blackness" in that same position would have a very low value, showing how far it is from "white". 
 
-But.. it would not really be true :). It's actually a *very* misleading way to explain. And.. just wrong.. :)
+But... it wouldn't really be true :). It's actually a *very* misleading way to explain it. And... just wrong... :)
 
-Let's dig in why.
+Let's dig into why.
 
-#### What does neural network learn during the training?
+#### What does a neural network learn during training?
 It just learns the chance for tokens to happen around each other.
 
-To do that it has to form certain ways to *relate* tokens. Of course some of the tokens come together more *often* than others. So they are *more related*.
+To do that, it has to develop certain ways of *relating* tokens. Of course, some of the tokens come together more *often* than others. So they are *more related*.
 
-How to record this relatedness? 
-Of course through *similar* patterns of the tokens. 
+How does it record this relatedness? 
+Of course, it does so through *similar* patterns of tokens. 
 
-Neural networks do it at training by finding the right values for all token axes and other parameters. The goal is to make certain tokens look like a "star" and some others like a "circle" :). In a figurative way.. So it's all about figures in patterns, you see :)
+Neural networks do this during training by finding the right values for all token axes and other parameters. The goal is to make certain tokens look like stars and some others like circles :). In a figurative sense... So it's all about figures in patterns, you see :)
 
-And the beauty here is that it doesn't matter how *big* these stars are or how *small*, you still see the *stars*, not circles :). You still can match one "star" token to any other "star" token and find the resemblance.
+And the beauty of it is that it doesn't matter how *big* or *small* these stars are. You still see *stars*, not circles :). You can still match one "star" token to any other "star" token and find the resemblance.
 
-That means that *actual* numeric values created at training are not *that* important for classification. Most important are the *proportions* between values, as they form a figure in the pattern. For convenience, we can imagine some proportions of these values as a multidimensional "stars", "circles" or even as "pizza without a slice" :).
+This means that the *actual* numeric values created during training are not *that* important for classification. What's most important are the *proportions* between values, as they form a figure within the pattern. For convenience, we can imagine some proportions of these values as multidimensional "stars", "circles", or even a "pizza without a slice" :).
 
-Once the learning is done, neural network can then compare these token patterns and see how compatible they are. 
+Once the learning is done, the neural network can then compare these token patterns and see how compatible they are. 
 
-Do not think that every "star"/"pizza"/"circle" patern is a separate isolated group. No, neural networks have a way to measure how *close* the pattern is to every other token and to decide on its similarity based on that. So we don't really have *groups*, instead we have a way to measure the chance of a token coming based on *similarity level*. The circle pattern is closer to the pizza pattern than to a star. And each token's pattern has multiple such figures inside.
+Do not think that every "star"/"pizza"/"circle" pattern is a separate isolated group. No, neural networks have a way to measure how *close* the pattern is to every other token and to decide on its similarity based on that. So we don't really have fixed *groups*, instead we have a way to measure the chance of a token coming based on its *similarity level*. A circle pattern is closer to a pizza pattern than to a star. And each token's pattern has multiple such figures inside.
 
-Until learning happens, nobody knows which token groupings are to be reflected, nor which patterns neural network will create to unite them. But after the learning, the figures represent chances for every token to be around every other token and their *similarity* forms stable token combinations.
+Until learning happens, nobody knows which token groupings will be reflected, nor which patterns the neural network will create to unite them. But after learning, the figures represent the chances for every token to happen next to every other token, and their *similarity* level forms stable token combinations.
 
-It's like now you know which people will agree to come to a party, depending on who comes, but for the whole city! :)
+It's like knowing which people will agree to come to a party, depending on who else is there - but for the entire city! :)
 
-In simple words, certain proportions in the token values reflect that tokens a, b, c have higher chances to come together but won't come if token "d" is there as its pattern breaks the compatibility.
+In simple words, certain proportions in the token values reflect the fact that tokens a, b, and c have higher chances of coming together, but won't show up if token "d" is there, as its pattern breaks the compatibility.
 
-One more example: say you have tokens with low values on pages 16 and 17 but high values on pages 5, 12 and 121 - that is a sign that the token *might be* *at least* related to a "fairytale" related tokens cloud. That's because these tokens always went together around the fairytales context in that very text that model was trained upon, and the model has found a way to reflect it through this "figure" within of its patterns. But always remember that the same token can still be related to many other clouds of tokens. And also a change in any of the axes may suddenly make it related to a totaly different clouds of tokens, as it will turn existing figures into something new in the same pattern.
+One more example: say you have tokens with low values on pages 16 and 17 but high values on pages 5, 12, and 121 - this is a sign that the token *might be* *at least* related to a "fairytale"-related token cloud. That's because these tokens always went together within fairytale contexts in the very text the model was trained on, and the model has found a way to reflect it through this "figure" within its patterns. But always remember that the same token can still be related to many other clouds of tokens. Also, a change in any of the axes may suddenly make it related to totally different clouds of tokens, as it will turn existing figures into something new in the same pattern.
 
-An *insight* here is that every token, in fact, is *not* a fixed symbol on the inside. Every token itself is just *a cloud of traits*, that can be aligned with *other clouds of traits* - tokens. Every token is *a concept*.
+The *insight* here is that every token, in fact, is *not* a fixed symbol on the inside. Every token itself is just *a cloud of traits* that can be aligned with *other clouds of traits* - other tokens. Every token is *a concept*.
 
-And yes, these multiple similar traits encode multiple clouds of related tokens :). 
+And yes, any part of the trait can also be a part of other traits, simultaneously encoding multiple clouds of related tokens :). 
 
-So there is no "chars" on the inside, no "words", no facts of any kind. There is *just* a pattern that can be related to other patterns. 
+So there are no "characters" on the inside, no "words", and no facts of any kind. There is *just* a pattern that can be related to other patterns. 
 
 How do most people interpret this? 
-"If the words are tied sensibly, it must mean it has ideas! It stores the facts! It has knowledge!" :)
+"If the words are linked sensibly, it must mean it's has ideas! It stores facts! It has knowledge!" :)
 
 Sounds fun, but.. what it stores is just chances for data to be organized in some way :). 
 
