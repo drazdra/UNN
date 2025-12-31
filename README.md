@@ -584,68 +584,68 @@ Basically, that's all. That is how we compare the shapes (the signs of all axes)
 
 #### Unnecessary details about the actual comparison process that you can skip :)
  
-Once we have summed up the results we do a few more operations. These do not change the meaning conceptually, but they make the results more stable, convenient and easier to compare across all tokens.
+Once we have summed up the results, we do a few more operations. These do not change the meaning conceptually, but they make the results more stable, convenient and easier to compare across all tokens.
 
 First, we just scale down the final value by the number of axes there were: we divide the result by the square root of the total number of axes. We do it to avoid turning most values into ~zeros after the softmax. 
 
 Second, we normalize it with the softmax, which means we take the comparison results *of all donor tokens and our target token*, and use these to rank each score against them all. Here we lose the original proportions of the scores, as this function is exponential.
 
 How do we calculate softmax? 
-For every token pair we take the constant value of 2.71828 (Euler's number) as a base and raise it to a power of the "reduced" comparison score: if the score is 6 we do 2.71828^6. 
+To calculate the softmax, for every token pair we take Euler's number (the constant 2.71828) as a base and raise it to the power of the "reduced" comparison score. For example, if the score is 6, we do 2.71828^6. 
 
-Then, to avoid big numbers, we divide every "powered" result by the sum of all powered scores - thus converting every value into a "percentage". And that's how we get our softmaxed value in the range of 0-1.
+Then, to avoid big numbers, we divide every "powered" result by the sum of all the powered scores - effectively converting every value into a "percentage". And that's how we get our final softmaxed value in the range of 0 to 1.
 
-The effect of this is that highest numbers are much much higher than anything even slightly smaller. It's like every little addition in high values lifts that score more and more faster and faster. And negative values become extremely small fractions.
+The effect is that the highest numbers become much, much higher than anything even slightly smaller. It's like every little addition to a high value lifts that score more and more, faster and faster. And negative values become extremely small fractions.
 
-So only the *most* compatible ones can really add to amalgamation, even a little less compatible ones are reduced to a very small effect. We even have to first scale them down to avoid total disappearance of any gradient.
+So only the *most* compatible ones can really add to the amalgamation. Even the slightly less compatible ones are reduced to a very small effect. We even have to scale them down first to avoid the total disappearance of any gradient.
 
-#### End of unnecessary details :)
+#### End of the unnecessary details :)
 
 
 #### A moment of critique
 
-When we do the comparison with dot-product, if a single column/axis is MUCH higher than other columns and matches its paired column in sign (both positive or negative), it might make the final result to have a high value *even* if all of the other columns have different signs but low values. This is a flaw of the used comparison method (dot product) and model *has* to learn to walk around it by finding the parameters combinations in Q and K matrices that make this situation very improbable. 
+When we do the comparison with dot product, if a single column/axis is MUCH higher than the others and matches its paired column in sign (both positive or negative), it might cause the final result to have a high value *even* if all of the other columns have different signs but low values. This is a flaw of the comparison method (dot product), and the model *has* to learn to work around it by finding combinations of parameters in the Q and K matrices that make this situation very improbable. 
 
-Theoretically a model could abuse for easy detection purpose certain specific axes in the underlying token values, by giving them high values as a trait, but these attempts i believe are wasted by later normalization block, so it should mostly abuse the q/k matrices in this regard.
+Theoretically, a model could abuse certain specific axes in the underlying token values for easy detection, by giving them high values as a trait. But these attempts, i believe, are wasted by the later normalization block, so the model mostly has to abuse the Q/K matrices in this regard.
 
-Another thing is that the only way to encode incompatibility of the pattern here is to use the opposite signs for the values or zero values. Just different non-zero values of the same sign can define only the level of compatibility.
+Another thing is that the only way to encode the level of pattern incompatibility here is to use opposite signs for the values or zero values. Just different non-zero values of the same sign can only define the level of compatibility.
 
-All of this is a pretty limited method to encode signal and my idea is that mostly it works because all it does is detecting compatibility, which is a very simple signal to encode. And, it actually *should be* a redundant signal.. but more about it later :).
+All of this is a pretty limited method for encoding a signal. My idea is that it works mostly because all it has to do is detect compatibility, which is a very simple signal to encode. And, it actually *should be* a redundant signal.. but more about that later :).
 
-The q/k thing looks *very* smart, probably the smartest thing in transformers, being also very fast in terms of compute. Yes, a better comparison would be not just compatibility to the head but between *actual traits*, but that would be *a totally different attention story*.
+The Q/K thing looks *very* smart, probably the smartest thing in Transformers, being also very fast in terms of compute. Yes, a better comparison would be not just compatibility with the head but between *actual traits*, but that would be *a totally different attention story*.
 
-#### end of critique
+#### End of the critique
 
 #### A moment of thinking
 
-Here we get an interesting side conclusion that q/k may learn not just the level of tokens compatibility (critically low score category vs everything else) but also learns to work as a *patcher* to change the size of the patterns so their amalgamation would end up in a right proportions. This is interesting as it then learns to encompass two different functions: detect tokens relatedness/compatibility and to patch the size of mingled patterns for better mingling. Of course at that mingled traits do not have to be *the same* between tokens, as attention head may extract different ones from different tokens. But considering the amount of other things it should take into consideration, i would guess it's a rather weak emerging feature.
+Here we get an interesting side conclusion: Q/K may learn not just the level of token compatibility (the critically low score category vs everything else) but also learn to work as a *patcher* to change the size of the patterns, so that the amalgamation of their work ends up in the right proportions. This is interesting as it then learns to encompass two different functions: detecting token relatedness/compatibility and patching the size of mingled patterns for better mingling. Of course, at that, the mingled traits do not have to be *the same* between tokens, as the attention head may extract different ones from different tokens. But considering the amount of other things it should take into consideration, i would guess it's a rather weak emerging feature.
 
-#### end of thinking
+#### End of the thinking
 
 
 #### Distance between mingled tokens
-If you have an inquiring mind, you may have spotted that now we know how compatible our tokens are, but we have no way of knowing how much they should affect each other, as older tokens should affect new tokens less than fresh ones. The "white" word should not affect all further words in the text as much as the right next one after it. 
+If you have an inquiring mind, you may have spotted that while we know now how compatible our tokens are, we still have no way of knowing how much they should affect each other, as older tokens should affect new tokens less than fresh ones. The "white" word should not affect all further words in the text as much as the very next one. 
 
 How do we go about it? 
-Well, to deal with it transformers introduce the RoPE trick. 
+Well, to deal with it, transformers introduce the RoPE trick. 
 
-You can imagine it as an odometer - a device in cars that counts how much it has driven so far. It shows a number in miles or kilometers, where every number is on a separate rotating disk. Once the odometer reaches "0009" it turns into "0010" and so on. At that, all disks move *simultaneously* so it's not a sudden shift to +1 in the third disk. No, that disk just was slowly crawling there all the time and could be read as "half there" separately, when we had "5" on the last disk. 
+You can imagine it as an odometer - a device in cars that counts how far the car has been driven. It shows a number in miles or kilometers, where every digit is on a separate rotating disk. Once the odometer reaches "0009", it turns into "0010", and so on. And remember, all disks move *simultaneously* so it's not a sudden shift to +1 in the third disk. No, that disk is slowly crawling there the whole time and could separately be read as being "halfway there" when we have a "5" on the last disk. 
 
-This is exactly how RoPE works. It simply takes the position number of every token (milage within context) and converts it into pattern distortions in a *predictable way*. Literally.. it pretends that axes are these disks and rotates them.. 
+This is exactly how RoPE works. It simply takes the position number of every token (mileage within the context) and converts it into pattern distortions in a *predictable way*. Literally... it pretends that the axes are these disks and rotates them... 
 
 How can it rotate an axis? Well, it can't rotate one axis :). 
-But it:
- - takes a lined paper and puts a dot, calling it 0,0 coordinates
- - takes *two* axes values, pretends these are (x,y) coordinates and puts a second dot there
- - takes drawing compass, puts it into 0,0 dot and draws a circle through the second dot
- - and then with a weaked smile gradually changes these coordinates as if the second dot is alive and crawls upon that circle, until it returns to the same spot
- - and so on again and again
+Instead, it:
+ - Takes a piece of lined paper and puts a dot on it, calling it the (0,0) coordinates.
+ - Takes the values of *two* axes, pretends these are (x,y) coordinates and puts a second dot there.
+ - Takes a drawing compass, puts it at the (0,0) dot, and draws a circle through the second dot.
+ - And then, with a wicked smile, gradually changes these coordinates as if the second dot is alive and crawls upon that circle, until it returns to the same spot.
+ - And so on again and again.
 
-It doesn't stop at that and uses separate pairs of axes for various distances. So if the first pair is for, say, 10 miles/tokens, next one can be for 20 tokens, next one for 40 and so on. So at the token #40 the first pair of axes makes 4 full circles, while the last one makes only 1 full circle.
+It doesn't stop there; it uses separate pairs of axes for various distances. So, if the first pair is for, say, 10 miles (tokens), the next one can be for 20 tokens, the next one for 40, and so on. In this setup, at token #40, the first pair of axes has made 4 full circles, while the last one has made only 1.
 
-But.. axes of what? Which pattern do we torture this way? Well, these are applied to the Q and K results.
+But... axes of what? Which pattern do we torture this way? Well, these rotations are applied to the Q and K results.
 
-As i said above, the rotation angle depends on the absolute position of token in the context - their "milage" from the start of the context. The more distance is between tokens, the more of the axes pairs get rotated more.
+As i said above, the rotation angle depends on the absolute position of the token in the context - its "mileage" from the start of the context. The greater the distance between tokens, the more axes pairs get rotated.
 
 If the original shapes were *similar*, once we increase distance between tokens, RoPE rotates thier axes and shapes lose their similarity and become *less* compatible. 
 
