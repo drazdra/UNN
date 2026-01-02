@@ -766,21 +766,21 @@ The model wasn't trained enough to grasp that having "brown" before "hare" makes
 
 So, the "brown+hare" combination just didn't break the attachment of the context to "white"... on the contrary, it made "white" closer, *as "brown" is a color too*! And now we have "color" cloud traits in the pattern, making all colors even more related - that is, more probable.
 
-And there you go! It added "*green*". Why? Just because of the above! *All* colors are pretty much tied together as they *often* are used together. And various different colors often happen in the *same* context. So they should share some similar traits too. That's how "green" later becomes more probable than most other words - we get tied to "colors" traits cloud more and more with every new color token. 
+And there you go! It added "*green*". Why? Just because of the above! *All* colors are pretty much tied together as they *often* are used together. And various different colors often happen in the *same* context. So they should share some similar traits too. That's how "green" later becomes more probable than most other words - we get tied to the "color traits cloud" more and more with every new color token. 
 
-Of course i call it "colors" traits cloud only as a *simplification*, because in reality it includes everything typically coming *with* colors in text too. 
+Of course, i call it a "color traits cloud" only as a *simplification*, because in reality, it includes everything that typically comes *with* colors in text too. 
 
-So the model is not "stupid" to mix up or forget the color of our hare, it just *works* this way - by pulling the probable *compatible* tokens, and compatible they are primarily by their common usage combinations, encoded in traits.
+So, the model is not "stupid" to mix up or forget the color of our hare. It just *works* this way - by pulling the probable *compatible* tokens, and compatible they are primarily because of their common usage combinations, which are encoded in the traits.
 
-Let's play more. In European context the "white" is tightly related to the "purity" (snow, wedding ritual, innocence, etc). Let's test it too:
+Let's play more. In a European context, "white" is tightly related to "purity" (snow, wedding rituals, innocence, etc.). Let's test that too:
 
 A hare of white embodies the -> ```moon, a symbol of purity and new beginnings.``` (seed: 1122261616)
 
 A white hare embodies the -> ```essence of purity, innocence, and good luck. ``` (seed: 4173163411)
 
-While making the examples i also got "springtime" in continuations and wondered why, it turned out the white hare is a symbol of spring in Japan :).
+While making these examples i also got "springtime" in the continuations and wondered why. It turned out that the white hare is a symbol of spring in Japan :).
 
-If we replace the "hare" with "rabbit" it goes right into the direction of "Alice in the wonderland" as "white rabbit" happens a lot in that story and neural network saw it at the training.
+If we replace "hare" with "rabbit", it goes right in the direction of "Alice in Wonderland" as the "white rabbit" appears a lot in that story and the neural network saw it during training.
 
 A white rabbit from -> ```the book Alice's Adventures in Wonderland.``` (seed: 2624672892)
 
@@ -788,17 +788,17 @@ But
 
 A white hare from -> ```the Black Forest, Germany.``` (seed: 2800670882)
 
-I'm sure you've noticed that this process is the very essence of being *biased*. Yes, as by definition it works by pulling the learnt *associations* together, basically it's a big bias machine.
+I'm sure you've noticed that this process is the very essence of being *biased*. Yes, as by definition it works by pulling the learned *associations* together - basically, it's a big bias machine.
 
-What happens if we have unrelated tokens? Like, if our text is "I was swimming today. You look great". The "swimming" token pattern then isn't related *much* to the "look", because these are not happening much together. And transformer then doesn't mingle the "water" cloud much into the "look" token (or does it a bit). So the word "look" doesn't get *much* closer to whatever was associated with the "swimming". The traits of the swimming are not transferred to the "look". 
+What happens if we have unrelated tokens? Like, if our text is "I was swimming today. You look great". The "swimming" token pattern then isn't related *much* to "look", because these do not often happen together. And the transformer then doesn't mingle the "water" cloud much into the "look" token (or only does it a bit). So, the word "look" doesn't get *much* closer to whatever was associated with "swimming". The traits of "swimming" are not transferred to "look". 
 
 A thing to note here, as i said before:
- - when we mingle traits, we do not mingle the complete original tokens, we mingle only their interpretations (traits) created with V matrix that i will explain later
- - however, we do not just add or remove only the *relevant parts* of the pattern interpretations (traits) we mingle. We just blend these interpretation patterns (traits) completely, with all the irrelevant parts they have, mixing up everything. Of course it results in making certain features more prominent and makes some other features fade. Not to mention we change already existing subpatterns by this. In result we affect *everything*, making new token closer to something new, not just to the "relevant" part of the new.
+ - when we mingle traits, we do not mingle the complete original tokens, we mingle only their interpretations (traits) created with the V matrix that i will explain later
+ - however, we do not just add or remove only the *relevant parts* of pattern interpretations (traits) that we mingle. We simply blend the interpretation patterns (traits) completely, with all the irrelevant parts they have, mixing up everything. Of course, as a result we make certain features more prominent, while some other features fade. Not to mention we change already existing subpatterns by this. We just affect *everything*, making new token closer to something new, not just to the "relevant" part of the new.
 
-However, as each attention head learns to extract its own type of pattern traits, it learns to minimize this flaw by extracting only more or less relevant pattern part for mingling.
+However, as each attention head learns to extract its own type of pattern traits, it learns to minimize this flaw by extracting only the more or less relevant part of the pattern for mingling.
 
-And that is exactly what we do have the matrix V for.
+And that is exactly what we have the V matrix for.
 
 #### V matrix.
 
