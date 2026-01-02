@@ -726,45 +726,45 @@ But our sum of "white+hare" suddenly is now related to the "snow" token, as:
 
 And since our attention head liked these traits, the snow-related cloud of tokens becomes very much related to our new "white+hare" amalgamation :). We just made these traits much stronger. Of course, various attention heads also mingled tons of *other traits*, but at the moment, we only care about this one.
 
-Let's test it with Gemma2-9b (gemma-2-9b-it-Q4_K_M.gguf) (without template) on a standard settings in llama.cpp.
+Let's test it with Gemma2-9b (gemma-2-9b-it-Q4_K_M.gguf) (without a template) using standard settings in llama.cpp.
 
-And guess what? We do not get "snow" as our next token *anywhere* in probabilities. Why? Just because this tokens combination doesn't *ever* end in "snow" in text. "White hare snow" text is improbable. 
+And guess what? We do not get "snow" as our next token *anywhere* in the probabilities. Why? Simply because this token combination doesn't *ever* end in "snow" in actual texts. A "White hare snow" sequence is highly improbable.
 
-What is probable? Judging by the output, most probable continuations are:
- - comma ","
- - new line: "\n"
- - "is".
+What is probable? Judging by the output, the most probable continuations are:
+ - comma (,);
+ - new line (\n);
+ - or the word "is".
  
-So it wants to say either: "White hare," or "White hare is" or "White hare\n". 
+So, it wants to say either: "White hare," or "White hare is", or "White hare\n". 
 
-That is exactly because of these *other traits* that other attention heads mingled in. 
+That is exactly because of those *other traits* that other attention heads mingled in. 
 
-These traits were much more prominent than "snow", because these words way more often end up with a comma or an english null verb. And that's how it works. Not by abstract "idea" closeness, but by the *statistical* distribution. So even a new line right after two words becomes a much more probable option than the "snow", which is nowhere around. Weird as it is, but traits of the "comma" already were embedded in the "white" and "hare". And they were more refined, stronger than the "snow" traits :).
+Those traits were much more prominent than "snow", because these words way more often end up followed by a comma or an english auxiliary verb. And that's exactly how it works. Not by abstract "idea" closeness, but by the *statistical* distribution. So, even a new line right after two words becomes a much more probable option than the "snow", which is nowhere to be found. Weird as it is, traits of the "comma" were already embedded in "white" and "hare". And they were more refined - stronger than the "snow" traits :).
 
-But what about "snow"? Are the traits of that cloud even there, as i explained, or was i wrong? Is it encoded in the tokens patterns? To test it, lets nudge our neural network to produce a *surface* token. To achieve that, we just add "upon" word. "Upon" is almost always followed by some surface in texts, so it should work well. But which surface will we get? Grass? Floor? Asphalt? Clouds? Let's see:
+But what about "snow"? Are the traits of that cloud even there, as i explained, or was i wrong? Are they encoded in the token patterns? To test this, let's nudge our neural network to produce a *surface* token. To achieve that, we just add the word "upon". "Upon" is almost always followed by some surface in the text, so it should work well. But which surface will we get? Grass? Floor? Asphalt? Clouds? Let's see:
 
 White hare upon -> ```the snow,
 A flash of white, a silent flow.
 Across the field, a fleeting sight,``` (seed: 2366235071)
 
-Ah, i forgot about "the"! But it's not important here, as you see the "snow" became a very probable continuation.
+Ah, i forgot about "the"! But it's not important here, as you can see, the "snow" became a very probable continuation.
 
-Now let's change it to "Brown"..
+Now, let's change it to "Brown"..
 
 Brown hare upon -> ```the moorland,
 A flash of white against the green,```
 
-And as you see if we change to the "brown" we get the "moorland" as surface instead. 
+And as you can see, if we change it to "brown", we get the "moorland" as the surface instead. 
 
-So the "snow" traits are encoded in the "white hare" *even* when the next token is *not* snow.
+So, the "snow" traits are encoded in the "white hare" *even* when the next token is *not* snow.
 
-..but the fun thing is that even for "brown hare" we still get "white" as well. How come, our hare is brown! 
+...but the fun thing is that even for "brown hare", we still get "white" as well. How come? Our hare is brown! 
 
-Well, it's just because "hare" word often happens around "white" in texts, just as "brown" does. So we still got "white" traits in the mingled pattern.
+Well, it's just because the word "hare" often happens around "white" in texts, just as it does with "brown". So, we still got "white" traits in the mingled pattern.
 
-Model wasn't trained enough to grasp that having "brown" before "hare" makes "white" *later* to be in this combination very improbable. There is no separate strong enough "brown hare" traits with their separate tokens cloud, so to say.
+The model wasn't trained enough to grasp that having "brown" before "hare" makes "white" appearing *later* in this combination very improbable. There are no separate, strong enough "brown hare" traits with their own separate token cloud, so to say.
 
-So "brown+hare" just didn't break attachment of "brown+hare" to the "white".. on the contrary, it made "white" closer, *as the "brown" is a color too*! And now we have "color" cloud traits in the pattern, making all colors  even more related, more probable.
+So, the "brown+hare" combination just didn't break the attachment of the context to "white"... on the contrary, it made "white" closer, *as "brown" is a color too*! And now we have "color" cloud traits in the pattern, making all colors even more related - that is, more probable.
 
 And there you go! It added "*green*". Why? Just because of the above! *All* colors are pretty much tied together as they *often* are used together. And various different colors often happen in the *same* context. So they should share some similar traits too. That's how "green" later becomes more probable than most other words - we get tied to "colors" traits cloud more and more with every new color token. 
 
