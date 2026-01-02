@@ -691,40 +691,40 @@ Well, we could send the numeric position of the tokens, but it doesn't work well
 
 #### Now let's talk about the *user* side of the story
 
-I hope you've skipped the previous internal mechanics explanation and now we can just speak about the human side of the story :).
+I hope you've skipped the previous explanation of the internal mechanics, and now we can just speak about the human side of the story :).
 
-For the easiness of understanding, let's pretend for a second that for pure random chance our network's attention head has learnt to match the traits of a specific idea of humans.. (it can't happen as transformers never do token clouds per human idea, they are based on tokens *sequences*, but we pretend).
+To make it easier to understand, let's pretend for a second that by pure random chance our network's attention head has learned to match the traits of a specific idea of humans.. (it can't happen as transformers never create token clouds around human ideas; they are based on token *sequences*, but let's pretend).
 
-Let's say our attention head may not care if the tokens are "color" related or "grammar" related. It cares only if the tokens are "politically" related! (sigh) So it's compatible only with tokens that have figures common for politically related tokens. Maybe the head was trained in 2025, who knows.
+Let's say our attention head doesn't care if the tokens are "color-related" or "grammar-related". It only cares if the tokens are "politically" related! (Sigh) So, it's compatible only with tokens that have figures common to politically related tokens. Maybe the head was trained in 2025, who knows?
 
-Then, on a higher level of abstracting, we can believe it measures:
- - relatedness of the donor token's interpretation (both are about politics and close enough)
- - significance of the related parts in the whole tokens (how much it is about politics)
- - significance of the related parts to the head's specifics (is the head about politics)
+Then, on a higher level of abstraction, we can believe it measures:
+ - The relatedness of the token's interpretation (both are about politics and close enough).
+ - The significance of the related part within the whole token (how much is it about politics?).
+ - The significance of the related part to the head's focus (is the head about politics?).
 
 How we may think about attention heads then:
  - every attention head has its own interpretation of the tokens
- - when we test tokens for relatedness, we search for relatedness in the context of this interpretation
- - for testing we use the original token values *before* they are interpreted (as they entered this block)
- - because this way we also learn to see how significant the related part is in each token
+ - when we test tokens for relatedness, we search for it within the context of this interpretation
+ - for testing we use the original token values *before* they are interpreted (as they entered this block),
+ - as this way we also learn to see how significant the related part is within each token
 
-But.. all of it is only in our own heads :). 
+But... all of that is only in our own heads :). 
 
-It's not what it is. In the neural network, these are just potentially emerging features that can sometimes happen. But all it does, is testing the tokens for compatibility level with the head's learnt patterns. And these patterns are based upon... mere sequences of word chunks.
+It's not what it seems. In a neural network, these are just potentially emerging features that can sometimes happen. But all it does is test the tokens for their compatibility level with the head's learned patterns. And these patterns are based upon... mere sequences of word chunks.
 
-Now let's take a look at the real world examples. And sorry, it's not going to be political :).
+Now, let's take a look at some real-world examples. And sorry, it's not going to be political :).
 
-If our text is "white hare", q/k checks if they both are compatible with its processing and can be mingled, and how much. That is, if they are "related".
+If our text is "white hare", Q/K checks if they both are compatible with the head and can be mingled, and how much. That is, it determines if they are "related".
 
-If it believes they are, neural network mingles some traits of "white" and "hare" tokens, making the result *closer* to a specific token clouds, let's say one of these clouds is "snow" related. 
+If it believes they are, the neural network mingles some traits of the "white" and "hare" tokens, making the result *closer* to specific token clouds. Let's say one of these clouds is a "snow-related" one. 
 
-What *exactly* our attention head specializes upon? Maybe upon any adjectives that change nouns? Or just upon the "snow" token cloud traits? Or something else? Who knows.. 
+What *exactly* does our attention head specialize in? Maybe in any adjectives that change nouns? Or just in "snow" token cloud traits? Or something else? Who knows...
 
 But our sum of "white+hare" suddenly is now related to the "snow" token, as:
- - "white" token often happens in the context of snow, and has traits of the "snow" token cloud
- - "hare" token happens in the context of "snow" and has these traits too
+ - The "white" token often happens in the context of snow, and has traits of the "snow" token cloud;
+ - The "hare" token happens in the context of "snow" and has these traits too.
 
-And as our attention head liked these traits, the snow related cloud of tokens becomes very much related to our new "white+hare" amalgamation :). We just made these traits much stronger. Of course, various attention heads also mingled tons of *other traits*, but we right now care about this one only.
+And since our attention head liked these traits, the snow-related cloud of tokens becomes very much related to our new "white+hare" amalgamation :). We just made these traits much stronger. Of course, various attention heads also mingled tons of *other traits*, but at the moment, we only care about this one.
 
 Let's test it with Gemma2-9b (gemma-2-9b-it-Q4_K_M.gguf) (without template) on a standard settings in llama.cpp.
 
