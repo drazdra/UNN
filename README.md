@@ -802,53 +802,53 @@ And that is exactly what we have the V matrix for.
 
 #### V matrix.
 
-This matrix is the final puzzle piece of our attention head triumvirate - Q/K/V, it learns to extract information about some specific traits the attention head specializes upon. 
+This matrix is the final puzzle piece of our attention head triumvirate - the Q/K/V. It learns to extract information about some specific traits the attention head specializes in. 
 
-Of course it is not just the copy of these traits from the donor token, it's a *different* pattern based on the input. It has different proportions, values and meaningful *figures*. We can say that if earlier in the tokens we had stars and circles, here we *may* have *ponies and elephants*. But as it actually *needs* information about the actual traits it extracts, it shouldn't be just some basic signal, the way it is with Q/K.
+Of course, it is not just a copy of these traits from the donor token. It's a *different* pattern based on the input. It has different proportions, values and meaningful *figures*. We can say that if earlier in the tokens we had stars and circles, here we *may* have *ponies and elephants*. But as it actually *needs* information about the very traits it extracts, it shouldn't be just some basic signal, as is the case with Q/K.
 
-This "figures thing" consisting of traits is a tricky one to understand, so let me repeat everything again. 
-Neural networks do not encode the meaning just per single axis of a pattern, they go one abstract level higher and encode meaning through the *combinations* of these. And not just with specific combinations of actual values in every axis, but also in the *proportion* of the values. Proportions of axes just make *figures*. Even more to that, it's not just figures, it's not just a pony, it's also how *skewed* it is. Which rays differ how. And so on. This way pattern proportions produce an additional new relation on top of just similar single values.
+This "figures thing" consisting of the traits is a tricky one to understand, so let me repeat everything again. 
+Neural networks do not encode meaning just along a single axis of a pattern. They go an abstract level higher and encode meaning through *combinations* of these axes. And not just with specific combinations of actual values in every axis, but also in the *proportion* of the values. The proportions of the axes just make *figures*. Even more than that, it's not just figures, it's not just a pony, it's also how *skewed* it is. Which rays differ in what way. And so on. This way pattern proportions produce an additional relation on top of just similar single values.
 
-Relatedness of "white+hare" to the "snow" is not because there is some special single "snow" axis. It's *just because some of the new axes proportions in their full combination *relate* to the "snow" pattern*. 
+The relatedness of "white+hare" to "snow" is not because there is some special single "snow" axis. It's *just because some of the new axis proportions in their full combination _relate_ to the "snow" pattern*. 
 
-And it's never a single "pony" or a "elephant", but rather a huge weird figure where every spike can mean something *when paired* with some other spikes or "flats" or whatever. 
+And it's never a single "pony" or an "elephant", but rather a huge weird figure where every spike can mean something *when paired* with some other spikes or "flats" or whatever. 
 
-Let's call it - a zoo! Or a *meta pattern zoo* within of our pattern. 
+Let's call it - a zoo! Or a *meta pattern zoo* within our pattern. 
 
-Like drawing butterflies.. that altogether form a cute face if we know how to look right.. and a pizza if to look at it the other way! 
+Like drawing the butterflies... that altogether form a cute face if we look at them the right way.. and a pizza if you look at them the other way! 
 
-And the V matrix role here is to learn how to find and extract the traits of some concept, recorded in both specific values ranges and proportions of axes values (traits).
+And the role of the V matrix here is to learn how to find and extract the traits of a concept, recorded in both value ranges and proportions of axis values (traits).
  
-In simple words, it learns to see a pony in the pattern, including how much the pony is skewed. And it doesn't matter if that pony rides on a turtle or not!
+In simple words, it learns to see a pony in the pattern, including how much the pony is skewed. And it doesn't matter if the pony rides on a turtle or not!
 
-Now let's get back to what actually is going on.
+Now let's get back to what actually happens.
 
-As V matrix extracts the traits it knows per token, from a pair of tokens we get two rows of numbers. What do we do with these? We:
- - mutliply each number of these by the factor of "relatedness"/compatibility found by our q/k comparisons<br>
-   That is for target token #2 and donor token #1:<br>
+As the V matrix extracts the traits it knows per token, from a pair of tokens we get two rows of numbers. What do we do with these? We:
+ - multiply each of these numbers by the factor of "relatedness"/compatibility found by our Q/K comparisons<br>
+   That is, for target token #2 and donor token #1:<br>
       &nbsp;&nbsp;V1 * comparison of Q2 and K1<br>
       &nbsp;&nbsp;V2 * comparison of Q2 and K2<br>
- - simply sum the resulting numbers of two rows axis by axis. Yes, we just put one list of numbers over another one and sum their values
+ - simply sum the resulting numbers of the two rows axis by axis. Yes, we just put one list of numbers over another and sum their values
 
-And here we are - having an updated traits sum, a new figure. It has same same amount of axes, as we only summed the individual columns.
+And here we are - having an updated trait sum, a new figure. It has the same amount of axes, as we only summed the individual columns.
 
-And that gives us our "mingled" pattern consisting of extracted traits from all the compatible tokens preceeding the target one and the target one itself.
+And that gives us our "mingled" pattern consisting of extracted traits from all the compatible tokens preceding the target one and the target one itself.
 
-Basically, here our single attention head can rest, as it has done its work upon every tokens pair. And all of the compatible traits were mingled into all compatible tokens :).
+Basically, here our single attention head can rest, as it has done its work on every token pair. And all of the compatible traits were mingled into all the compatible tokens :).
 
 
 #### A bit of a critical thinking about attention block
 
- A dubious thing about attention is that we always draw a new pattern from the *morphed previous pattern*, instead of creating a really new pattern on the background of the old one, or correcting the existing pattern. 
+A dubious thing about attention is that we always draw a new pattern from the *morphed previous pattern*, instead of creating a genuinely new pattern against the background of the old one, or correcting the existing pattern. 
 
 It means that this implementation:
- - can not self reflect by definition
- - it can not work on a contrast as it always *mingles*
- - it can not come up with a totally different pattern/approach, as it always inherits and morphs, but can not change the context
- - it can not restart at some point producing an alternative pattern
- - it can not go back to some earlier point in context and to correct an incorrect mingling that poisons it by pulling in wrong associations
+ - Cannot self-reflect by definition.
+ - It cannot work by contrast as it always *mingles*.
+ - It cannot come up with a totally different pattern/approach, as it always inherits and morphs, but cannot change the context.
+ - It cannot restart at some point producing an alternative pattern.
+ - It cannot go back to some earlier point in the context and correct an incorrect mingling that poisons it by pulling in the wrong associations.
  
-The existing pattern is always biasing everything. The existing context is always a part of the *new pattern*, they are mingled into a single representation. There is no memory of any separate specific isolated part of the context.
+The existing pattern is always biasing everything. The existing context is always a part of the *new pattern*. They are mingled into a single representation. There is no memory of any separate specific isolated part of the context.
 
 
 Another thing i would like you to note here that we encode the concept of traits "relatedness" in both: ranges of absolute numbers of axes values *and* in figures they form. 
