@@ -647,48 +647,47 @@ But... axes of what? Which pattern do we torture this way? Well, these rotations
 
 As i said above, the rotation angle depends on the absolute position of the token in the context - its "mileage" from the start of the context. The greater the distance between tokens, the more axes pairs get rotated.
 
-If the original shapes were *similar*, once we increase distance between tokens, RoPE rotates thier axes and shapes lose their similarity and become *less* compatible. 
+If the original shapes were *similar*, once we increase the distance between tokens, RoPE rotates their axes, and the shapes lose their similarity and become *less* compatible. 
 
 Can this rotation make different non-compatible shapes falsely compatible? 
 
-Of course, when we increase distance between tokens the change between a few axes may suddenly get *more similar* by an accident. But usually it's not enough to make the *whole shape* similar enough because there is lots of other axes pairs that are still different. So an accidental "compatibility" in just one pair of the axes after rotation has very little chances of making the whole shapes suddenly false compatible.
+Of course, when we increase the distance between tokens, the values in a few axes may suddenly get *more similar* by accident. But usually, it's not enough to make the *whole shapes* similar enough because there are plenty of other axis pairs that are still different. So, an accidental "compatibility" in just one pair of axes after rotation has very little chance of making those two full shapes suddenly falsely compatible.
 
 So, is the RoPE perfect? Sigh. Let's see..
 
 Once we do 180 degrees rotation due to distance between our tokens, vectors suddenly start *restoring* their original similarity, as if becoming more and more compatible, tho the distance just *grows*. 
 
-This is pretty fun, however don't forget that all "disks" rotate, so when our first disk starts to restore similarity, our second disk already half way "distorted". So the overall compatibility is still diminished.
+This is pretty fun, however don't forget that all the "disks" rotate, which means that when our first disk starts to restore similarity, our second disk is already halfway "distorted". So, the overall compatibility is still diminished.
 
-Another thing about RoPE is that due to implementation as our absolute positions of tokens in context become big, the rounding effects in the code may lead to precision loss, digital noise :). So in real world engine, the actual precision loss might intervene as we go further into context, due to quantization stuff. Be it linear logic it wouldn't matter much, but in our case we have non-linear effects where a little change might lead to big consequences, so this thing *may* at times affect results a lot.
+Another thing about RoPE is that, due to the implementation, as our absolute positions of tokens in context become large, the rounding effects in the code may lead to precision loss, digital noise :). So in a real-world engine, the actual precision loss might intervene as we go deeper into the context, due to quantization stuff. If it were linear logic, it wouldn't matter much, but in our case we have non-linear effects where a little change might lead to big consequences, so this thing *may* at times affect results a lot.
 
+A single attention head *may* lie about the tokens' "compatibility" score based on *where* the tokens are in the context, even if their mutual distance didn't change. And it can also lie if the distance between tokens is out of its "safe" range.
 
-A single attention head *may* lie about tokens "compatibility" score based on *where* tokens are in the context, even if their mutual distance didn't change. And it also can lie if the distance between tokens is out of its "safe" range.
-
-And here we get another problem! The longer context we have, the larger amount of disks might lie about the compatibility. At the start only the first disks go outside of the safe zone fast, but later in context a lot of medium speed disks might also show false incompatibility.
+And here we get another problem! The longer the context we have, the larger the number of disks that might lie about the compatibility. At the start, only the fastest disks go outside the safe zone quickly, but deeper in the context, a lot of medium-speed disks might also show false incompatibility.
 
 So, let's try to predict some consequences of this fun, thanks to RoPE:
- - every attention head is applicable only within of a certain distance between tokens, otherwise it lies
- - at certain relative positions of tokens in context, attention head lies
- - to be able to still understand where there is noise and where signal, model has to *duplicate* attention heads with the same specialization *for various distance ranges*. So multiple heads catch the same traits just over different distance ranges
- - this redundancy is the only way for neural network later to understand which attention head lies and which ones are telling the truth
+ - Every attention head is applicable only within a certain distance between tokens; otherwise, it lies.
+ - At certain relative positions of tokens in the context, an attention head lies.
+ - To be able to still understand where there is noise and where there is a signal, the model has to *duplicate* attention heads with the same specialization *for various distance ranges*. So, multiple heads catch the same traits just over different distance ranges.
+ - This redundancy is the only way for the neural network later to understand which attention head lies and which ones are telling the truth.
 
-Now consider that the RoPE, once it is applied deep in the context, actually warps the original Q and K produced shapes a lot. If these shapes actually carried some complex single signal, there would be a really narrow range of distances where they could still keep both the signals and their similarity.
+Now consider that RoPE, once it is applied deep in the context, actually warps the original shapes produced by Q and K a lot. If these shapes actually carried some fragile, single-structure signal, there would be a really narrow range of distances where they could still keep both the signal and their similarity.
 
-And.. we would hit the need for incredible redundancy in the attention heads, right? The training also would grow a lot in compare to non-rope solutions.
+And... we would hit the need for incredible redundancy in the attention heads, right? The training also would grow a lot compared to non-RoPE solutions.
 
-However.. it doesn't happen. It doesn't change *that* much. 
+However... it doesn't happen. Things don't change *that* much. 
 
-Why? Because the signal is very simple, it's not about matching the profile of specific traits of two tokens, it's just about compatibility to the head. 
+Why? Because the signal is very simple: it's not about matching the profile of specific traits between two tokens; it's just about compatibility with the head. 
 
-And this one can be expressed easily in just a fraction of axes and... it can even be easily redundant across *different distance range axes/disks*. So that it's easy to develop a pattern that still stays compatible by just reusing abstact similar patterns over various disks that average each other. So when some go out of scope, other ones just become *more* compatible. And the compatibility signal survives. 
+And this one can be expressed easily in just a fraction of the axes and... it can even be easily redundant across *different distance-range axes/disks*. This makes it easy to develop a pattern that still stays compatible by just reusing abstract, similar patterns over various disks that average each other out. So, when some go out of scope, others just become *more* compatible. And the compatibility signal survives. 
 
-Of course it can't compensate for any range of distances, as starting positions of disks should be neutral, be they originally opposite, fast pair match wouldn't be decisive for the whole q/k comparison.
+Of course, it can't compensate for any range of distances, as the starting positions of the disks should be neutral. If they were originally opposite, a fast-pair match wouldn't be decisive for the whole Q/K comparison.
 
-The RoPE still forces the models to create redundant heads for long distances and for short distances, to fight the false signal when multiple "disks" go out of phase and start to lie. But because of the "compatibility" trick it's much smaller redundancy than what could be if Q/K carried a really complex signal about the actual tokens traits.
+RoPE still forces models to create redundant heads for long and short distances to fight false signals when multiple "disks" go out of phase and start to lie. But because of the "compatibility" trick, it's much less redundancy than there would be if Q/K carried a really complex signal about the actual token traits.
 
-Why do we still use the RoPE then?
+Why do we still use RoPE then?
 
-Well, we could send the numeric position of tokens, but it doesn't work well because model gets used then that certain tokens play certain role at a specific position and we want it to be abstract as much as possible. We don't want the first produced token to be always "hi" just because it's the first one :). Also, this way it's much easier to *scale* the possible context length as model learns to encode any distance, not just a fixed range of positions. Instead, it learns to translate the distance into compatibility change, even tho with mistakes.
+Well, we could send the numeric position of the tokens, but it doesn't work well because the model gets used to certain tokens playing specific roles at fixed positions, and we want it to be as abstract as possible. We don't want the first produced token to always be "hi" just because it's the first one :). Also, this way it's much easier to *scale* the supported context length, as the model learns to encode any distance, rather than just a fixed range of positions. Instead, it learns to translate distance into a compatibility change, even if it makes mistakes.
 
 #### Now let's talk about the *user* side of the story
 
