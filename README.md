@@ -1031,48 +1031,48 @@ Nope. FFN does not really store some separate standard token clouds. This is bec
 
 So, what the FFN stores are patterns on *how to change* a typical input to shift it closer to some standard pattern. In other words, it finds the most probable *adjustments* required for infusion into the MHA pattern, to make it closer to some common token clouds. The FFN learns to adjust token clouds - to brush them up - but it does not learn a separate language of "standard" token clouds.
 
-And if you wonder why we need the O matrix at all, or why we couldn't just feed the MHA results to the FFN directly, this is precisely the answer. The FFN needs to have the original token representation with the MHA changes, to brush it up. It can't work off the pure MHA changes, as they don't have information about the actual related token clouds. They have information only about changes to these clouds. And the meaning of these depends on the *original* token figures. In order to mingle the MHA output into the original token, we first have to translate that faceted representation into a single one. That's why we need one more intermediate step of the O matrix earlier (apart from noise cancellation).
+And if you wonder why we need the O matrix earlier, or why we couldn't just feed the MHA results to the FFN directly, this is precisely the answer. The FFN needs to have *the original token representation with the MHA changes* to brush it up. It can't work off the pure MHA changes, as they don't have information about the actual related token clouds. They have information only about changes to these clouds. And the meaning of these depends on the *original* token figures. In order to mingle the MHA output into the original token, we first have to translate that faceted representation into a single one. That's why we have the O matrix back there (apart from noise cancellation).
 
-#### How do we mingle MHA into the first matrix 
+#### How do we mingle the MHA into the first matrix 
        ..or "i've finally decided to explain what matrix multiplication is" :). 
        
- - every operation is split by token, so we do all these things per single token of the context - per row from MHA
- - each token coming from MHA is a row of, say, 512 columns/axes
- - FFN's first matrix in multiplication has just as many columns/axes/dimensions as MHA row has - 512 in our example
- - but at that it has way more rows, like x4 times: 2048
- - we do *not* multiply the FFN matrix "into" the MHA row, we do the MHA row *into* each row of FFN matrix by multiplying every column of MHA into the same respective column of FFN. And we do it with the *every row* of the FFN. So the same one input token row multiplies *every* row of the FFN matrix.
- - then we sum up numbers of every of 2048 FFN rows and get 2048 new values/axes/dimensions
- - so we have turned 512 axes into 2048 axes and got a new x4 bigger pattern 
- - we do it for every token we have, returned by MHA
+ - Every operation is performed per-token, so we do all these things per single token of the context - per row from the MHA;
+ - Each token coming from the MHA is a row of, say, 512 columns/axes;
+ - The first FFN matrix in multiplication has just as many columns/axes/dimensions as the MHA row has - 512 in our example;
+ - However, it has way more rows, like four times more: 2048;
+ - We do *not* multiply the FFN matrix "into" the MHA row. We multiply the MHA row *into* each row of the FFN matrix, by multiplying every column of the MHA into the same respective column of the FFN matrix. And we do it with *every row* of the FFN. So the same one input token row multiplies *each* row of the FFN matrix;
+ - Then we sum up the numbers of each of the 2048 FFN rows and get 2048 new values/axes/dimensions;
+ - So we have turned 512 axes into 2048 axes and got a new, four times larger pattern;
+ - We do it for each token we have, returned by the MHA;
 
-Basically, we did 2048 dot-product comparisons, finding how similar each of our tokens to each of these 2048 patterns.
+Basically, we did 2048 dot-product comparisons, finding how similar each of our tokens is to each of these 2048 patterns.
 
-> this is usually called "matmul" on slang or "matrice multiplication" and that's what we mostly use as a method to extract some information from a pattern, or to "translate" a pattern, which in a way is the same. A lot of people also say "project into another space" which is even more confusing, as they don't even mention if they use an lcd projector or a dlp one. humor.
+> This is usually called "matmul" in slang or "matrix multiplication" and that's what we mostly use as a method to extract some information from a pattern, or to "translate" a pattern, which, in a way, is the same thing. A lot of people also say "project into another space", which is even more confusing, as they don't even mention if they use an LCD projector or a DLP one. humor.
 
 But what does that process *actually* mean? Well, it's pretty obvious. 
 
-To understand it, we just have to remember what our MHA returned tokens do represent. They represent a pattern configuration, used for expressing their relatedness to other tokens.
+To understand it, we just have to remember what our MHA-returned tokens do represent. They represent the pattern configuration used for expressing their relatedness to other tokens.
 
-When we mingle these into FFN matrix, we simply complete every of 2048 FFN's unfinished patterns, where each of these is a "test" for:
+When we mingle these into the FFN matrix, we simply complete each of the 2048 FFN's unfinished patterns, each serving as a "test" for:
  - "how well"
  - this token matches
- - certain specific trait part
+ - a specific trait part
  - of the *most probable adjustments*
- - that FFN's first matrix has learnt during the training
- - to the traits of tokens relatedness
+ - to the traits of tokens' relatedness,
+ - that the FFN's first matrix has learned during training.
  
-How does it work to find these required adjustments?
-You can think of these as locks and keys or like some fun test in a magazine where you answer multiple questions.
+How does it find these required adjustments?
+You can think of these as a lock-and-key mechanism or like a fun test in a magazine where you answer the questions.
 
-Our MHA produced relatedness pattern just "unlocks" some of the FFN per axis "locks", by being compared to each of these new axes - these books/locks. If you look at it per axis, it's just the way we compared shapes in Q/K - dot product comparison, just here we do it against 2048 different test patterns. And voila, each new axis/book gives us some value showing how much our MHA pattern relates to it. 
+The MHA-produced relatedness pattern just "unlocks" some of the FFN's "locks", by being compared to each of the new pattern's axes (the rows of the FFN's first matrix, which become axes of the new pattern) - these books/locks. It's just the way we compared shapes in Q/K - a dot-product comparison; here we just do it against 2048 different test patterns/rows. And voila, each new axis/book gives us a value showing how much our MHA-produced pattern "relates" to it. 
 
-The incoming token here works more as an original noisy signal coming through a set of *detectors* that read it by 2048 own parameters and based on that build a new its own profile of that signal. It's not even quite amplification or dampening, because in the end we get *different* axes/figures. It's not a simple "upscaling" of the same pattern. 
+The incoming token here works more as an original noisy signal coming through a set of 2048 *detectors*, and based on that, we get a new profile of that signal. It's not even quite amplification or dampening, because in the end we get *different* axes/figures. It's not a simple "upscaling" of the same pattern. 
 
-It's like getting results of some psychology test with 512 parameters and comparing it to some totally different psychological test having 2048 different parameters, finding which ones and how much do match. 
+It's like getting the results of a psychological test with 512 parameters and mapping them onto a totally different psychological test with 2048 different parameters, finding which ones match and to what extent. 
 
-Our results here are parameters of that new psychological test, in a totally different parameters representation. A different pattern that encodes the required changes to the original pattern.
+Our results here are the "scores" of that new psychological test, in a totally different parameter representation. This is the pattern that interprets the data in a different way, extracting the information required to produce the necessary changes to the original pattern.
 
-As it holds the refinement to the original "profile", by doing it it can actually shift the "profile" to a different final diagnosis :). That is to amend traits so that they move from certain most probable cloud of traits to other related clouds of traits.
+As it holds the refinement to the original "profile", by injecting it later, it can even shift the token "profile" to a different "final diagnosis" :). That is, to amend the original traits in a way that moves them from one cloud of traits to another. This means not just making the existing token have a more identifiable shape, but changing its shape to a different "proper" one. Although you have to remember that the FFN operates *per token* and has only the context embedded into the token by the MHA, which limits this functionality - but more on that later.
 
 #### But.. how does it decide if the new axis is related to the original pattern?
 In a classic implementation, the model just learns a simple fixed value that signifies the edge to cross, to be considered relevant. If the result reaches this edge value, then it means "q/k" of the ffn says "yes", this new *axis* is relevant, let's use it in a new pattern. If it's not, we just do not use this axis from FFN at all and pass a zero.
