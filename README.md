@@ -1004,34 +1004,34 @@ And upon this, i think we have finished the Attention block and can finally move
 
 ### The Feed-Forward Network (FFN) part.
 
-You may have heard that FFN block stores the *knowledge* but.. all of this is not really accurate, if not to say not even true :). 
+You may have heard that the FFN block stores *knowledge*, but... all of this is not really accurate... to be precise, it's not true at all :). 
 
-To understand the role of FFN you need to know only one thing. On the input FFN receives the tokens table from the multi head attention.. and on the output it produces a pattern that is added up to the very same tokens table it got on the input. Which means.. its output should be compatible with its input :).
+To understand the role of the FFN, you need to know only one thing. At the input, the FFN receives the token table from the multi-head attention block... and at the output, it produces a pattern that is added back to the very same token table it got at the input. Which means... its output should be compatible with its input :).
 
-So, as you see, FFN just once again "updates" the existing token patterns by doing something on the inside. 
+So, as you can see, the FFN just once again "updates" the existing token patterns by doing something on the inside. 
 
 Let's see what it does.
 
-FFN is made of 3 parts:
- - first matrix - extracting data 
- - passing gate and bias
- - second matrix - converting data back
+The FFN is composed of three parts:
+ - The first matrix - data extraction.
+ - The activation function (passing gate) and bias.
+ - The second matrix - converting the data back.
 
 First, let's take a look at what happens:
-1. Our MHA resulting token pattern is multiplied with the first FFN matrix which has way more pattern axes
-2. Static unique per axis numeric value (bias) is added to the result (per axis)
-3. Passing gate (ReLU or sth else) passes only the *new* axes that are actually related to the input
-4. Filtered new axes are multiplied into the second matrix, translating it into a different representation pattern with a standard amount of axes (as on input to FFN)
-5. A second static unique per axis numeric value (second bias) is added to the result (per axis)
-6. Resulting pattern is then mingled with the original tokens table coming from MHA. It's a residual connection, just like after the attention. So the final result is actually a mix of the MHA view with a tuning from FFN.
+1. The resulting token pattern from the MHA is multiplied with the first FFN matrix, which has way more pattern axes.
+2. A unique static numeric value (bias) is added to the result (per axis).
+3. The passing gate (ReLU or something else) passes through only the *new* axes, which are actually related to the input.
+4. Filtered new axes are multiplied into the second matrix, translating them into a different representation pattern with the original number of axes (as on input to the FFN).
+5. A second static value (second bias) is added to the result (per axis).
+6. The resulting pattern is then mingled with the original token table coming from the MHA. It's a residual connection, just like after the Attention block. So the final result is actually a mix of the MHA view with the tuning from the FFN.
 
-So, conceptually, this operation finds the relevant figures/patterns stored in FFN and then converts these back into the figures compatible with what we got from MHA, and mingles these in. Just like earlier we were mingling different tokens, here we mingle our tokens with FFN figures reflecting.. what? Token clouds? 
+So, conceptually, this operation finds the relevant figures/patterns stored in the FFN and then converts them back into the figures compatible with what we got from the MHA, and mingles them in. Just like earlier we were mingling different tokens, here we mingle our tokens with FFN figures reflecting.. what? Token clouds? 
 
-Nope. FFN does not really store some separate standard clouds of tokens. This is because it has to produce only an *adjustment* to the input pattern, not a *new* pattern. Remember, we mingle its result back into original input, so it should learn to *adjust*, not to *translate*.
+Nope. FFN does not really store some separate standard token clouds. This is because it has to produce only an *adjustment* to the input pattern, not a *new* pattern. Remember, we mingle its result back into the original input, so it should learn to *adjust*, not to *translate*.
 
-So what FFN stores is patterns on *how to change* a typical input to shift it closer to some standard pattern. In other words, it finds most probable *adjustments* required to be infused into the MHA pattern, to make it closer to some common token clouds. FFN learns to adjust token clouds, to brush them up, it does not learn separate "standard" token clouds language. 
+So, what the FFN stores are patterns on *how to change* a typical input to shift it closer to some standard pattern. In other words, it finds the most probable *adjustments* required for infusion into the MHA pattern, to make it closer to some common token clouds. The FFN learns to adjust token clouds - to brush them up - but it does not learn a separate language of "standard" token clouds.
 
-And if you wondered why do we need the O matrix at all, couldn't we just feed the MHA results to the FFN directly, that's precisely the answer. FFN needs to have the original token representation with MHA changes, to brush it up. It can't work off the pure MHA changes, as they don't have information about the actual related token clouds, it has information only about changes to these clouds. And the meaning of these depends on the *original* token figures. In order to mingle MHA into the original token we have first to translate that faceted representation into a single one. That's why we need one more intermediate step of the O matrix earlier (apart from noise cancellation).
+And if you wonder why we need the O matrix at all, or why we couldn't just feed the MHA results to the FFN directly, this is precisely the answer. The FFN needs to have the original token representation with the MHA changes, to brush it up. It can't work off the pure MHA changes, as they don't have information about the actual related token clouds. They have information only about changes to these clouds. And the meaning of these depends on the *original* token figures. In order to mingle the MHA output into the original token, we first have to translate that faceted representation into a single one. That's why we need one more intermediate step of the O matrix earlier (apart from noise cancellation).
 
 #### How do we mingle MHA into the first matrix 
        ..or "i've finally decided to explain what matrix multiplication is" :). 
