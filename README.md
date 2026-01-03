@@ -947,62 +947,62 @@ We have several tasks here in the *current* arch:
  
 The thing is that the next block (FFN) anyway sees *only* this centered and averaged representation, so it believes this is the ground truth and it learns to extract information from this data version. But it doesn't mean there was no data loss during normalization or that it's not a bottleneck. 
 
-#### start of the critique
-Let's concentrate on the fact that we introduce two learnt parameters per axis: a value to multiplicate the ray by and a value to add to the ray's length. These are a two learnt values per axis, and they do the same to *any* token produced by attention with *any* figures inside. 
+#### Start of the critique
+Let's concentrate on the fact that we introduce two learnt parameters per axis: a value to multiply the ray's length by and a value to add to the ray's length. These are two learned values per axis, and they do the same to *any* token produced by the attention block with *any* figures inside. 
 
-Now let's see the problems it creates. At this point we already break: 
- - absolute number ranges
+Now, let's see the problems it creates. At this point, we already break: 
+ - the absolute value range (scale of values)
  - the actual figures we had in the pattern
- - the skew of these figures
+ - the skew of these figures.
  
-The actual *figures* can still be used, however *only within of a limited range of values* as if some elephant trunk is too long, it gets averaged and feels then like elephant has silently visited a plastic surgery clinic to become a k-idol. Even if model tried to encode some relatedness via trunk length during the learning, it failed and had to find another way. Because if our token has no other prominent axes, it would shrink. But if our token would have other high values, it would *not* shrink this much. So the value becomes dependent not just on mingled figures, but its *passage* becomes dependant on what other figures are there. And now it can't vary the length of a *single* axis, as it becomes much less predictable.
+The actual *figures* can still be used, however, *only within a limited range of values*, as if an elephant's trunk is too long, it gets averaged and then feels like the elephant has silently visited a plastic surgery clinic to become a k-idol. Even if the model tried to encode some relatedness via trunk length during learning, it failed and had to find another way. Because if our token has no other prominent axes, it would shrink. But if our token had other high values, it would *not* shrink this much. So the value becomes dependent not just on mingled figures, but its *passage* becomes dependent on which other figures are present. And now it can't vary the length of a *single* axis, as it becomes much less predictable.
 
-Also, as we apply the *same* gain+shift per axis to *every different mingled token*, the model *can not* rely on the absolute values ranges from now on as this method of passing the information becomes almost impredictable. All of a sudden the range of already established pattern can change once average length of all rays has changed.
+Also, as we apply the *same* gain+shift per axis to *all different mingled tokens*, the model *cannot* rely on the absolute value range from now on as this method of passing the information becomes almost unpredictable. All of a sudden, the range of an already established pattern can change once the average length of all rays has changed.
 
-The skewing of figures can not be used, because normalization introduces *uneven* distortion as border values will change more, while the average values will remain somewhat the same. It partially applies to encoding with figures as well.
+The skewing of figures cannot be used, because normalization introduces *uneven* distortion, as the border values will change more, while the average values will remain somewhat the same. It partially applies to encoding with figures as well.
 
-All of this, as i reason here, should enforce model to rely upon figures consisting of *average* similar values, and limits its methods to encode information. 
+All of this, as i reason here, should force the model to rely upon figures consisting of *average* similar values, and limit its methods for encoding information. 
 
-So now, model has to encode relatedness through proportions of specific groups of axes, rather than through all of them, because changing a single axis may change proportions and values of *other* axes. So the most reliable way to ensure the signal passes, is to isolate certain group of axes by some specific gain, so that this specific combination always passes the normalization gate with the same distortion level. The model is enforced to tie certain types of figures to certain axes as they have specific gain+shift values it finds during training and these are *compatible*, while some other axes might be compatible with other figures.
+So now, the model has to encode relatedness through proportions of specific groups of axes, rather than through all of them, because changing a single axis may change proportions and values of *other* axes. So the most reliable way to ensure the signal passes is to isolate a certain group of axes via some specific gain, so that this specific combination always passes the normalization gate with the same distortion level. The model is forced to tie certain types of figures to certain axes, as they have the specific gain+shift values it finds during training and these are *compatible*, while some other axes might be compatible with other figures.
 
-Thus, our normalization layer is a huge noise source, significantly complicating for the model the means of delivering its signal to the next block. And it's also a huge bottleneck as it limits the ways for model to encode the meaning.
+Thus, our normalization layer is a huge noise source, significantly complicating the model's means of delivering its signal to the next block. And it's also a huge bottleneck as it limits the ways for the model to encode the meaning.
 
-It's like telling the model: "Wait, we have screwed your patterns by compressing and averaging them, each one in a different way, so now try to find how to change every of the rays to fix it. And sorry, you can use only 1 combination for any of the tokens you create".
+It's like telling the model: "Wait, we have screwed your patterns by compressing and averaging them, each one in a different way, so now try to find how to change each of the rays to fix it. And sorry, you can use only one combination for any of the tokens you create".
 
-And the model is like: "!@#EY!821, Umm.. okay.. maybe i can at least try to use this to make groups of axes by giving them common boosts fitting some of my figures, then it's easier to pass through this noisy gate.. Let me then try to waste lots of compute trying to find what at all passes through this pinhole.."
+And the model is like: "!@#EY!821, Umm.. okay.. maybe i can at least try to use this to create groups of axes by giving them common boosts fitting some of my figures, then it's easier to pass through this noisy gate.. Let me then try to waste a lot of compute trying to find what passes through this pinhole at all.."
 
-I think that all of this could be avoided if we initially have *stabilized* the signal channel the model uses.
+I think that all of this could be avoided if we had initially *stabilized* the signal channel the model uses.
 
-> It could be cool to make V matrix learn on the already mingled tokens but it would require a lot of changes to the kv cache and it's a different story.
+> It could be cool to make the V matrix learn on the already mingled tokens, but it would require a lot of changes to the KV cache and it's a different story.
 
-Let's work within attention heads with *proportions* directly. Define a range for proportions, mingle tokens by *proportions* first, train V matrix upon the proportions instead of absolute values. Whatever V extracts encode it then via proportions in the same range again. 
+Let's work within the attention heads with *proportions* directly. Define a range for the proportions, mingle tokens by the *proportions* first, train the V matrix upon the proportions instead of absolute values. Whatever the V extracts, encode it then via the proportions in the same range again. 
 
-This way we *abstract* away from the actual absolute values, tying our model to the proportions channel. And if you believe it limits the means of communication, it's not, as normalization makes absolute values impossible to interpret anyways, it still has to rely upon figures, just it has to find a way to *pass* these through that distortion. 
+This way we *abstract* away from the actual absolute values, tying our model to the proportions channel. And if you believe it limits the means of communication, it doesn't, as normalization makes absolute values impossible to interpret anyway. It still has to rely upon figures, it just has to find a way to *pass* them through that distortion. 
 
-This way we do *not* need the pattern centering (mean) and compressing/averaging the proportions (standard deviation). We can just pass already stable uniform representation.
+This way we do *not* need the pattern centering (the mean) and the compressing/averaging of the proportions (the standard deviation). We can just pass an already stable, uniform representation.
 
-This way model can *rely* upon the proportions and their skewing as it becomes a stable channel of information to the next block without all this terrible noise.
+This way, the model can *rely* upon the proportions and their skewing, as they become a stable channel of information to the next block without all this terrible noise.
 
-This way tokens *keep* not just their internal pattern coherence but they keep their *relative* coherence as we haven't destroyed their size on *per token* average basis. They originally exist in the same range and we only change proportions of the patterns within of that range.
+This way tokens *keep* not only their internal pattern coherence but also their *relative* coherence, as we haven't destroyed their size on a *per-token* average basis. They originally exist in the same range, and we only change the proportions of the patterns within that range.
 
-Yes, if we implement proportions lineary, some axis can get oversaturated and clip. It may break the way training works. To avoid this, we can make *non-linear* proportions compression that will normally operate lineary over certain most common wide range, but still allow going *beyond* that range too. Say after "100" we apply a much harder compression, then after "1000" even harder and so on, making clipping nearly impossible.
+Yes, if we implement proportions linearly, some axes can get oversaturated and clip. It may break the way training works. To avoid this, we can make *non-linear* proportions compression that will normally operate linearly over a broad, common range, but still allow going *beyond* that range too. Say, after "100" we apply a much harder compression, then after "1000" even harder, and so on, making clipping nearly impossible.
 
-But this is only half of the fun, as here we also keep absolute numbers in proportion values stable between the blocks too! The model now can encode data not just in figures as in axes proportions, but also in the actual size of the figures as these are now stable and FFN can use these to extract information.
+But this is only half the fun, as here we keep absolute values within the proportions stable between the blocks too! The model now can encode data not just in figures via axis proportions, but also in the actual size of the figures, as these are now stable and the FFN can use them to extract information.
 
-I believe all this should be faster than finding *one size fits all* parameters for normalization and finding the safe values that would pass the normalization, preserving the information.
+I believe all this should be faster than finding the *one-size-fits-all* parameters for the normalization and finding the safe values that would pass the normalization, preserving the information.
 
-And it's much cleaner representation for the next block as it is minus one noise source.
-#### end of critique
+And it's a much cleaner representation for the next block as it is minus one noise source.
+#### end of the critique
 
-And all of this is called Multiple Heads Attention (MHA). 
+And all of this is called Multi-Head Attention (MHA). 
 
-Just one more little thing to mention. Transformers have two phases of processing data, one is "prompt evaluation" where the existing text is converted into internal representation and another one is inference, where the new tokens are generated. 
+Just one more little thing to mention. Transformers have two phases of processing data: one is the "prompt evaluation", where the existing text is converted into an internal representation, and the other is inference, where the new tokens are generated. 
  
-So if at the prompt evaluation the target of traits amalgamation is every given token, we just enrich every token with traits from all related preceeding tokens. At the inference we continue that by making a non-existing new token a target for the sum of the whole context.
+So, if during prompt evaluation the target of traits amalgamation is every given token, we just enrich every token with traits from all related preceding tokens. During inference, we continue that by making the new, non-existent token a target for the sum of the whole context.
 
-And upon this, i think we have finished the attention block and can finally move to..
+And upon this, i think we have finished the Attention block and can finally move to...
 
-### FFN part.
+### The Feed-Forward Network (FFN) part.
 
 You may have heard that FFN block stores the *knowledge* but.. all of this is not really accurate, if not to say not even true :). 
 
