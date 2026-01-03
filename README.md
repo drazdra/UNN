@@ -851,55 +851,56 @@ It means that this implementation:
 The existing pattern is always biasing everything. The existing context is always a part of the *new pattern*. They are mingled into a single representation. There is no memory of any separate specific isolated part of the context.
 
 
-Another thing i would like you to note here that we encode the concept of traits "relatedness" in both: ranges of absolute numbers of axes values *and* in figures they form. 
+Another thing i would like you to note here is that we encode the concept of trait "relatedness" in both: ranges of absolute numbers of axis values *and* in the figures they form. 
 
-Absolute values ranges *do* carry the relatedness concept because we mingle *scaled* patterns and system has to learn it as another measure of relatedness. If q/k pair returns *low* score, we multiply our V figure by it and make it *smaller* before mingling it into another token's figure. That means that neural network has to react to both: 
- - figures similarity expressed in proportions between different axes
- - the actual absolute ranges of values taken by the axes - figures size
+The absolute value ranges *do* carry the relatedness concept because we mingle *scaled* patterns and the system has to learn it as another measure of relatedness. If a Q/K pair returns a *low* score, we multiply our V figure by it and make it *smaller* before mingling it into another token's figure. That means that the neural network has to react to both: 
+ - The similarity between figures, expressed in proportions between different axes;
+ - The actual absolute ranges of values taken by the axes - the size of the figures.
 
-For now just note that due to scaling we also use the figures absolute magnitude to encode information. We will talk about it more in the discussion of normalization step. 
+For now just note that due to scaling we also use the absolute magnitude of figures to encode information. We will talk about it more in the discussion of the normalization step. 
 
 #### end of the critique moment
 
 
-And to finish up the attention block, let's repeat again that every repeating block (consisting of attention+FFN parts) has *multiple* such attention blocks (q/k/v) working in parallel, called attention heads. 
+And to finish up the attention block, let's repeat again that every repeating block (consisting of attention+FFN parts) has *multiple* such Q/K/V sets working in parallel, called the attention heads. 
 
-Each of them during training *hopefully* forms its own way of interpretation. This way they are *supposed* to match, tie up and mingle tokens *differently*: different tokens at different strength, extracting and mingling different figures from the patterns. 
+Each of them during training *hopefully* forms its own way of interpretation. This way, they are *supposed* to match, tie up and mingle the tokens *differently*: different (or same) tokens at different strengths, extracting and mingling the different figures from the patterns. 
 
-And here things go weird, because *originally* each token had its single pattern/definition, but now each of the attention heads has produced its own *separate* pattern/definition per token! Each token now exists in multiple versions!
+And here things go weird, because *originally* each token had a single pattern/definition, but now each of the attention heads has produced its own *separate* pattern/definition per token! Each token now exists in multiple versions!
 
-Do you think if we unite all these together we will get a longer list of numbers than it was on start?
+Do you think if we unite all these we will get a longer list of numbers than the token had at the start?
 
-Not really. Yes, every attention head gets a full width list of numbers per each token. But.. they produce way smaller list of numbers per token. That is with less values-axes, a narrower table. It's a simplified representation, in comparison to the original input, a shorter patterns.
+Not really. Yes, every attention head gets a full-width list of numbers per token. But.. they produce a way smaller list of numbers per token. That is, with fewer values (axes), a narrower table. It's a simplified representation, compared to the original input, a shorter pattern.
 
-What do we do with these multiple simplified versions of the same tokens?
+What do we do with these multiple simplified versions of every token?
 
-We just take these resulting tables of tokens and.. stack their results together per token! So our table becomes much wider (than it was per head), but the amount of rows (tokens) is still the same.
+We just take them and.. stack them together for each token! So our token table becomes much wider (than it was per head or at the start). Each row (which is one token) holds now all token interpretations from all attention heads.
 
-And now it's as if each token was represented by its smaller reflections in multiple smaller mirrors - attention heads. This way we got a "faceted" view of each separate token. 
+And now it's as if each token were represented by its smaller reflections in multiple smaller mirrors - attention heads. This way we got a "faceted" view of each separate token. 
 
-Of course in reality these "facets" have redundancy, as attention heads could grasp *similar* patterns and compare/interpret more or less the same things in the end. Making attention heads do something totally different is a separate task. Usually developers try various tricks in attempt to get rid of redundancy. Like initializiation of heads with different random noise, switching off some heads during training, splitting the tokens between heads by some rules, overlapping their attention and so on and so forth. *And here a single flexible attention head could be really nice..* :).
+Of course, in reality, these "facets" have redundancy, as attention heads could grasp *similar* patterns and compare/interpret more or less the same things in the end. Making attention heads do something totally different is a separate task. Usually, developers try various tricks in an attempt to get rid of the redundancy. Like initializing the heads with different random noise, switching off some heads during training, splitting the tokens between the heads by some rules, overlapping their attention, and so on and so forth. *And here, a single flexible attention head could be really nice..* :).
 
-But remember, what i told you about transformers? It feels like somebody just liked to copy-paste a lot :). 
+But do you remember what i told you about transformers? It feels like somebody just liked copy-pasting a lot :). 
 
-Also, earlier i was saying that the context is always fixed and we can't come with a totally new pattern. This copy-paste *patches* it by creating multiple interpretations, where things can differ. *Yet* they all still just *morph* the existing context, same pattern, they do not cross-talk and move only forward, even if they do it in different ways. 
+Also, earlier, i said that the context is always fixed and we can't come up with a totally new pattern. This copy-paste approach *patches* it by creating multiple interpretations where things can differ. *Yet* they all still just *morph* the existing context, the same pattern. They do not cross-talk. They move only forward, even if they do it in different ways. 
 
 So, what do we have to do with our faceted token representation?
 
-#### Here we finally get to the last part of attention: O matrix.
-Its purpose is to convert this faceted token view into *one more* different pattern, yet united. 
+#### Here we finally get to the last part of the attention block: the O matrix.
 
-After all, it's transformers. If you want to do some operation, just transform everything into something else! :)
+Its purpose is to convert this faceted token view into *one more* different pattern, yet a mingled one. 
 
-> And yes, of course every one of these transformations introduces some noise and loses some useful signal. So the more transformations we have, the harder it is to train a model. It just has to find its own similarities in every of the intermediate patterns. On the other hand, this is the actual way of how transformers work, their core instrumentary, allowing them to process patterns.
+After all, it's the Transformers. If you want to do a single operation, just transform everything into something else! :)
 
-The role of the O matrix conceptually is to transform the faceted attention heads' output into a pattern that is compatible with the original pattern we had on attention input. 
+> And yes, of course, each one of these transformations introduces some noise and loses some useful signal. So the more transformations we have, the harder it is to train a model. It just has to find its own similarities in each of the intermediate patterns. On the other hand, this is the actual way Transformers work, their core toolkit, allowing them to process patterns.
 
-Also, it tries to filter out single false attention heads results, relying upon results of all attention heads, thus patching the attention flaws. Remember what we talked of in the Q/K block? Here if the heads produced some redundancy information, O matrix can learn how to use it to extract the useful signal and to ignore the "lying" heads. 
+Conceptually, the role of the O matrix is to transform the faceted attention heads' output into a pattern that is compatible with the original pattern that we had at the input of the attention block.
 
-And here we finally get the required *change* to our original pattern, that our attention block has produced. 
+Also, it tries to filter out single false attention heads' results, relying upon the results of all attention heads, thus patching the attention flaws. Remember what we talked about in the Q/K block? Here, if the heads produced some redundant information, the O matrix can learn how to use it to extract the useful signal and ignore the "lying" heads. 
 
-This change carries the shifts to original token patterns, turning them into a *different* clouds of traits. Clouds that now reflect *the sum* of their related traits per token. 
+And here, we finally get the required *change* to our original pattern that the attention block has produced. 
+
+This change carries the shifts to the original token patterns, turning them into *different* clouds of traits. Clouds that now reflect *the sum* of their related traits per token. 
 
 Phew!
 
