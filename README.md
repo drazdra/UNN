@@ -905,48 +905,49 @@ This change carries the shifts to the original token patterns, turning them into
 Phew!
 
 #### Residual connection step
-This is how we call adding of our changes to the *token patterns as we had at the input to this attention block*. 
+
+This is what we call the process of adding our changes to the *token patterns as we had them at the input of this attention block*. 
 
 It's literally just adding their values together. 
 
-What's the point of doing it all this way? Why couldn't we just create an updated *ready* token in the attention block?
+What's the point of doing it all this way? Why couldn't we just create an updated, *ready* token in the attention block?
 
-Well, having it this way adds certain uniformity to the structure of the pattern, our model has to adapt to the fact that its pattern figures structure should match the one it had on the input. 
+Well, having it this way adds a certain uniformity to the structure of the pattern. Our model has to adapt to the fact that the structure of its pattern figures should match the one it had at the input. 
 
-By limiting the actual functionality of the attention to just the gradual changes of the original pattern, we resolve the potential warping of figures within attention.
+By limiting the actual functionality of attention to just the gradual changes to the original pattern, we resolve the potential warping of figures within attention.
 
-The whole attention block in the end has to work as *fine tuning* of the original pattern, not as something totally new or free. And that makes it much less "heavy" and much cheaper to train, as now it has to find only the *changes*.
+The whole attention block in the end has to work as a *fine-tuning* of the original pattern, not as something totally new or free. And that makes it much less "heavy" and much cheaper to train, as now it has to find only the *changes*.
 
-And mingling of the *simplified interpretations* of V matrices still works without making everything fall apart fast. The attention result just tunes the original pattern, *not replaces* it.
+And the mingling of the *simplified interpretations* of the V matrices still works without making everything fall apart fast. The attention result just tunes the original pattern, *rather than replacing* it.
 
-So, in a few words, here we return to stars and circles we had originally, but now somehow changed, hopefully reflecting their relatedness better, as every single token now includes the related traits of *all preceeding* related tokens.
+So, in a few words, here we return to the stars and the circles we had originally, but now somehow changed, hopefully reflecting their relatedness better, as every single token now includes the related traits of *all preceding* related tokens.
 
-And in the end of the attention..
+And at the end of the Attention block..
 
-#### Almost forgot.. the normalization block :). 
-Usually normalization means making something less deviating ;). Not sure if this explanation helps, so lets dive into this block. It is much trickier than one might think, as it's not just scaling everything to fit a specific values range or something like that. 
+#### Almost forgot... the normalization block :). 
+Usually, normalization means making something less deviating ;). Not sure if this explanation helps, so let's dive into this block. It is much trickier than one might think, as it's not just scaling everything to fit a specific value range or something like that. 
 
 This block has two parts:
- - plain math that finds the "center/middle" of the pattern (called "mean")
- - plain math that finds the average length of pattern rays from that center
- - shifting the middle of the whole pattern to zero spot on all axes, so it's now "centered"
- - changing pattern proportions by making its values more statistically average in compare to each other, so we don't have any more single too big spikes or single too short values. At that we also compress the range making values smaller.
+ - The plain math that finds the "center/middle" of the pattern (called "mean")
+ - The plain math that finds the average length of the pattern rays from that center
+ - Shifting the middle of the whole pattern to the zero spot on all axes, so it's now "centered"
+ - Changing pattern proportions by making its values more statistically average in comparison to each other, so we don't have any more single too big spikes or single too short ones. At the same time, we also compress the range making values smaller.
    <br><br>
- - multiplying each axis value by a number that model has learnt for this given axis (changing ray length)
- - adding to each axis a fixed number that model learnt to apply here for this given axis (changing ray length)
+ - Multiplying each axis's value by a number that the model has learned for this given axis (changing ray lengths)
+ - Adding to each axis a fixed number that the model learned to apply here for this given axis (changing ray lengths)
 
-I don't know how to comment upon this, as at this moment i feel like crying. I know this is empirically considered to be a great solution that works, but it makes me only cry more. It all is about methodology, after all.
+I don't know how to comment upon this, as at this moment i feel like crying. I know this is empirically considered to be a great solution that works, but it only makes me cry more. It is all about methodology, after all.
 
 So, let's first explain why it's used at all. 
 
 We have several tasks here in the *current* arch:
  - to produce some stable and more predictable input for the next block
- - at that to prevent losing small distinctions when compressing the values range 
- (as in a fixed range a single too big axis value can make all other values be so small, that they will share the same value and lose all its distinctions, while with this method the axes don't become equal if they were not originally)
+ - yet to prevent losing subtle distinctions when compressing the value range 
+ (as in a fixed range, a single too big axis value can make all other values be so small that they will share the same value and lose all their distinctions, while with this method, the axes don't become equal if they were not originally).
  
-The thing is that the next block (FFN) anyways sees *only* this centered and averaged representation, so it believes this is the ground truth and it learns to extract data from this thing. But it doesn't mean there was no data loss at normalization or that it's not a bottleneck. 
+The thing is that the next block (FFN) anyway sees *only* this centered and averaged representation, so it believes this is the ground truth and it learns to extract information from this data version. But it doesn't mean there was no data loss during normalization or that it's not a bottleneck. 
 
-#### start of critique
+#### start of the critique
 Let's concentrate on the fact that we introduce two learnt parameters per axis: a value to multiplicate the ray by and a value to add to the ray's length. These are a two learnt values per axis, and they do the same to *any* token produced by attention with *any* figures inside. 
 
 Now let's see the problems it creates. At this point we already break: 
