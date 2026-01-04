@@ -1246,45 +1246,47 @@ What would you do if somebody was stuttering while trying to say something? Woul
 So, why doesn't it happen when we use instruct models *with proper templates*? Because the template part establishes a different context for the model, enriching the input with a.. personality :). All this template formatting we add to the prompt not only establishes a chat pattern the model knows - question/answer, but also embeds its favorite "ideas"/combinations - captured within the traits of these template tokens - into the next token.
 
 #### Final words
-Transformers are not about logic, it's just *incremental associative morphers*, tweaking your input in a most probable way through associative thinking, that it learns from the training data's internal structure :). They merely continue your pattern the way they learnt as most probable, without being able to *reflect* upon own  decisions, to *go back* or to fully rely upon our actual *human* ideas.
+Transformers are not about logic, they are just *incremental associative morphers*, tweaking your input in the most probable way through associative thinking which they learn from the training data's internal structure :). They merely continue your pattern the way they learned to be the most probable, without being able to *reflect* upon their own decisions, to *go back* or to fully rely upon our actual *human* ideas.
 
-It's hard to be surprised when something provides no logic or hallucinates, when all it does is just uncontrolled associative self-morphing of a mix made of both syllables and words :).
+It's hard to be surprised when something fails to provide logic or hallucinates, when all it does is just uncontrolled associative self-morphing of a mix made of both syllables and words :).
 
-And i'm sure after reading it all you should be full of ideas on how to make transformers a much better thing :).
+And i'm sure after reading all this, you must be full of ideas on how to make Transformers a much better thing :).
 
 #### An afterword
-Here i'm sure most of you want to say: "Hey!! What?! It's over? Why didn't you tell about the most obvious flaw of the transformers?! It's clear as day and you ignore it!"
+Here, i'm sure many of you will want to ask: "Hey!! What?! It's over? Why didn't you tell us about the most obvious flaw of the Transformers?! It's clear as day and you ignore it!"
 
-Well, please forgive me, it's just that though i'm sure it's clear for you, but it wasn't as obvious for me and took some time to blossom into this small addition.
+Well, please forgive me, i'm absolutely sure it was clear to you, but it wasn't to me and it took some time to blossom into this small addition.
 
-Yes, you are absolutely right, the main issue is that token patterns mix two different things into a single represenation:
- - characters sequence
- - conceptual similarity
+Yes, you are absolutely right: the main issue is that token patterns mix two different things into a single representation:
+ - Character sequence
+ - Conceptual similarity.
 
 Let me explain.
-When we process tokens, the only goal for this is to transform the *existing* token pattern into the *next* token pattern. However.. we find final matching pattern by its shape, that is, similar tokens should be interchangeable. In other words tokens with similar patterns should *all* fit the context. And it means that they all should be semantically close to each other, right? You can't replace a word "red" with a word "tea" without breaking the meaning. 
+When we process tokens, the sole objective is to transform the *existing* token pattern into the *next* token pattern. However... we find the final matching pattern by its shape, that is, similar tokens should be interchangeable. In other words, tokens with similar patterns should *all* fit the context. And that means they all should be semantically close to each other, right? You can't replace the word "red" with the word "tea" without breaking the meaning. 
 
-So the token patterns have to develop similarity based on the *meaning*. 
+So, the token patterns have to develop a similarity based on their *meaning*. 
 
-*Yet*, the very essence of transformers is to tie tokens based on the *probability* of their usage *in a sequence*. Or, in other words - which token *usually* goes next. And that can be *irrelevant* to the actual *meaning* of the sentence.
+*Yet*, the very essence of Transformers is to tie tokens based on the *probability* of their usage *in a sequence*. Or, in other words - which token *usually* goes next. And that can be *irrelevant* to the actual *meaning* of the sentence.
 
-See? The very same token pattern should encode two very different things: probable tokens sequence AND "synonyms" at the same time. So the same pattern has to encompass both: "comma" and "crimson", for example. As they both are *tied* but one *as a synonym* and another one *as a common next token*.
+See? The very same token pattern should encode two very different things: probable token sequence AND "synonyms" at the same time. So the same pattern has to encompass both; for example, a comma (,) and the word "crimson". As they are both *tied* but one is "*as a synonym*" and the other *as a common next token*.
 
-These are *totally* different roles. And that is exactly why LLMs struggle to develop conceptual understanding. Next token *can not* be used *conceptually* if it's not *probable* just as a common letters combination. And a conceptually similar token can get rendered as something *totally different* just because it often happens in the text together and has similar traits.
+These are *totally* different classes. And that is exactly why LLMs struggle to develop conceptual understanding. A next token *cannot* be used *conceptually* if it's not a *probable* common letter combination. And conceptually similar tokens can get rendered as something *totally different* just because they do not appear much together and fail to develop similar traits.
 
-This leaves a *very* narrow slit for models to make sense, they can't use *any* word fitting conceptually, they have to use a word fitting conceptually *and* being commonly used in the sequence of letters. 
+This leaves a *very* narrow slit for models to make sense of things. They can't use *any* word that fits conceptually, they have to use a word that is both conceptually fitting *and* statistically common in the character sequence.
 
-They struggle to make the same tokens pattern language to encode two absolutely different things: conceptual understanding AND rendering it as a sequence of text. Patterns similarity is working by two different axes simultaneously: proper sequence through similar patterns AND similar concepts through the same similar patterns.
+They struggle to make the same token patterns encode two absolutely different things: conceptual understanding AND the rendering of text sequences. Pattern similarity works along two different axes simultaneously: 
+ - Creating the proper sequence through the pattern similarity
+ - AND uniting related concepts through the same pattern similarity.
 
-And it has *no* way to know if it continues the text conceptually or just statistically. The first case is always a flash emerging over the basic statistical implementation.
+And it has *no* way of knowing if it continues the text conceptually or just statistically. The former is always a flash emerging over the basic statistical implementation.
 
 And what a flaw it is :). 
 
-I'm sure, of course, you were understanding this thing without me from the beginning as something obvious, but i only had a vague understanding that something is mixed up here when i was starting to write this. And only in the end i finally managed to induce this :).
+I'm sure, of course, you understood this thing without me from the very start as something obvious, but i only had a vague understanding that something was mixed up here when i started writing this. And only in the end did i finally manage to "infer" this :).
 
 ### Chapter 3: or let's hallucinate together
 
-This chapter is going to have a jumpy structure as i just want to share some of the ideas coming to my mind when i think about transformers. As i have no way to check these, they are rather theoretical :). Also, i ignore the  compute cost that these might introduce. 
+This chapter is going to have a jumpy structure as i just want to share some of the ideas coming to my mind when i think about transformers. As i have no way to check these, they are rather theoretical :). Also, i ignore the compute cost that these might introduce. 
 
 So, don't take these as "ready proven right solutions" or as "this is the only final right way to do it", these are just vectors i see and some raw initial suggestion of doing it.
 
