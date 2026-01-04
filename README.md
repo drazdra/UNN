@@ -1074,38 +1074,38 @@ Our results here are the "scores" of that new psychological test, in a totally d
 
 As it holds the refinement to the original "profile", by injecting it later, it can even shift the token "profile" to a different "final diagnosis" :). That is, to amend the original traits in a way that moves them from one cloud of traits to another. This means not just making the existing token have a more identifiable shape, but changing its shape to a different "proper" one. Although you have to remember that the FFN operates *per token* and has only the context embedded into the token by the MHA, which limits this functionality - but more on that later.
 
-#### But.. how does it decide if the new axis is related to the original pattern?
-In a classic implementation, the model just learns a simple fixed value that signifies the edge to cross, to be considered relevant. If the result reaches this edge value, then it means "q/k" of the ffn says "yes", this new *axis* is relevant, let's use it in a new pattern. If it's not, we just do not use this axis from FFN at all and pass a zero.
+#### But... how does it decide if the new axis is related to the original pattern?
+In a classic implementation, the model just learns a simple fixed value that signifies the edge to cross to be considered relevant. If the result reaches this edge value, then it means the "Q/K" of the FFN says "yes" - this new *axis* is relevant, let's use it in the new pattern. If it's not, we just do not use this axis from the FFN at all and output a zero.
 
-This fixed value (can be negative or positive) is used to detect the edge and is called "bias". Of course it's just a learnt number during the training. 
+This fixed value (which can be negative or positive) is used to detect the edge and is called the "bias". Of course, it's just a number learned during training. 
 
-Basically, we just add it (e.g. plus -2.5 or +4.1, etc) to a FFN axis's value and it just "negates" the typical noise value of the learnt pattern on this axis. 
+Basically, we just add it (e.g. -2.5 or +4.1, etc.) to an FFN axis value and it just "negates" the typical noise value of the learned pattern on that axis. 
 
-Then we can look if the sum is now more than zero or not. If the result here surpasses that noise volume level, it means our input data had its say in this. If it's less than or equals zero, we believe all we have is just the standard pattern level "noise" we got after multiplication and this trait is not related.
+Then we can check if the sum is now more than zero or not. If the result here surpasses that noise volume level, it means our input data had its say in this. If it's less than or equal to zero, we believe all we have is just the standard pattern-level "noise" we got after multiplication and this trait is unrelated.
 
-Please don't get me wrong, we do not compare the result to the bias value itself, we *add* this bias value to the result and then check the sum of this operation with some fixed non-learnt function (RelU, etc). In the original implementation it just checks if it's more than zero or not, as i explained above.
+Please don't get me wrong, we do not compare the result to the bias value itself. We *add* the bias value to the result and then check the sum of this operation with a fixed non-learned function (ReLU, etc). In the original implementation, it just checks if it's more than zero or not, as i explained above.
 
-But conceptually, that's just what bias does: it just serves to negate the standard pattern noise level so we could know if our own data is relevant to this axis.
+But conceptually, that's just what bias does: it just serves to negate the standard pattern-noise level, so we can know if our own data is relevant to that axis.
 
-A funny thing here is that bias may be so high that it can allow enriching *any* input patterns with some shift typical for a specific token cloud, to a specific "idea".
+A funny thing here is that the bias may be so high that it can force the enrichment of *any* input pattern with a shift typical of a specific token cloud, that is, towards a specific "idea".
 
-Or it can be so low that it will make shifting to certain "ideas" be nearly impossible, unless it's some very rare case.
+Or it can be so low that it will make shifting towards certain "ideas" nearly impossible, unless it's a very rare case.
 
-But in practice as patterns rely upon multiple axes, this is not very likely. It gets balanced in training.
+But in practice, as the patterns rely on multiple axes, this is not very likely. And of course, these factors also get balanced during training.
 
-It also mixes two functions into a single fixed learnt value: 
+It also mixes two concepts into a single fixed learned value: 
 
- a) deciding on the axis relatedness by negating the standard learnt value - one size fits all
+ a) deciding axis relatedness by negating the value - a "one-size-fits-all tokens" approach.
  
- b) signal amplification/damping that distorts the pattern as it is. 
+ b) signal amplification/dampening that distorts the pattern as it is. 
 
-But as we don't directly infuse that result to the original input and it's a fixed change that is always applied, the next matrix should learn to adjust to it and this distortion shouldn't go further. 
+But as we do not directly infuse that result into the original input, and it's a fixed change that is always applied, the second matrix learns to adjust, so that distortion shouldn't go further. 
 
-So, we have added the bias value to the comparison value per axis, now what? How do we do know if the axis is related? If the lock was unlocked? How to know if there is any relevance between the MHA learnt cloud of tokens *to the traits* that mark FFN learnt most probable *adjustments* to shift the pattern closer to certain token clouds? *sigh*
+So, we have added the bias value to the comparison value per axis, now what? How do we tell if the axis is related? If the lock is unlocked? How to know if there is any relevance between the MHA-learned cloud of tokens *and the traits* that mark FFN-learned most probable *adjustments* to shift the pattern closer to certain token clouds? *sigh*
 
-> ..the irony of this architecture, is that to measure if there is some useful trait/signal in the incoming token, we first *multiply it* and only *then* check if we had to do the expensive multiplication or not :)
+> ...the irony of this architecture is that to measure if there is some useful trait/signal in the incoming token, we first *multiply it* and only *then* check whether we had to do the expensive multiplication at all :)
 
-And that's exactly what our second block does - ReLU. It tests every of the new 2048 axes with the added biases to see if the value they have now is positive. If it's more than zero, it considers this axis/trait as a related one and keeps its value on this axis. If the reuslt is negative or zero, it *nullifies* the axis value - our token is not related to the trait of this FFN learnt adjustment. In this case comparison result is just discarded in this axis.
+And that's exactly what our second block does - ReLU. It tests each of the new 2048 axes with the added bias to see if the value they have now is positive. If it's more than zero, it considers this axis/trait as a related one and keeps its value on this axis. If the result is negative or zero, it *nullifies* the axis value - our token is not related to the trait of this FFN-learned adjustment. In this case, the comparison result is just discarded in this axis.
 
 Once we pass the ReLU filter, we come to the second FFN matrix.
 
