@@ -1192,59 +1192,58 @@ And here goes the saddest thing about Transformers: samplers. What they do is de
 But how? 
 
 #### Samplers
-Samplers are a very ironic thing within transformers, as they do a very important job of a final word choice and yet have zero AI, ML, DL or any other neural network related stuff :). It's 100% plain good old conditional algorithms having zero idea of what's going on, zero learning.
+Samplers are a very ironic thing in the Transformer architecture, as they do a very important job of a final word choice and yet have zero AI, ML, DL, or any other neural-network-related stuff :). It's 100% plain, good old conditional algorithms that have zero idea of what's going on, zero learning.
 
-Samplers merely take the logit scores for all found compatible tokens and then choose the one according to whatever samplers user has chosen to apply to the generation process. These samplers are "dry", "top_k", "typ_p", "top_p", "min_p", "xtc", "temperature" and so on, they are often updated, some new stuff is added.
+Samplers merely take the logit scores for all found, compatible tokens and then choose one according to whatever samplers the user has chosen to apply to the generation process. These samplers are: dry, top_k, typ_p, top_p, min_p, xtc, temperature, and so on. The list is often updated, some new stuff is being added all the time.
 
-The exact order of samplers, their lists and implementations differ across various engines, as i said it's *engine's* thing, not the neural network's part. So i won't go into explaining how exactly they work, just the idea. 
+The exact order of samplers, their lists and implementations differ across various engines, as i said it's an *engine-level* thing, not part of the neural network. So i won't get into explaining how exactly they work. I will just explain their basic purpose.
 
-They just do various stuff like normalize the logits with softmax, flatten the scores, filtering out tokens that were used too much earlier, remove tokens that have too low scores to be statistically trustworthy and so on and so forth. And then they choose one from the remaining ones.. by flipping a coin :). I believe it's the most ironic thing in the whole transformers implementation :). We first put in a hell of compute powers to detect the most fitting next word and then we just randomly choose one from the candidates :).
+They just do various stuff like normalize the logits with softmax, flatten the scores, filter out tokens that were used too much earlier, remove tokens that have too low scores to be statistically trustworthy and so on and so forth. And then they choose one from the remaining ones... by flipping a coin :). I believe it's the most ironic thing in the whole Transformers implementation :). We first put in a hell of a lot of compute power to detect the most fitting next word and then we just randomly choose one from the candidates :).
 
-
-Once it's done, we just inject our new token/word into the first step and repeat the process, going in our quest for the next syllable, word, number, comma, space, dots ..
+Once it's done, we just inject our new token back into the very beginning, and repeat the process, going on our quest for the next syllable, word, number, comma, space, dots, etc.
 
 When does it all stop? 
-Well, sooner or later neural network produces the *ending token* and the engine running it learns to interpret it as a stop signal. How is this ending token happening? The same way, it just becomes probable as it is something model has learnt to do during the training, it was in the datasets. Usually it's something like "EOS", e.g. <|EOS|> which stands for "end of stream". 
+Well, sooner or later the neural network produces the *ending token* and the engine running it learns to interpret this as a stop signal. How does this ending token happen? The same way, it just becomes probable as it is something the model has learned to do during training, it was in the datasets. Usually it's something like "EOS", e.g. <|EOS|> which stands for "end of stream". 
 
 Well, this one was short :). 
 
-So, let's now come up with some afterwords..
+So, let's now wrap this up with some afterwords...
 
 ### Conclusion on transformers
-I think hardly anybody would expect logic to emerge from all this process, which in fact is a simple abstract traits mingling based on resemblance, which in its turn is based on statistical distribution of data chunks that are not even meaningful in our sense of it :). 
+I think hardly anybody would expect logic to emerge from all this process, which in fact is a simple mingling of abstract traits based on resemblance, which, in turn, is based on the statistical distribution of data chunks that are not even meaningful as we see it :). 
 
-To put it in a couple of words, what we have here is called "associative thinking". The only difference from humans is that it associates *syllables* more than words.. sigh.
+To put it in a few words, what we have here is called "associative thinking". The only difference from human associative thinking is that it associates *syllables* more than actual words.. sigh.
 
-It just adds up the associations of syllables and words that the model has learnt during its training and that's all to it.
+It just adds up the associations of syllables and words that the model has learned during its training and that's all there is to it.
 
-Same as if somebody asked you to tell the first word that comes to your mind when you hear something. 
+It's the same as if somebody asked you to say the first word that comes to mind when you hear something. 
 
-Yes, deeper repeating blocks process compound constructions, that is already associated syllables that form something that is much closer to human concepts. If you remember i said in the text that this is how it overcomes the tokenization issue. It goes more abstract this way and operates on meta-concepts of assembled tokens. But the key limitation is that it still is limited by the conceptualization / traits clouds based on tokens sequences. And whatever deep abstract level it develops, it just has to use the clouds that reflect probable character sequences. It has to stay close to these as we just mingle in results of every next layer and in the end we expect these to be still compatible with our only truth - original clouds of tokens reflecting characters distributions.
+Yes, deeper repeating blocks process compound constructions, that is, already associated syllables that form something that is much closer to human concepts. If you remember, i said in the text that this is how it overcomes the tokenization issue. It goes more abstract this way and operates on meta-concepts of assembled tokens. But the key limitation is that it is still limited by the conceptualization (trait clouds) based on token sequences. And whatever deep abstract level it develops, it just has to use the clouds that reflect probable character sequences. It has to stay close to these as we just mingle in the results of every next layer and in the end we expect these to still be compatible with our only truth - the original token clouds reflecting character distributions.
 
-It's like trying to make model think in quotations of popular verses, yet to make sense of the world.
+It's like trying to make the model think in quotations from popular verses, yet to make sense of the world.
 
-Can you be logical thinking this way? Obviously, only through a very, very tedious brute force training and when you do a step away it all falls apart. Which is exactly what we have with transformers.
+Can you be logical while thinking this way? Obviously, only through very, very tedious brute-force training and when you take a step away, it all falls apart. Which is exactly what we have with Transformers.
 
 #### A fun proof
-Now let's do a fun experiment. Let's send to llm only 2 tokens: "The\n\n" - simplest pattern. Nothing else, **no template**, and at that let's use instruct model. 
+Now let's do a fun experiment. Let's send to the llm only 2 tokens: "The\n\n" - simplest pattern. Nothing else, **no template**, and at that let's use an instruct model. 
 
-I started with Llama 3.1 storm 8b (it was just the first one in my list) and guess what? 
+I started with Llama 3.1 Storm 8b (it was just the first one on my list) and guess what? 
 
-The candidate #5 for continuation is ```The``` :). This is what model believes should go next. Why? Because the only changes we had were from V matrices interpretations and FFN matrices refinement, so within candidates we have gotten the same output that was originally in the input, plus the bias skew and associated meanings. But the original pattern was so little distorted that our continuation suggests the same pattern - "The" as the 5th most probable option :).
+The fifth candidate for continuation is ```The``` :). This is what the model believes should go next. Why? Because the only changes we had were from the V matrix interpretations and FFN matrix refinements, so among the candidates we got the same output that was originally in the input, plus the bias skew and associated meanings. But the original pattern was so little distorted that the continuation suggests the same pattern - the word "The" as the fifth most probable option :).
 
-Now, guess what happens if we send "The\n\nThe\n\n"? :) Yes, it just continues the pattern, producing endless ```The\n\n``` as the first candidates, reproducing the same pattern, strenghtening it with every next repetition in created resonance.
+Now, guess what happens if we send "The\n\nThe\n\n"? :) Yes, it just continues the pattern, producing an endless sequence of ```The\n\n``` as the first candidates, reproducing the same pattern, strengthening it with every next repetition in a resonance effect.
 
-It just copied the traits from the original tokens and went into resonance, traits of the same token became more and more prominent, making everything else improbable. It's just an echo of itself.
+It just copied the traits from the original tokens and went into resonance, the traits of the same token became more and more prominent, making everything else improbable. It's just an echo of itself.
 
-Next i tried Gemma3 4b and.. guess what? Its top candidate is ```The``` right away :). So, the reply i got is just endless loop of "The" :). Llama could extract from "The" some other probable token cloud traits, while Gemma implementation clearly aligned with the strongest traits and in the end, ironically, it worked even worse for this scenario :). And of course with every next "The" its probability grows a lot, leaving all other candidates less and less probable :). It just falls into a pattern of dotted line, where "The" is just a dot it uses.
+Next i tried Gemma 3 4b and.. guess what? Its top candidate is ```The```, right away :). So, the reply i got is just an endless loop of "The" :). Llama could extract some other probable token cloud traits from "The", while the Gemma implementation clearly aligned with the strongest traits and in the end, ironically, it worked even worse for this scenario :). And, of course, with every next "The" its probability grows a lot, leaving all other candidates less and less probable :). It just falls into a line of dots, where "The" is just a dot it uses.
 
-For Gpt-Oss-120B "The" is at #4 but again if you prompt it with "The\n\nThe\n\n" it just loops with endless ```The``` :).
+For GPT-OSS-120B, "The" is the 4th candidate, but again, if you prompt it with "The\n\nThe\n\n", it just loops with an endless sequence of ```The``` :).
 
-For Qwen3-Vl-30B-A3B-Instruct single "The\n\n" is already enough to make it #1, so it's just a loop of ```The\n\n```.
+For Qwen3-VL-30B-A3B-Instruct, a single "The\n\n" is already enough to make "The\n\n" the first candidate, so it's just a loop of ```The\n\n```.
 
-What would you do if somebody was stuttering while trying to say something? Would you reply with the same word over and over? :) Not if you are adequate. And that's exactly, what transformers lack - adequacy. *More on that in the next chapter :).*
+What would you do if somebody was stuttering while trying to say something? Would you reply with the same word over and over? :) Not if you make any sense :). And that's exactly what Transformers lack - adequacy. *More on that in the next chapter :).*
 
-So why don't they do it when we use instruct models *with proper templates*? Because the template part establishes a different context for the model, enriching the input with its.. personality :). All this template formatting we add to the prompt is not only establishing a chat pattern model knows - question/answer, but also embeds into next token its favorite "ideas"/combinations captured within the traits of these template tokens.
+So, why doesn't it happen when we use instruct models *with proper templates*? Because the template part establishes a different context for the model, enriching the input with a.. personality :). All this template formatting we add to the prompt not only establishes a chat pattern the model knows - question/answer, but also embeds its favorite "ideas"/combinations - captured within the traits of these template tokens - into the next token.
 
 #### Final words
 Transformers are not about logic, it's just *incremental associative morphers*, tweaking your input in a most probable way through associative thinking, that it learns from the training data's internal structure :). They merely continue your pattern the way they learnt as most probable, without being able to *reflect* upon own  decisions, to *go back* or to fully rely upon our actual *human* ideas.
