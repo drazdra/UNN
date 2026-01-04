@@ -1110,29 +1110,29 @@ And that's exactly what our second block does - ReLU. It tests each of the new 2
 Once we pass the ReLU filter, we come to the second FFN matrix.
 
 #### Translating it back into the same pattern language
-And here we do a "reverse" operation: we multiply our 2048 axes of a new pattern into the second FFN's matrix. That one has reverse shape: 2048 columns and 512 rows - so it converts our adjustment pattern into fewer axes, into a *different* representation that is compatible with the input pattern language, so we could mix these.
+And here we do a "reverse" operation: we multiply our 2048 axes of a new pattern into the second FFN's matrix. That one has the reverse shape: 2048 columns and 512 rows - so it converts our adjustment pattern into fewer axes, into a *different* representation that is compatible with the input pattern language, so we can mix these.
 
 If:
- - we had only *one* repeating block of attention+ffn
- - used the original Input block with tokens for both input and output matching,
-then here model would learn to translate these 2048 parameters back into the representation compatible with what we had in the very beginning. Axes here would mean the same thing that they were at the very start in tokens vocabulary, the figures would be similar - stars and circles again.
+ - we had only *one* repeating block of attention + ffn
+ - used the original Input block token vocabulary for both input and output matching,
+then here, the model would learn to translate these 2048 parameters back into the representation compatible with what we had in the very beginning. Axes here would mean the same thing they did at the very start in the token vocabulary, the figures would be similar - stars and circles again.
 
 ##### hopeful dreaming
-However, as we have *many* repeating blocks chained together, model has no need to make this internal representation uniform. It has freedom to find very different token relatedness traits with every of its block. But the closer it's to the end, the closer it has to be to the original vocabulary pattern language.
+However, as we have *many* repeating blocks chained together, the model has no need to make this internal representation uniform. It has the freedom to find very different token relatedness traits with each of its blocks. But the closer it is to the end, the closer it has to be to the original vocabulary's pattern language.
 
-So if on start it marks tokens by stars and circles, in the middle of repeating blocks it may mark tokens with .. circles and stars! Why not? It can choose anything :). Worths paying for the extra training!
+So if at the start it marks tokens by stars and circles, in the middle of repeating blocks it may mark tokens with .. circles and stars! Why not? It can choose anything :). It's worth paying for the extra training!
 
 ##### sore reality
-Well, the truth is.. it *could*.
+Well, the truth is... it *could*.
 
-In reality the creators decided that too much freedom is not practical and.. added results of the original MHA output to the output of FFN block, as said in the beginning. 
+In reality, the creators decided that too much freedom is not practical and.. added the results of the original MHA output to the output of the FFN block, as was said in the beginning. 
 
 Thus:
- - enforced a somewhat uniform format between these blocks, as data this way has to keep more or less similar representation, otherwise addition of the input data would break the output. They have to stay compatible.
- - FFN is freed from the need to keep original signal in its representation, it can concentrate solely on the tuning and return only the *corrections* to the original signal. Actually, this way FFN is enforced to do mostly finetuning of the existing pattern, because otherwise addition of these two would break things.
+ - They have enforced the use of a somewhat uniform format between these blocks, as data, this way, has to keep more or less similar representation. Otherwise, the addition of the input data would corrupt the output. They have to stay compatible.
+ - FFN is freed from the need to keep the original signal in its representation; it can concentrate solely on the tuning and return only the *corrections* to the original signal. Actually this way FFN is forced to do mostly fine-tuning of the existing pattern, because otherwise addition of these two would mess things up.
 
-And they called it "residual connection". Why not BLEEOR?..<br>
-  .."Be like everyone else, or else.."
+And they called it a "residual connection". Why not BLEEOR?..<br>
+  ..."Be Like Everyone Else, Or else..."
 
 Getting back to the actual process, we have passed second matrix and.. we add the second bias value. It's just a numeric value the model has learnt per axis. I don't really see any conceptual meaning in this operation, apart from pure speed up in training, where model can just quickly adjust the typical result it gets in some axis without changing the whole similarity representation. Of course it's a crutch in a way, but it works. 
 
