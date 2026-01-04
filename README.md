@@ -1179,13 +1179,15 @@ The thing is, that next repeating blocks can operate on compound token clouds as
 ##### end of the critical moment
 
 ### Output block
-When all of the repeating blocks did their work on the pattern, we finally compare it to the vocabulary patterns (output or input layer), to locate the token that resembles our new pattern the most. And that would be the closest set of characters representing our newly produced "idea" frankenstein :).
+When all the repeating blocks have done their work on the pattern, we finally compare it to the vocabulary patterns (output or input layer) to locate the token that resembles our new pattern the most. And that would be the closest set of characters representing our newly produced "idea-Frankenstein" :).
 
-This process is a bit tricker than input as there can be multiple candidates with a similar patterns. For example it can be "ten", "10", "*ten*", "Ten", "_10_" or even.. "9" and "11" :). It can be "Hello", "Hi", "Hey!", "Heya", "Greetings", "What?", "Leave", etc. As explained above it can even be very different things, totally unrelated by human ideas, like: The/My/Every/It/Black/Always/etc. 
+This process is a bit trickier than the input as there can be multiple candidates with similar patterns. For example, it can be "ten", "10", "*ten*", "Ten", "_10_" or even.. "9" and "11" :). It can be "Hello", "Hi", "Hey!", "Heya", "Greetings", "What?", "Leave", etc. 
 
-The comparison score of the new pattern to vocabulary tokens is called "logit". 
+And what's more, as explained above, it can simultaneously match a lot of *very different things*, which are totally unrelated according to our common sense, but still "mean" *nearly the same* for the model here: The/My/Every/It/Black/Always/etc. 
 
-And here goes the saddest thing of transformers: samplers. What they do is decide which one of resembling patterns to choose as the actual token. It decides which characters we will see..
+Each of these has a matching score - which represents how much the new pattern matches each of the vocabulary tokens. This score is called a "logit". 
+
+And here goes the saddest thing about Transformers: samplers. What they do is decide which of the resembling patterns to choose as the actual token. They decide which characters we will see..
 
 But how? 
 
