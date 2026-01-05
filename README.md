@@ -1307,21 +1307,23 @@ Language defines what objects/phenomena we see as actors, what *interactions* be
 
 And, of course, we train our LLMs with our languages.
 
-So what's the difference? Why LLMs can't think the way we do if they can use the language, why do they hallucinate?
+So what's the difference? Why can't LLMs think the way we do if they can use language, why do they hallucinate?
 
-First signal system, unlike the language, can express only a vector changing the state of our consciousness, giving it certain state. 
+First signaling system, unlike language, can only produce a vector that changes the state of our consciousness, giving it a certain state. 
 
-Does it remind you something? Yep, transformers. And *music*.
+Does it remind you of something? Yep, Transformers. And *music*.
 
-LLMs use our language as an extremely complicated.. first signal system. It is changing their state *directly* and they are forced to think in the language right away. 
+It's shocking but LLMs use our language as an extremely complicated.. first signaling system. It is changing their entire internal state *directly*.
 
-There is no separate conceptualization level that would untie the language *representation* from the ideas. And there is no second level of attention that could reorganize their own existing state fixing the mistakes on the first level. There is no separate internal processing *state* that would be *unaffected directly* by the input information, that could reflect and self-correct.
+They do not "think", they do *react*. Even so called "reasoning models" do the same thing, they just produce an even *more* complicated reaction in the *same* way. What we do is trying to build an incredibly complicated *instinct* system.
 
-In short, it requires two fixes:
- - Untying the thinking from the language representation
- - Providing LLM with a parallel attention not affected by the input *directly*
+There is no separate conceptualization level that would untie language *representation* from the ideas. And there is no second level of attention that could reorganize its own existing state fixing the mistakes at the first level. There is no separate internal processing *state* that would be *unaffected directly* by the input information, that could reflect and self-correct.
 
-Let's talk about the first one for starters.
+In short, this architecture requires two major fixes:
+ - Untying thinking from language representation
+ - Providing LLMs with a parallel attention not affected by the input *directly*
+
+Let's talk about the first one.
 
 After the training, llm knows "white", "wet", "human" and so on. However many of the words are not separate tokens but a *mix* of sub-tokens, of their traits combination. In result, llm manupulates not our words but often by the syllables. It is deprived of the access to an actual language, we literary convert our language into a set of senseless chunks to confuse the model. And as if it's not enough, we make it believe that "comma" and "shoe" are interchangeable.
 
