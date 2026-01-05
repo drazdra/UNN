@@ -1325,16 +1325,19 @@ In short, this architecture requires two major fixes:
 
 Let's talk about the first one.
 
-After the training, llm knows "white", "wet", "human" and so on. However many of the words are not separate tokens but a *mix* of sub-tokens, of their traits combination. In result, llm manupulates not our words but often by the syllables. It is deprived of the access to an actual language, we literary convert our language into a set of senseless chunks to confuse the model. And as if it's not enough, we make it believe that "comma" and "shoe" are interchangeable.
-
-How to fix it?<br>
-Through the ideas distillation. And yes, it's more compute.
+How to do it? Through idea distillation. And yes, it requires more compute.
 
 ##### Attention level 1.
-Is what our current transformers are. It tries to develop abstract ideas but they are always tied to the actual character tokens, even deep in the repeating blocks when they are abstract, they manipulate traits clouds developed with character sequences.
+This is the state of our current Transformers. It tries to develop abstract ideas but they are always tethered to actual character tokens, even deep in the repeating blocks when they are abstract, they manipulate trait clouds developed with character sequences.
+
+After the training, the LLM knows "white", "wet", "human" and so on. However many of the words are not separate tokens but a *mix* of sub-tokens, of their traits combination. In result, the LLM does not manipulate our words, but often operates with syllables. It is deprived of access to an actual language. We literally convert our language into a set of senseless chunks to confuse the model. And as if it's not enough, we make it believe that "comma" and "shoe" are interchangeable.
+
+Ironically, LLMs actually try to hack this situation during training by adding meta-traits to various tokens that have "space" for them, so they can trace compound information helping them to conceptualize data correctly. It's called "attention sink". But, it's just a hack they are forced to develop as it goes against the very structure they are given.
+
+This is basically what our LLMs are right now.
 
 ##### Attention level 2.
-Once we have a ready llm we can just freeze it, and add more matrices for developing the *next* layer of attention - words level. This one should contain only the separate words, not syllables. 
+Once we have a ready LLM we can just freeze it, and add more matrices for developing the *next* layer of attention - words level. This one should contain only the separate words, not syllables. 
 
 We have two ways to create it.
 The easiest one is just to use stacked sub-tokens making the words that the second attention layer would see as separate own tokens. But it would take loads of resources.
