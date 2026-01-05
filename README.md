@@ -1286,61 +1286,41 @@ I'm sure, of course, you understood this thing without me from the very start as
 
 ### Chapter 3: or let's hallucinate together
 
-This chapter is going to have a jumpy structure as i just want to share some of the ideas coming to my mind when i think about transformers. As i have no way to check these, they are rather theoretical :). Also, i ignore the compute cost that these might introduce. 
+This chapter is going to have a jumpy structure, as i just want to share some of the ideas that come to my mind when i think about Transformers. Since i have no way to check these, they are rather theoretical :). Also, i will ignore the compute costs that these might entail. 
 
-So, don't take these as "ready proven right solutions" or as "this is the only final right way to do it", these are just vectors i see and some raw initial suggestion of doing it.
+So, don't take these as "proven solutions" or as "this is the only right way to do it", these are just the vectors i see and some raw initial suggestions on how to do it.
 
-Also, if you just scrolled here, this is not a complete list and several big ideas i embedded into the previous chapters.
+Also, if you just scrolled down to this chapter, this is not a complete list and several big ideas i have embedded into the previous chapter.
 
 Let's start:
 
-#### 0. Animal consciousness. 
-What makes humans be a different kind of species from all the animals on our planet? Hair style? Shoes?
+#### 0. Turning animal consciousness into AGI
+What makes humans different from all the animals on our planet? Hairstyles? Shoes?
 
-It's the language. The second signal system we have.
+It's language. The second signaling system that we possess.
 
-if baby is lost in a forest and grows up with animals, such person perceives the world as an animal, not the way we do. Socialising of such people is not an easy task and often not even fully possible. 
+if a baby is lost in a forest and grows up with animals, such a person perceives the world as an animal, not the way we do. The socialization of such people is no easy task, and it is often not even fully possible. 
 
-Why? Simply because our neural network trains *with* the language, not just with experience. 
+Why? Simply because our own neural networks train *with* language, not just with experience.
 
-Language defines what objects/phenomenas we see as actors, what *interactions* between these we see and more importantly which ones we *do not* see.
+Language defines what objects/phenomena we see as actors, what *interactions* between them we see and more importantly which ones we *do not* see.
 
-If your language has 40 different words for different snow states, you can see and understand about snow much more than if all you see is just "snow". If your language sees no difference between some colors, these are "same" colors to you when you refer to them. A psychologists sees a lot of things happening in the mind, while some person doesn't even know what's going on inside. Think about words for logical operations, for personality traits, for people, for physics and so on. What is it we do not see?
+And, of course, we train our LLMs with our languages.
 
-Animals can express fury, danger and so on with sounds, these sounds carry ideas but they lack *specific* information. 
+So what's the difference? Why LLMs can't think the way we do if they can use the language, why do they hallucinate?
 
-Animals can't say "there is a yummy brown mushroom under the bush if you go 2 kilometers to the east". 
+There is no separate conceptualization level that would untie the language *representation* from the ideas. And there is no second level of attention that could reorganize their own existing state fixing the mistakes on the first level. There is no separate internal processing *state* that would be *unaffected directly* by the input information, that could reflect and self-correct.
 
-They can only express pleasure and enthusiasm and call you to go there. They can tell you it's danger from the sky or danger from the ground, it seems to be specific but you can not use the same sounds to express a different state.
+In short, it requires two fixes:
+ - Untying the thinking from the language representation
+ - Providing LLM with a parallel attention not affected by the input *directly*
 
-While language provides us with specific information beyond just *states*.
-
-We can say in a happy voice absolutely terrible things and to say in a terrible voice the best thing ever. Like when boss tells you about raised salary. You wouldn't guess it by the tone.
-
-First signal system, unlike the language, can express only a vector changing the state of our consciousness, giving it certain state. 
-
-Does it remind you something? Yep, transformers. And *music*.
-
-As humans we can do it too but..
-
-We also can actually operate on a totally different level: through the language we can refine our thinking even *without understanding* of what we do and to do.
-
-Children can solve equations in school following the rules yet having no idea how it works. Yet getting the *right* result. Just like LLMs..
-
-But, we can actually think about abstract matters that never happened in our life, things we have no experience for, and yet to understand what we are talking about. Even if it's *purely* abstract. 
-
-We can discuss concepts of perception, love, climate in another country, alien civilizations, space travelling, quantum physics, knitting and so on. 
-
-We could never experience it but we can imagine it, share with others, split apart and make a working model of it due to *language constructions*. 
-
-We can manipulate by the abstractions, ideas, take apart concepts and make new ones, find logical gaps and synthesize probable solutions while we use our language. All with thinking!
-
-How to achieve it with LLMs? Through ideas distillation. 
+Let's talk about the first one for starters.
 
 After the training, llm knows "white", "wet", "human" and so on. However many of the words are not separate tokens but a *mix* of sub-tokens, of their traits combination. In result, llm manupulates not our words but often by the syllables. It is deprived of the access to an actual language, we literary convert our language into a set of senseless chunks to confuse the model. And as if it's not enough, we make it believe that "comma" and "shoe" are interchangeable.
 
 How to fix it?<br>
-Well, it's more compute.
+Through the ideas distillation. And yes, it's more compute.
 
 ##### Attention level 1.
 Is what our current transformers are. It tries to develop abstract ideas but they are always tied to the actual character tokens, even deep in the repeating blocks when they are abstract, they manipulate traits clouds developed with character sequences.
