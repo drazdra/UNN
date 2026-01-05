@@ -1337,7 +1337,7 @@ Ironically, LLMs actually try to hack this situation during training by adding m
 This is basically what our LLMs are right now.
 
 ##### Attention level 2.
-Once we have a ready LLM we can just freeze it, and add more matrices for developing the *next* layer of attention - words level. This one should contain only the separate words, not syllables. 
+Once the base LLM is trained, we can just freeze it, and add more matrices for developing the *next* layer of attention - word level. This level should operate solely with complete words, not syllables. 
 
 We have two ways to create it.
 The easiest one is just to use stacked sub-tokens making the words that the second attention layer would see as separate own tokens. But it would take loads of resources.
