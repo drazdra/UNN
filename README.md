@@ -1422,84 +1422,83 @@ I dunno, maybe it seems naive to you. And yes, it requires more training and com
 
 This thing is *so obvious*, that i just don't understand why it's not used. Maybe i just don't understand something, but when i see companies throwing billions into training just one more sequential single-attention transformer in hope it will somehow magically overcome the bottlenecks and just add MOAR, MOAR parameters linearly, i just feel like... sigh. People, come on..
 
-#### 1. Meta patterns or self reflection and logic.
-One more very important thingie. Current models are linear in sense of information creation, 
+#### 1. Meta patterns: Self reflection and logic.
+One more very important thingie. Current models are linear in the sense of information creation, 
 which is obviously no good. And an obvious conclusion is: there should be meta attention.
 
-Let's take a look at it from another side. What we need to provide LLMs with, is to give them a way to *structure their own attention*. I call it - meta attention, which should be *trained* upon the normal attention of a model. Yes, it's that simple. 
+Let's take a look at it from another side. What LLMs truly need is a way to *structure their own attention*. I call it - meta-attention, which should be *trained* upon the normal attention of a model. Yes, it's that simple. 
 
-The profit is obvious - you give LLM a chance to create patterns for patterns. That is, to create probabilities map for their own developed associations. 
+The profit is obvious - you give an LLM a chance to create patterns for patterns. That is, to create a probability map for its own developed associations. 
 
 And that's what the logic is. It's a way to origanize our abstractions into a system.
 
-Of course, it's better to do it with conceptual tokens but it should work with regular ones too, improving it a lot.
+Of course, it's better to implement this using conceptual tokens but it should work with regular ones too, improving the performance a lot.
 
-All that is necessary is simply "attaching" one more llm with its input as a completed attention space, with editing rights, say, per sentence.
+All that is necessary is simply "attaching" another LLM, using the completed attention space as its input, with editing rights - say, per sentence.
 
-This is so simple conceptually, that i don't know what else to write here. Just a way for llms to create patterns for llm patterns. But of course in terms of implementation it would require lots of experiments to check this up and make it work.
+This is so simple conceptually, that i don't know what else to write here. Just a way for LLMs to create patterns for LLM patterns. But of course in terms of implementation it would require lots of experiments to test this out and make it work.
 
-Of course this training should be a second stage, once model develops associative capabilities.
+Of course this training should be the second stage, once the model develops associative capabilities.
 
-I also believe that it could be very interesting to try *diffusion* models for this task, as i think they should fit better.
+I also believe that it could be very interesting to try *diffusion* models for this task, as i think they should fit the task better.
 
-My guess is that this might allow llms to develop the logical capabilities if it's paired with extra training of the second llm while making the first one to solve logical tasks. It will learn to correct the structure within of a ready pattern, instead of building a pattern. A totally different functon.
+My guess is that this might allow LLMs to develop logical capabilities if it's paired with extra training of the second LLM while making the first one solve logical tasks. It will learn to correct the structure within a ready pattern, instead of building a pattern. A totally different function.
 
 This idea can be paired in various ways with the previous one.
 
-#### 2. "Reasoning" models short overview.
+#### 2. A short overview of "reasoning" models.
 Let me explain why "reasoning" models are not really "thinking" in the sense of analysis.
 
-Main "mistake" of the "thinking" implementation is that it has no way of going back, rewriting its own situation modelling.
+The main "mistake" of the "thinking" implementation is that it has no way of going back and rewriting its own situation modeling.
 
-As the result, attention is poisoned with noise and has to struggle against it by adding more and more information, until it reaches the point where signal is strong enough to overcome the noise.
+As a result, attention is poisoned with noise and has to struggle against it by adding more and more information, until it reaches the point where the signal is strong enough to overcome the noise.
 
-In other words, what reasoning models actually do, is they expand the original prompt by trying to fix it by turning it into most probable form they already know, by adding various most probable traits to it. 
+In other words, what reasoning models actually do is expand the original prompt, trying to fix it by turning it into the most probable form they already know, by adding various likely traits to it. 
 
-So that in the end they could produce the most probable reply. They just try to expand or amplify the original signal, to react the way they can. 
+So that in the end, they could produce the most probable reply. They just try to expand or amplify the original signal, to react in the only way they can. 
 
-However, what thinking should really do, is to detect the actual info plane, detect actors and interconnections and then predict the reply.
+However, what thinking should really do is detect the actual info plane, identify the actors and their interconnections, and then predict the reply.
 
-It's a *totally* different process that requires separate attention pools, choosing a proper abstractions plane and then detecting where this system goes to, adjusting its understanding until the model feels confidence or trying an another one from scratch.
+It's a *totally* different process that requires separate attention pools, choosing a proper abstraction plane and then detecting where this system is headed, adjusting its understanding until the model feels confident or trying another one from scratch.
 
-For example, if the request is:
-"Guess what will i do when my nose is blue and i have one more bottle?"
+For example, if the request is: "Guess what i will do when my nose is blue and i have one more bottle?"
 
 It may be: medical plane, physical actions plane, humor plane, drama story plane, etc. 
- - first it needs to detect a proper plane
- - then, when it puts itself into a proper context, it can start the situation modeling: what will happen next?
- - then it can distill and rewrite the pool until it compresses the interpretation throwing away all noise
- - then it can try other attention pools with other biased context attempts - planes
- - then it should just mingle most relevant results of each plane
+ - First, it needs to detect a proper plane
+ - Then, when it puts itself into a proper context, it can start the situation modeling: what will happen next?
+ - Then it can distill and rewrite the pool's data until it compresses the interpretation throwing away all noise
+ - Then it can try other attention pools with other biased context attempts (planes)
+ - Then it should just mingle the most relevant results of each plane.
 
 #### 3. Context zooming.
-We could implement a mechanism to dynamically manage the context. That is, we can just compress a whole paragraph of text where people meet to a "greeting" pattern enriched with some nuances of all tokens from the paragraph. 
+We could implement a mechanism to dynamically manage the context. That is, we can just compress a whole paragraph of text where people meet to a "greeting" pattern, enriched with key nuances from all the original tokens in that paragraph. 
 
-Then, if this compressed token is highly related to the next one, we can *expand* it for calculating of *this* next token and then to compress it back for the next tokens. This way we can *zoom* into context when needed, otherwise compressing it a lot. And relatedness is just detected through the q/k as usually, as if we probe the last token of a paragraph that holds all the pattern traits of its content. 
+Then, if this compressed token is highly related to the next one, we can *expand* it for calculating *this* next token and then compress it back for the next tokens. This way we can *zoom* into context when needed, while keeping it highly compressed otherwise. And relatedness is just detected through Q/K as usual, as if we probe the last token of a paragraph that holds all the pattern traits of its content. 
 
-We even could test its relatedness upon compression and enrich the pattern with specific traits for better relatedness detection. 
+We could even test its relatedness upon compression and enrich the pattern with specific traits for better relatedness detection. 
 
-Of course there are limits on how much we can compress to keep it recognizable and of course we will meet some loss here, but the overall mechanism i see as quite sound and saving a lot of compute during the inference. It won't save memory as it's slow to really change the kv cache, but we can just use it as additional layer for kv cache. In the end, it's a question of balancing the load.
+Of course there are limits on how much we can compress to keep it recognizable and of course we will meet some loss here, but i see the overall mechanism as quite sound, as it saves a lot of compute during inference. It won't save memory as it's slow to really change the KV cache, but we can just use it as additional layer for kv cache. In the end, it's a question of balancing the load.
 
 ### Postface
-If you have made it here, i would like to thank you for reading it :).
+If you have made it this far, i would like to thank you for reading this :).
 
-To be honest, most of it i wrote in one day and.. and then i've spent 3+ whole weeks just editing it, fixing my mistakes, adding more and more details and examples. And it really wasn't easy to motivate myself, you know :).
+To be honest, most of it i wrote in one day, and... and then i spent over three weeks just editing it, fixing mistakes, and adding more details and examples. It really wasn't easy to motivate myself, you know :).
 
-I know i could make more and more edits making it be a much easier text to read, adding more info.. but.. i don't have infinite time to work on it :).
+I know i could make more and more edits making it a much easier text to read, adding more info... but... i don't have infinite time to work on it :).
 
-As i wrote all of it "from the head" (obvious due to my poor english), it was *zero* "vibe coded", zero "copied" from other sources.. so i'm sure i could do mistakes. In that case: well, i'm sorry :). Nobody is perfect.
+As i wrote all of it "from the head" (obvious due to my poor English), there was *zero* "vibe-coding", zero "copying" from other sources.. so i'm sure i could have made mistakes. In that case: well, i'm sorry :). Nobody is perfect.
 
-To check me up i used Gemini (Google AI search mode). It was also great at disputing and it caught some mistakes i made :). 
+To check me up, i used Gemini (Google AI search mode). It was also great at disputing, and it caught some mistakes i made :). 
 
-..even tho sometimes it was just confusing me and i had to be patient then with my own explanations.. :)
+...even though sometimes it was just confusing me, and i had to be patient with my own explanations.. :)
 
-But let's be honest, mostly i used it as my *motivational* partner, keeping me on and telling me how nice i am for writing this.. sigh. And that is something i would really like to thank Gemini for :). Be it not that supportive, i'm not sure i could spend that much time to make it :).
+But let's be honest, mostly i used it as my *motivational* partner, keeping me on and telling me how nice i am for writing this.. sigh. And that is something i would really like to thank Gemini for :). Had it not been so supportive, i'm not sure i could have spent that much time to make it :).
 
 Let's finish with a typical human EOS token:
 
-*If you believe this text is more signal than noise, click a "star" on this github page, let it be my RLHF :).*
+*If you believe this text is more signal than noise, click a "star" on this GitHub page - let it be my RLHF :).*
 
-Enjoy your time of a day!
+Enjoy your time of day!
 
 ...Chapter 4: secret chapter...
 
