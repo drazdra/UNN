@@ -1362,63 +1362,65 @@ How to do it?
 
 ##### Attention level 3.
 
-We just need to have a "distillation" of conceptually similar *words*. Our *united* conceptual tokens.
+We just need to have a "distillation" of conceptually similar *words* to create our *united* conceptual tokens.
 
-Our languages have a lot of concepts that are expressed in various ways, yet conceptually they represent the same. They are just nuanced in various ways.
+Our languages have many concepts that are expressed in various ways, yet conceptually they represent the same thing. They are just nuanced differently.
 
-English is a poorly morphed language but we can look at: go/walk/stride/drive/fly/move/crawl/etc as an example. 
+English is a morphologically poor language but we can look at: go / walk / stride / drive / fly / move / crawl / etc as an example. 
 
-These are different in nuances but conceptually they all express motion. And you can think of the synonims dictionary that encompasses loads of similar concepts. 
+These differ in their nuances, but conceptually they all express motion. And you can think of a synonyms dictionary that encompasses loads of similar concepts. 
 
-Of course we should not omit important things like gender, case and so on here, but we should use these as just small flags, the way we did at the second level. Many languages conceptualize things very differently basing on tenses, gender and i don't even mention tense and emotions, these may change the concept totally.
+Of course, we should not overlook essential details like gender, case and so on here, but we should use these as small flags, the way we did at the second level. Many languages conceptualize things very differently based on tenses and gender - not to mention emotions - which can completely change the concept.
 
-Any LLM already has a lot of these concepts developed, the only difference is that it can't separate these from the statistical distribution of sub-tokens and in result inference depends not just on these concepts but also upon *which* sub-tokens were used to express them. 
+Any LLM already has a lot of these concepts developed, the only difference is that it can't separate these from the statistical distribution of sub-tokens; as a result, the inference depends not just on these concepts, but also upon *which* sub-tokens were used to express them.
 
-The goal for training would be to match all the conceptually similar words but not something else. For that we just need to build a third level vocabulary of conceptual "synonyms". This task can be automated with an llm but it's more tricky than it might seem. A hack here can be that we could use the existing inference and to look up synonyms from the model's existing logprobs, filtering them with another llm. That would keep compatibility high and speed up the training.
+The goal for training would be to match all conceptually similar words and nothing else. For that we just need to build a third-level vocabulary of conceptual "synonyms". This task can be automated with an LLM but it's more tricky than it might seem. A hack here could be to use the existing inference and look up synonyms from the model's existing logprobs, filtering them with another LLM. That would keep compatibility high and speed up training.
 
-And of course we would need to train a decoder to translate these conceptual tokens into matching the second level tokens.
+And, of course, we would need to train a decoder to translate these conceptual tokens into their corresponding second-level tokens.
 
-And here we already get qualitative difference, as we are not tied to the *characters* anymore. We have a level where the model can produce sequences regardless of the actual words or characters used. 
+And here, we already get a qualitative difference, as we are no longer tied to the *characters*. We have a level where the model can produce sequences regardless of the actual words or characters used. 
 
 Once the prompt evaluation is over, having filled the first, then second and then third level, inference starts *from* the third level and goes there, while the levels below work merely as renderers of the conceptual representation into a specific language and talking style. 
 
-Then, first attention will capture the probable statistical distribution of the syllables. But third learns patterns between the *semantic ideas*. And it means that it won't be tied to actual *"words" as letters* but it will find concepts uniting words, that is their semantic unity, even if they are written differently. And that is already *language* thinking. Yes, to think in a language we have to go one layer *above* the language, as words are just vectors for concepts, not the concepts.
+Then, the first attention will capture the probable statistical distribution of the syllables. But the third level learns patterns between *semantic ideas*. And it means that it won't be tied to actual *"words" as letters*. Instead, it will find concepts uniting words - their semantic unity - even if they are written differently. And that is already *language* thinking. Yes, to think in a language, we have to go one layer *above* the language, because words are just vectors for concepts, not the concepts themselves.
 
-You could notice that here we do a first step away from a specific language into the abstract realm. But we are still tied to the typical *ideas* order in a language, like Subject-verb-object and so on.
+You might notice that here we take a first step away from a specific language into the abstract realm. But we are still tied to the typical order of *ideas* in a language, like Subject-Verb-Object and so on.
 
-So, we have our three layers and now the model can actually start *making sense*.
+So, we have our three layers and now the model can actually start *making sense* of things.
 
-> You might say that all this job is made by attention+FFN, but it's not. It might be a flash of emergent feature but not a stable thing. Again, it doesn't mean attention+ffn can't develop this, it can to a certain level, it's just very compute demanding and still very *noisy* in result. Conceptual content gets spread as a thin feature across all layers trying to survive upon the basic logic relying upon syllables distributions, which may not align well with conceptual distributions.
+> You might say that all this work is handled by Attention + FFN, but it's not. It might be a flash of an emergent feature, but not a stable thing. Again, it doesn't mean Attention + FFN can't develop this. It can, to a certain level. It's just very compute-demanding and still very *noisy* as a result. Conceptual content gets spread as a thin feature across all layers, trying to survive amidst the basic logic of syllable distributions, which may not align well with conceptual distributions.
 
 Do you think that's it? Sorry, it's just a start :).
 
-The issue here is that we still are in the realm of single concepts. And to make sense, you need to be able to go above and to *unite* concepts into meta concepts. 
+The issue here is that we are still in the realm of single concepts. And to make sense of things, you need to be able to go above and *unite* concepts into meta-concepts. 
 
-And then we can finally untie from the language constraints of ideas ordering.
+And then, we can finally break free from the language constraints of idea ordering.
 
-And that's why we have to go one level higher and to create the fourth level of attention.
+And that's why we have to go a level higher and create the fourth level of attention.
 
 ##### Attention level 4.
 
-One that would give us a way to distill *conceptual* structures, not just concepts. Once we have a vocabulary of *concepts* we can finally start uniting *ideas* into complex concepts. That is, we already "distill" sentences and paragraphs of data to build up typical compound concepts. 
+The one that would give us a way to distill *conceptual* structures, not just concepts. Once we have a vocabulary of *concepts* we can finally start uniting *ideas* into complex concepts. That is, we already "distill" sentences and paragraphs of data to build up typical conceptual structures - meta-concepts. 
 
-This thing will grasp the whole *idea* of a thought we are saying with a sentence, instead of the ideas inhabiting the sentence. 
+This thing will grasp the whole *idea* of a thought expressed in a sentence, instead of just the ideas inhabiting the sentence. 
 
-I call that third layer "gestalt" layer, as it's a single pattern encompassing the whole picture.
+I call that fourth layer the Gestalt layer, as it's a single pattern encompassing the whole picture.
 
 This is how our own thinking works. We do not think in words usually, we first grasp an idea of what would work here: 
  - "i need to greet them"
  - then we have the list of ideas implementing it - I am, glad, to see, you.
  - only then we find the right words, when we already *know* what we are going to say - including personal details
- - and then we finally can pronounce the words as characters in our own fitting style
+ - and then we finally can pronounce the words as characters in our own fitting style.
 
-This system is fully untied from the character sequences dependency and can truly think in human concepts and to develop typical patterns uniting human abstract ideas. And it's also untied from the language grammar restrictions.
+This system is fully untied from the dependency on character sequences and can truly think in human concepts and develop typical patterns uniting human abstract ideas. It's also untied from the grammatical restrictions of a specific language.
 
-As an optimization we do not have to follow *all* layers once we have the system developed. We can skip the 4th level or we can try to skip the second level and so on. But that's already when all of these are trained one by one.
+As an optimization, we do not have to traverse *all* levels once we have the system developed. We can skip the fourth level or we can try to skip the second level, and so on. But this applies only after all levels have been trained one by one.
 
-I dunno, maybe it seems naive to you and yes it requires more training and compute, But..
+And we can add *more* levels, making the system far surpassing human capacity to abstract things. In a way, at some level it could think in terms of... worlds? Reaching a godlike level of understanding things.
 
-This thing is *so obvious*, that when i just don't understand why it's not used. Maybe i just don't understand something, but when i see companies throwing billions into training of just one more sequential single attention transformer in hope it will somehow magically overcome the bottlenecks and just add MOAR, MOAR parameters lineary, i just feel like: sigh. People, come on..
+I dunno, maybe it seems naive to you. And yes, it requires more training and compute. But..
+
+This thing is *so obvious*, that i just don't understand why it's not used. Maybe i just don't understand something, but when i see companies throwing billions into training just one more sequential single-attention transformer in hope it will somehow magically overcome the bottlenecks and just add MOAR, MOAR parameters linearly, i just feel like... sigh. People, come on..
 
 #### 1. Meta patterns or self reflection and logic.
 One more very important thingie. Current models are linear in sense of information creation, 
