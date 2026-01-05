@@ -1309,6 +1309,12 @@ And, of course, we train our LLMs with our languages.
 
 So what's the difference? Why LLMs can't think the way we do if they can use the language, why do they hallucinate?
 
+First signal system, unlike the language, can express only a vector changing the state of our consciousness, giving it certain state. 
+
+Does it remind you something? Yep, transformers. And *music*.
+
+LLMs use our language as an extremely complicated.. first signal system. It is changing their state *directly* and they are forced to think in the language right away. 
+
 There is no separate conceptualization level that would untie the language *representation* from the ideas. And there is no second level of attention that could reorganize their own existing state fixing the mistakes on the first level. There is no separate internal processing *state* that would be *unaffected directly* by the input information, that could reflect and self-correct.
 
 In short, it requires two fixes:
