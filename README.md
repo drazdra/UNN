@@ -1339,24 +1339,24 @@ This is basically what our LLMs are right now.
 ##### Attention level 2.
 Once the base LLM is trained, we can just freeze it, and add more matrices for developing the *next* layer of attention - word level. This level should operate solely with complete words, not syllables. 
 
-We have two ways to create it.
-The easiest one is just to use stacked sub-tokens making the words that the second attention layer would see as separate own tokens. But it would take loads of resources.
+We have two ways to implement it.
+The easiest one is just to use stacked sub-tokens, making the words that the second attention layer would see as its own separate tokens. But it would take loads of resources.
 
-A better way would be to add on top of it a morphological tokenizer that would encode the base form of the word and its gender/case/tense/plurality/emotional suffixes/etc as a single axes in the pattern. This would reduce the vocabulary a lot. Why can't we just use this tokenizer at the first level of attention then? Because people often mistype and use non-existing words. There should be a first layer that works for any combination of characters, tying these to specific patterns model has learnt.
+A better way would be to add on top of it a morphological tokenizer that would encode the base form of the word and its gender, case, tense, plurality, emotional suffixes, etc. each with just a single axis in the pattern. This would reduce the vocabulary a lot. Why can't we just use this tokenizer at the first level of attention then? Because people often mistype and use non-existing words. There should be a first layer that works for any combination of characters, tying these to specific patterns the model has learned.
 
-Of course we would need a translation layer to be able to match tokens of this layer to the first layer's stacked "full words" back and forth. 
+Of course we would need a translation layer to be able to match tokens between these layers, linking the second layer back to the first layer's stacked "full words" and vice versa. 
 
-This second attention level doesn't really solve anything. We are still tied to the specific word sequences. However training upon this level already is split per *human* concept. And this means we will have token clouds expressing relatedness of human ideas, not of syllables if we do inference on this level.
+This second attention level doesn't really solve anything. We are still tied to the specific word sequences. However training upon this level already is split by *human* concepts. And this means we will have token clouds expressing relatedness of human ideas, rather than of syllables, if we do inference on this level.
 
-Partially we already have it in deep levels of the repeating blocks. Partially, because we are still tied to the character based tokens there and because our attention implementation is scattered all over the tokens, it doesn't unite concepts per-word, it does something totally different it had learnt during the training.
+Partially, we already have it in the deep levels of the repeating blocks. Partially, because we are still tied to the character-based tokens there and because our attention implementation is scattered all over the tokens. It doesn't unite concepts at a word level. It does something totally different that it has learned during its training.
 
-When we have the second level, at the inference we first use the first attention to convert into patterns, translate the evaluated prompt into the second attention level and then we re-evaluate the prompt on the second attention lavel where the conceptual units are words already. 
+When we have the second level, during inference, we first use the first attention to convert the input into patterns. Then we translate the resulting prompt patterns into the second attention level. Finally, we re-evaluate the prompt on the second attention level, where the conceptual units are already words. 
 
-Once we've done the inference at this second level, we get a generated word token. We translate it down and do the inference on the first level while attending to that translated token. We can do it for example by first sampling the list of candidates matching our second level token and then inference of the first level would only choose the best matching token among the candidates. We need it to keep the style of the conversation we have, but i guess here it's not really necessary.
+Once we've done the inference at the second level, we get a generated word token. We translate it down and do the inference on the first level while attending to that translated token. We can do it for example by first sampling a list of candidates matching our second level token and then the inference of the first level would simply choose the best matching token among them. We need this to maintain the style of the conversation, though i guess here it's not strictly necessary.
 
-So far we have not achieved much, we just have spent loads of compute to build a system that is much closer to human way of conceptualizing the data, yet it will probably sound nearly the same as before, as it's still bound to the sequential distribution of the words.
+So far, we have not achieved much, we just have spent loads of compute to build a system that is much closer to the human way of conceptualizing the data, yet it will likely sound much the same as before, as it's still bound to the sequential distribution of words.
 
-What should we do? Of course to jump to the semantic level, conceptual level. The one that would consist of human *ideas*, not of specific words. 
+What should we do? Of course, we need to jump to the semantic level, conceptual level. The one that would consist of human *ideas*, not specific words. 
 
 How to do it? 
 
