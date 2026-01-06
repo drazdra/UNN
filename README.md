@@ -103,14 +103,14 @@ And all of that is within the context of winter and within the context of underw
 But don't get me wrong, neural networks can go beyond just human ideas or words. They can process any data elements - sounds, syllables, numbers, images, weather, galaxies, anything.
 
 Based on this, let's write down what defines any neural network architecture, what *makes* it one:
- - how it represents (stores) these patterns 
- - how it actually finds/matches these patterns 
- - how it processes these patterns (inference, classification, distillation, etc)
- - how it updates these patterns
+ - How it represents (stores) these patterns;
+ - How it actually finds/matches these patterns;
+ - How it processes these patterns (inference, classification, distillation, etc.);
+ - How it updates these patterns.
 
-If you go down one abstract level and define how all that should be structured and work, you get a specific neural network architecture.
+If you go down one abstraction level and define how all that should be structured and work, you get a specific neural network architecture.
 
-If you go down one more abstract level, you implement these structures in a certain form, like in code or with a physical device, and get a specific model/engine pair.
+If you go down one more abstraction level, you implement these structures in a certain form, like in code or with a physical device, and get a specific model/engine pair.
 
 But at the top level, all of *machine learning is simply creating these patterns*. 
 
@@ -141,11 +141,11 @@ Sorry, i just couldn't resist making this joke :). It's not literally the case, 
 
 Mostly, in modern neural networks, we just use math instead of actual code branching/logical rules, etc. 
 
-The patterns inside are represented as numeric values, so math operations naturally process these patterns and everything just flows natively. By "comparing" these numbers, neural networks can find how similar the patterns are. By "adding up" numbers they can just mingle any patterns together. 
+The patterns inside are represented as numeric values, so math operations naturally process these patterns and everything just flows natively. By "comparing" these numbers, neural networks can find how similar the patterns are. By "adding up" numbers they can mingle any patterns together. 
 
-In a way, you can see it as merging two images within your image editor. The image files on the inside are just lists of numbers that represent the brightness of every dot, so we can simply add up the values from both files to get a new image - a mingled image uniting both patterns. 
+In a way, you can see it as merging two images within an image editor. The image files on the inside are just lists of numbers that represent the brightness of every dot, so we can simply add up the values from both files to get a new image - a mingled image uniting both patterns. 
 
-In a way, neural networks do the same. They just know how to properly merge numbers to get a new pattern or to match them and find how similar they are.
+Neural networks are close to that. They just know how to properly merge numbers to get a new pattern, or how to match them and find how similar they are.
 
 (we still may have certain hard conditions like in ReLU or samplers but more on that later)
 
