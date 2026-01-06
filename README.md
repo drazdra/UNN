@@ -626,7 +626,7 @@ Here we get an interesting side conclusion: Q/K may learn not just the level of 
 
 
 #### Distance between mingled tokens
-If you have an inquiring mind, you may have spotted that while we know now how compatible our tokens are, we still have no way of knowing how much they should affect each other, as older tokens should affect new tokens less than fresh ones. The "white" word should not affect all further words in the text as much as the very next one. 
+If you have an inquiring mind, you may have spotted that while we know how compatible our tokens are, we still have no way of knowing how much they should affect each other, as older tokens should affect new tokens less than fresh ones. The "white" word should not affect all further words in the text as much as the very next one. 
 
 How do we go about it? 
 Well, to deal with it, transformers introduce the RoPE trick. 
