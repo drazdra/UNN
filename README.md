@@ -546,12 +546,12 @@ The thing is, Q and K can perfectly look for *different traits* in the tokens, b
 And considering that they look for potentially different things, yet their results should match in comparison, the matrices just *have* to abstract their findings into a different resulting pattern language *common to both matrices* - the "green lamp". 
 
 In that language they need to retell two things:
- - whether or not they succeeded in finding the right traits in the tokens
- - how to scale the traits to avoid distortion
+ - Whether or not they succeeded in finding the right traits in the tokens;
+ - How to scale the traits to avoid distortion.
 
 Suddenly, the relatedness of the tokens becomes a level of compatibility with the attention head's "preferences" :).
 
-And here you can exhale, as this is the whole concept of "relatedness" :). I've turned everything upside down here to explain, but i think it worked well :).
+And here you can exhale, as this is the whole concept of "relatedness" :). I've turned everything upside down to explain, but i think it worked well :).
 
 Now, let's go into more gory details and see *how* exactly we compare. You may safely skip this section.
 
@@ -559,7 +559,9 @@ As i said above, after comparing the Q and K resulting rows we end up with a *si
 
 But how exactly do we get this single number? 
 
-We do this using a method called *dot-product* comparison. I wonder who comes up with these names... So, to do it we just:
+We do this using a method called *dot-product* comparison (I wonder who comes up with these names...)
+
+So, to do it we just:
  - Place the resulting Q row of numbers over the resulting K row.
  - Multiply the overlapping numbers of these two "layers".
  - Sum all those results up to get a total value.
