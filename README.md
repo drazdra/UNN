@@ -599,7 +599,7 @@ Then, to avoid big numbers, we divide every "powered" result by the sum of all t
 
 The effect is that the highest numbers become much, much higher than anything even slightly smaller. It's like every little addition to a high value lifts that score more and more, faster and faster. And negative values become extremely small fractions.
 
-So only the *most* compatible ones can really add to the amalgamation. Even the slightly less compatible ones are reduced to a very small effect. We even have to scale them down first to avoid the total disappearance of any gradient.
+So, only the *most* compatible ones can really add to the amalgamation. Even the slightly less compatible ones are reduced to a very small effect. We even have to scale them down first to avoid the total disappearance of any gradient.
 
 #### End of the unnecessary details :)
 
@@ -610,11 +610,11 @@ When we do the comparison with dot product, if a single column/axis is MUCH high
 
 Theoretically, a model could abuse certain specific axes in the underlying token values for easy detection, by giving them high values as a trait. But these attempts, i believe, are wasted by the later normalization block, so the model mostly has to abuse the Q/K matrices in this regard.
 
-Another thing is that the only way to encode the level of pattern incompatibility here is to use opposite signs for the values or zero values. Just different non-zero values of the same sign can only define the level of compatibility.
+Another thing is that the only way to encode the level of pattern incompatibility is to use opposite signs for the values or zero values. Just different non-zero values of the same sign can only define the level of compatibility.
 
 All of this is a pretty limited method for encoding a signal. My idea is that it works mostly because all it has to do is detect compatibility, which is a very simple signal to encode. And, it actually *should be* a redundant signal.. but more about that later :).
 
-The Q/K thing looks *very* smart, probably the smartest thing in Transformers, being also very fast in terms of compute. Yes, a better comparison would be not just compatibility with the head but between *actual traits*, but that would be *a totally different attention story*.
+The entire Q/K thing looks *very* smart, probably the smartest thing in Transformers, while being also very fast in terms of compute. Yes, a better comparison would be not just compatibility with the head, but a comparison between *actual traits*, but that would be *a totally different attention story*.
 
 #### End of the critique
 
