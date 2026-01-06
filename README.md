@@ -466,13 +466,13 @@ As explained above, at the start, we split the data into tokens and translate th
 
 So, here we have the entire context represented as a table where each row is a token, and we start by sending it to the first repeating block's attention. Literally, the whole table goes to each of the attention heads in there.
 
-Each of the attention heads has its own single Q, K, and V matrices it has learned during the training. Basically, that's what an attention head is: the Q, K, and V matrices and some logic for using them.
+Each of the attention heads has its own single Q, K, and V matrices it has learned during the training. Basically, that's what an attention head is: the Q, K, and V matrices, plus some logic for using them.
 
 The goal of attention is to find all *related* tokens in our context and to fuse their traits. This allows us to find something that is related *to all of them* together - that is to their context. In theory, we could just try to combine traits from *all* of the tokens together. But this is impossible, as our token's pattern has a fixed length and can't encompass infinite information. Trying to add everything into one little thing would just ruin its internal structure, it would be a cacophony.
 
 So we need to find only the tokens that actually often come together and so are related. Then we could unite their traits and see what else usually comes together - what else is from that cloud.
 
-These Q and K during the training learn to *detect* certain specific traits that the model sees as stable and relevant figures. So each attention head gets its own specialization - reacting to the specific cloud(s) of tokens.
+These Q and K during the training learn to *detect* certain specific traits that the model sees as stable and relevant figures. Each attention head gets its own specialization - reacting to the specific cloud(s) of tokens.
 
 But more than that, both Q and K learn to express the result of their findings in a *compatible way*, so their results could be *compared*. 
 
@@ -485,7 +485,7 @@ Well, of course all of them. We need to know which tokens the attention head can
 
 So the word chunk #2 is tested against #1 and.. #2, chunk #3 is tested against #1, #2, and... #3, and so on, for every pair.
 
-> By the way, in ML slang this is called "causal" attention, as in "cause and effect", causal here is literal - "preceding/determining the future". And all of that is done in batches, doing math simultaneously, to utilize the full power of gpu parallel processing
+> By the way, in ML slang this is called "causal" attention, as in "cause and effect", causal here is literal - "preceding/determining the future". And all of that is done in batches, doing math simultaneously, to utilize the full power of gpu parallel processing.
 
 Why do we need to compare a token to *itself*? 
  - The traits we extract *from* the token might break the proportions of the whole token when added back (remember, in the end we mingle everything back into the original tokens).
@@ -497,10 +497,10 @@ As the final purpose of comparison is the mingling of tokens, in every pair we h
 
 So, how exactly do we compare them?
 
-The first thing to understand is that we use the "input" version of every token in the sense of "as it came" to the attention block, *before* we changed it here. So the first repeating block's Q/K see the tokens as they are from the input vocabulary, and every next repeating block's q/k already see the tokens after they were processed by all preceding blocks.
+The first thing to understand is that we use the "input" version of every token in the sense of "as it came" to the attention block, *before* we changed it here. So the first repeating block's Q/K see the tokens as they are from the input vocabulary, and every next repeating block's Q/K already see the tokens after they were processed by all preceding blocks.
 
-The second thing to understand is that before comparing the tokens, every attention head goes over every token and creates its own Q, K, and V *results*/vectors. These are created by multiplying the token content by the content of the attention head's Q matrix, K matrix, and V matrix. So we get three new different patterns/rows/vectors for each token, for each attention head. And each of these patterns is just a single row of numbers.
-> I will explain "multiplication" later in the FFN block; this section is too dense as it is
+The second thing to understand is that before comparing the tokens, every attention head goes over every token and creates its own Q, K, and V *results* (the vectors). These are created by multiplying the token's content by the content of the attention head's Q, K, and V matrices. So we get three different new patterns (rows/vectors) for each token within each attention head. And each of these patterns is just a single row of numbers.
+> I will explain "multiplication" later in the FFN block; this section is too dense as it is.
 
 The attention heads care only about *their own* token "interpretations" - their own created rows - they do not interchange their data at all.
 
@@ -525,13 +525,13 @@ But let me make myself clear here: i believe that Q and K don't just project the
 
 Q and K project a "validation" pattern showing if the token is compatible with the *attention head*. It's like a green lamp showing this token *can* be processed with *this* attention head. Q lights the green lamp if the token can *accept* traits that the attention head usually extracts. And the K green lamp lights if the token *has* traits that this attention head extracts. So they are "compared" against the *attention head* first, and then the results of these two detections are what we actually compare.
 
-If attention head could detect both:
- - compatibility of the target token with the common extracted traits by this head
- - compatible traits in the donor token with this head's extraction
+If an attention head detects both:
+ - The compatibility of the target token with the traits this head has learned to extract;
+ - The compatible traits in the donor token with this head's extraction mechanics;
 
-these matrices learn to produce *similarly shaped* results - a green light.
+then these matrices learn to produce *similarly shaped* results - a "green light" signal.
 
-So their similar *shape* expresses their compatibility, while the shapes' combined *size* (the brightness) expresses the *proportions* that the mingled-in patterns should take.
+Their similar *shape* expresses their compatibility, while the shapes' combined *size* (the brightness) expresses the *proportions* that the mingled-in patterns should take.
 
 > The shape here means that their comparison produces a positive number, while the size/magnitude is a measure of how large this number is. We will talk about it soon.
 
