@@ -22,7 +22,7 @@ Content:
 #### Preface.
 This text is just an attempt to explain things about neural networks and transformers without any confusing ML slang, without any math, without any code. It doesn't mean it's shallow or simplified, more like the opposite.
 
-Its goal is to make you understand what's actually happening, why, and what for, without having any special knowledge in the field. Transformers are pretty simple, if you understand what they actually do :).
+Its goal is to make you understand what is actually happening, why, and what for, without having any special knowledge in the field. Transformers are pretty simple if you understand what they actually do :).
 
 I recommend reading the whole thing before getting back at me :). 
 
@@ -35,7 +35,7 @@ I'm sure everyone here knows how neural networks work.. yet please allow me to s
 
 Yes, i oversimplify certain things but not to the point of making them wrong *conceptually*.
 
-Actually, the whole point here is moving up from the implementation plane to the conceptual plane and to making it as abstract as possible.
+Actually, the whole point here is moving up from the implementation plane to the conceptual plane and making it as abstract as possible.
 
 We can have any amount of implementations but *conceptually* all neural networks are still the same :).
 
