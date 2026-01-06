@@ -620,7 +620,7 @@ The entire Q/K thing looks *very* smart, probably the smartest thing in Transfor
 
 #### A moment of thinking
 
-Here we get an interesting side conclusion: Q/K may learn not just the level of token compatibility (the critically low score category vs everything else) but also learn to work as a *patcher* to change the size of the patterns, so that the amalgamation of their work ends up in the right proportions. This is interesting as it then learns to encompass two different functions: detecting token relatedness/compatibility and patching the size of mingled patterns for better mingling. Of course, at that, the mingled traits do not have to be *the same* between tokens, as the attention head may extract different ones from different tokens. But considering the amount of other things it should take into consideration, i would guess it's a rather weak emerging feature.
+Here we get an interesting side conclusion: Q/K may learn not just the level of token compatibility (the critically low score category vs everything else) but also learn to work as a *patcher* to change the size of the patterns - so that the amalgamation of their work ends up in the right proportions. This is interesting, as it then learns to encompass two different functions: detecting token relatedness/compatibility *and* patching the size of mingled patterns for better integration. But considering the amount of other things it should take into consideration (like, trait variability between tokens), i would guess it's a rather weak emerging feature.
 
 #### End of the thinking
 
