@@ -41,9 +41,9 @@ We can have any amount of implementations but *conceptually* all neural networks
 
 Let's start with the most naive question ever, that nearly everyone can answer: how do neural networks differ from regular software? 
 
-To answer that, i suggest seeing a neural network as a "mind" *of a kind* :). But please, don't get triggered here, i don't mean it's a *human* mind :). Although it's certainly a mind as it can *analyze and predict*.
+To answer that, i suggest seeing a neural network as a "mind" *of a kind* :). But please, don't get triggered here, i don't mean it's a *human* mind :). Although it is certainly a mind as it can *analyze and predict*.
 
-Yes, it's the most primitive type of analysis and it processes data not the way we do, but it can still do both. It can analyze data to detect where the cat is and where the cup is and it can predict words well enough even to write essays, it even creates videos now by predicting the next frames.
+Yes, it's the most primitive type of analysis and it processes data not the way we do, but it can still do both. It can analyze data to detect where the cat is and where the cup is and it can predict words well enough even to write essays. It even generates videos now by predicting the next frames.
 
 To create this mind, we, as humans, code only its brain structure and functions, while the actual content of the mind is structured on its own, automatically, with the help of the structures and functions we have created. 
 
@@ -63,9 +63,9 @@ Why is "learn" in quotation marks? For the very same reason!
 
 Can you even say it's *you* learning it? Not really, you just spend time trying something and then *something* emerges. Or does not emerge :).
 
-You do not patch the connections in your brain manually. They just emerge somehow, if you try hard.
+You do not patch the connections in your brain manually. They just build up somehow, if you try hard enough.
 
-It's the hidden work of the internal implementation of brain structures and functions, which we neither control nor feel. We just get new patterns created in our brain that we can use when they are there.
+It's the hidden work of brain structures and functions, which we neither control nor feel. We just get new patterns in our brain that we can use.
 
 Same goes for neural networks. They don't control *training*. New patterns just form inside with the help of algorithms we have created for that purpose.
 
@@ -93,9 +93,9 @@ What it has is merely a huge amount of reflected patterns, embodying a cloud of 
 
 And that is for all the elements' configurations it has seen - for all patterns.
 
-In other words, neural networks do not reflect the data itself the way storage systems do. Neural networks reflect how data is organized, the possible relative distribution of its elements.
+In other words, neural networks do not reflect the data itself the way storage systems do. Neural networks reflect how data is organized - the possible relative distribution of its elements. They are *functions* that can recreate data, rather than data.
 
-For example:
+What they store is:
 How closely a kitten is related to "cute" and "milk". How closely snow is related to "cold" and a "blanket". 
 And how closely a blanket is related to coziness and coziness to a cat :). 
 And that is within the context of the winter and within the context of underwater swimming.
