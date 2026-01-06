@@ -667,7 +667,7 @@ A single attention head *may* lie about the tokens' "compatibility" score based 
 
 And here we get another problem! The longer the context we have, the larger the number of disks that might lie about the compatibility. At the start, only the fastest disks go outside the safe zone quickly, but deeper in the context, a lot of medium-speed disks might also show false incompatibility.
 
-So, let's try to predict some consequences of this fun, thanks to RoPE:
+Let's try to predict some consequences of this fun, thanks to RoPE:
  - Every attention head is applicable only within a certain distance between tokens; otherwise, it lies.
  - At certain relative positions of tokens in the context, an attention head lies.
  - To be able to still understand where there is noise and where there is a signal, the model has to *duplicate* attention heads with the same specialization *for various distance ranges*. So, multiple heads catch the same traits just over different distance ranges.
@@ -708,7 +708,7 @@ How we may think about attention heads then:
  - every attention head has its own interpretation of the tokens
  - when we test tokens for relatedness, we search for it within the context of this interpretation
  - for testing we use the original token values *before* they are interpreted (as they entered this block),
- - as this way we also learn to see how significant the related part is within each token
+ - this way we also learn to see how significant the related part is within each token
 
 But... all of that is only in our own heads :). 
 
@@ -741,7 +741,7 @@ So, it wants to say either: "White hare," or "White hare is", or "White hare\n".
 
 That is exactly because of those *other traits* that other attention heads mingled in. 
 
-Those traits were much more prominent than "snow", because these words way more often end up followed by a comma or an english auxiliary verb. And that's exactly how it works. Not by abstract "idea" closeness, but by the *statistical* distribution. So, even a new line right after two words becomes a much more probable option than the "snow", which is nowhere to be found. Weird as it is, traits of the "comma" were already embedded in "white" and "hare". And they were more refined - stronger than the "snow" traits :).
+Those traits were much more prominent than "snow", because these words way more often end up followed by a comma or an english auxiliary verb. And that's exactly how it works. Not by abstract "idea" closeness, but by the *statistical* distribution. Even a new line right after two words becomes a much more probable option than the "snow", which is nowhere to be found. Weird as it is, traits of the "comma" were already embedded in "white" and "hare". And they were more refined - stronger than the "snow" traits :).
 
 But what about "snow"? Are the traits of that cloud even there, as i explained, or was i wrong? Are they encoded in the token patterns? To test this, let's nudge our neural network to produce a *surface* token. To achieve that, we just add the word "upon". "Upon" is almost always followed by some surface in the text, so it should work well. But which surface will we get? Grass? Floor? Asphalt? Clouds? Let's see:
 
@@ -772,7 +772,7 @@ And there you go! It added "*green*". Why? Just because of the above! *All* colo
 
 Of course, i call it a "color traits cloud" only as a *simplification*, because in reality, it includes everything that typically comes *with* colors in text too. 
 
-So, the model is not "stupid" to mix up or forget the color of our hare. It just *works* this way - by pulling the probable *compatible* tokens, and compatible they are primarily because of their common usage combinations, which are encoded in the traits.
+The model is not "stupid" to mix up or forget the color of our hare. It just *works* this way - by pulling the probable *compatible* tokens, and compatible they are primarily because of their common usage combinations, which are encoded in the traits.
 
 Let's play more. In a European context, "white" is tightly related to "purity" (snow, wedding rituals, innocence, etc.). Let's test that too:
 
@@ -795,8 +795,8 @@ I'm sure you've noticed that this process is the very essence of being *biased*.
 What happens if we have unrelated tokens? Like, if our text is "I was swimming today. You look great". The "swimming" token pattern then isn't related *much* to "look", because these do not often happen together. And the transformer then doesn't mingle the "water" cloud much into the "look" token (or only does it a bit). So, the word "look" doesn't get *much* closer to whatever was associated with "swimming". The traits of "swimming" are not transferred to "look". 
 
 A thing to note here, as i said before:
- - when we mingle traits, we do not mingle the complete original tokens, we mingle only their interpretations (traits) created with the V matrix that i will explain later
- - however, we do not just add or remove only the *relevant parts* of pattern interpretations (traits) that we mingle. We simply blend the interpretation patterns (traits) completely, with all the irrelevant parts they have, mixing up everything. Of course, as a result we make certain features more prominent, while some other features fade. Not to mention we change already existing subpatterns by this. We just affect *everything*, making new token closer to something new, not just to the "relevant" part of the new.
+ - When we mingle traits, we do not mingle the complete original tokens, we mingle only their interpretations (traits) created with the V matrix that i will explain later
+ - However, we do not just add or remove only the *relevant parts* of pattern interpretations (traits) that we mingle. We simply blend the interpretation patterns (traits) completely, with all the irrelevant parts they have, mixing up everything. Of course, as a result we make certain features more prominent, while some other features fade. Not to mention we change already existing subpatterns by this. We just affect *everything*, making new token closer to something new, not just to the "relevant" part of the new.
 
 However, as each attention head learns to extract its own type of pattern traits, it learns to minimize this flaw by extracting only the more or less relevant part of the pattern for mingling.
 
