@@ -629,7 +629,7 @@ Here we get an interesting side conclusion: Q/K may learn not just the level of 
 If you have an inquiring mind, you may have spotted that while we know how compatible our tokens are, we still have no way of knowing how much they should affect each other, as older tokens should affect new tokens less than fresh ones. The "white" word should not affect all further words in the text as much as the very next one. 
 
 How do we go about it? 
-Well, to deal with it, transformers introduce the RoPE trick. 
+Well, to deal with it, Transformers introduce the RoPE trick. 
 
 You can imagine it as an odometer - a device in cars that counts how far the car has been driven. It shows a number in miles or kilometers, where every digit is on a separate rotating disk. Once the odometer reaches "0009", it turns into "0010", and so on. And remember, all disks move *simultaneously* so it's not a sudden shift to +1 in the third disk. No, that disk is slowly crawling there the whole time and could separately be read as being "halfway there" when we have a "5" on the last disk. 
 
@@ -643,7 +643,7 @@ Instead, it:
  - And then, with a wicked smile, gradually changes these coordinates as if the second dot is alive and crawls upon that circle, until it returns to the same spot.
  - And so on again and again.
 
-It doesn't stop there; it uses separate pairs of axes for various distances. So, if the first pair is for, say, 10 miles (tokens), the next one can be for 20 tokens, the next one for 40, and so on. In this setup, at token #40, the first pair of axes has made 4 full circles, while the last one has made only 1.
+What's more; it uses separate pairs of axes for various distances. So, if the first pair is for, say, 10 miles (tokens), the next one can be for 20 tokens, the next one for 40, and so on. In this setup, at token #40, the first pair of axes has made 4 full circles, while the last one has made only 1.
 
 But... axes of what? Which pattern do we torture this way? Well, these rotations are applied to the Q and K results.
 
@@ -655,13 +655,13 @@ Can this rotation make different non-compatible shapes falsely compatible?
 
 Of course, when we increase the distance between tokens, the values in a few axes may suddenly get *more similar* by accident. But usually, it's not enough to make the *whole shapes* similar enough because there are plenty of other axis pairs that are still different. So, an accidental "compatibility" in just one pair of axes after rotation has very little chance of making those two full shapes suddenly falsely compatible.
 
-So, is the RoPE perfect? Sigh. Let's see..
+Is the RoPE perfect? Sigh. Let's see..
 
 Once we do 180 degrees rotation due to distance between our tokens, vectors suddenly start *restoring* their original similarity, as if becoming more and more compatible, tho the distance just *grows*. 
 
 This is pretty fun, however don't forget that all the "disks" rotate, which means that when our first disk starts to restore similarity, our second disk is already halfway "distorted". So, the overall compatibility is still diminished.
 
-Another thing about RoPE is that, due to the implementation, as our absolute positions of tokens in context become large, the rounding effects in the code may lead to precision loss, digital noise :). So in a real-world engine, the actual precision loss might intervene as we go deeper into the context, due to quantization stuff. If it were linear logic, it wouldn't matter much, but in our case we have non-linear effects where a little change might lead to big consequences, so this thing *may* at times affect results a lot.
+Another thing about RoPE is that as our absolute positions of tokens in the context become larger, the rounding effects in the code may lead to precision loss, digital noise :). As we go deeper into the context, the actual precision loss might occur due to quantization stuff. If it were linear logic, it wouldn't matter much, but in our case, we have non-linear effects where a small change might lead to big consequences, so this thing *may* at times affect results a lot.
 
 A single attention head *may* lie about the tokens' "compatibility" score based on *where* the tokens are in the context, even if their mutual distance didn't change. And it can also lie if the distance between tokens is out of its "safe" range.
 
