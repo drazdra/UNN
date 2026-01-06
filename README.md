@@ -330,16 +330,16 @@ It's like knowing which people will agree to come to a party, depending on who e
 
 In simple words, certain proportions in the token values reflect the fact that tokens a, b, and c have higher chances of coming together, but won't show up if token "d" is there, as its pattern breaks the compatibility.
 
-One more example: say you have tokens with low values on pages 16 and 17 but high values on pages 5, 12, and 121 - this is a sign that the token *might be* *at least* related to a "fairytale"-related token cloud. That's because these tokens always went together within fairytale contexts in the very text the model was trained on, and the model has found a way to reflect it through this "figure" within its patterns. But always remember that the same token can still be related to many other clouds of tokens. Also, a change in any of the axes may suddenly make it related to totally different clouds of tokens, as it will turn existing figures into something new in the same pattern.
+One more example: say you have tokens with low values on pages 16 and 17 but high values on pages 5, 12, and 121 - this is a sign that the token *might be* *at least* related to a "fairytale"-related token cloud. That's because these tokens always went together within fairytale contexts in the very text the model was trained on. The model has found a way to reflect it through this "figure" within its patterns. But always remember that the same token can still be related to many other clouds of tokens. Also, a change in any of the axes may suddenly make it related to totally different clouds of tokens, as it will turn existing figures into something new in the same pattern.
 
 The *insight* here is that every token, in fact, is *not* a fixed symbol on the inside. Every token itself is just *a cloud of traits* that can be aligned with *other clouds of traits* - other tokens. Every token is *a concept*.
 
 And yes, any part of the trait can also be a part of other traits, simultaneously encoding multiple clouds of related tokens :). 
 
-So there are no "characters" on the inside, no "words", and no facts of any kind. There is *just* a pattern that can be related to other patterns. 
+There are no "characters" on the inside, no "words", and no facts of any kind. There is *just* a pattern that can be related to other patterns. 
 
 How do most people interpret this? 
-"If the words are linked sensibly, it must mean it's has ideas! It stores facts! It has knowledge!" :)
+"If the words are linked sensibly, it must mean it stores facts!" :)
 
 Sounds fun, but... what it stores are just the chances for data to be organized in certain ways :). 
 
@@ -347,7 +347,7 @@ But i said it's a concept... Concepts? Ideas? What is a concept, even?
 
 "Concept" means a combination of basic elements into a single new basic compound element. A concept car is a car built from a new set of basic components: an electric engine, propellers, carbon, a steam machine, AI, and paws, etc. In our case we are speaking of thinking, so it's about data elements, and for language, it's words. When we *think in language*, we operate with meaningful semantic units. We can build concepts based on functional understanding, traits, or abstractions, all expressed *in words*. The concept of "comfort" includes a lot of basic ideas, where each idea is expressed by a certain word: warm, convenient, safe, relaxing, pleasurable, etc. And we can think about these *words* as its compound elements - basic concepts forming a new concept.
 
-But transformers form *concepts* based merely on the grouping of symbol sequences! So, for them, the concept of "comfort" might be additionally tied to the "concepts" of "like ", "ed", "ing", "car", "dis" and even the comma ",". 
+But transformers form *concepts* based merely on the grouping of symbol sequences! For them, the concept of "comfort" might be additionally tied to the "concepts" of "like ", "ed", "ing", "car", "dis" and even the comma ",". 
 
 They don't have *any* experience other than text... They make concepts out of the grouping statistics of chunks left by the tokenizer.
 
