@@ -864,7 +864,7 @@ For now just note that due to scaling we also use the absolute magnitude of figu
 #### end of the critique moment
 
 
-And to finish up the attention block, let's repeat again that every repeating block (consisting of attention+FFN parts) has *multiple* such Q/K/V sets working in parallel, called the attention heads. 
+And to finish up the attention block, let's repeat again that every repeating block (consisting of Attention + FFN parts) has *multiple* such Q/K/V sets working in parallel, called the attention heads. 
 
 Each of them during training *hopefully* forms its own way of interpretation. This way, they are *supposed* to match, tie up and mingle the tokens *differently*: different (or same) tokens at different strengths, extracting and mingling the different figures from the patterns. 
 
@@ -878,11 +878,11 @@ What do we do with these multiple simplified versions of every token?
 
 We just take them and.. stack them together for each token! So our token table becomes much wider (than it was per head or at the start). Each row (which is one token) holds now all token interpretations from all attention heads.
 
-And now it's as if each token were represented by its smaller reflections in multiple smaller mirrors - attention heads. This way we got a "faceted" view of each separate token. 
+And now it's as if each token were represented by its smaller reflections in multiple smaller mirrors - attention heads. This way we got a "faceted" view of each separate token.
 
-Of course, in reality, these "facets" have redundancy, as attention heads could grasp *similar* patterns and compare/interpret more or less the same things in the end. Making attention heads do something totally different is a separate task. Usually, developers try various tricks in an attempt to get rid of the redundancy. Like initializing the heads with different random noise, switching off some heads during training, splitting the tokens between the heads by some rules, overlapping their attention, and so on and so forth. *And here, a single flexible attention head could be really nice..* :).
+Of course, in reality, these "facets" have redundancy, as attention heads could grasp *similar* patterns and compare/interpret more or less the same thing in the end. Making attention heads do something totally different is a separate task. Usually, developers try various tricks in an attempt to get rid of the redundancy. Like initializing the heads with different random noise, switching off some heads during training, splitting the tokens between the heads by some rules, overlapping their attention, and so on and so forth. *And here, a single flexible attention head could be really nice..* :).
 
-But do you remember what i told you about transformers? It feels like somebody just liked copy-pasting a lot :). 
+But do you remember what i told you about Transformers? It feels like somebody just liked copy-pasting a lot :). 
 
 Also, earlier, i said that the context is always fixed and we can't come up with a totally new pattern. This copy-paste approach *patches* it by creating multiple interpretations where things can differ. *Yet* they all still just *morph* the existing context, the same pattern. They do not cross-talk. They move only forward, even if they do it in different ways. 
 
@@ -896,9 +896,9 @@ After all, it's the Transformers. If you want to do a single operation, just tra
 
 > And yes, of course, each one of these transformations introduces some noise and loses some useful signal. So the more transformations we have, the harder it is to train a model. It just has to find its own similarities in each of the intermediate patterns. On the other hand, this is the actual way Transformers work, their core toolkit, allowing them to process patterns.
 
-Conceptually, the role of the O matrix is to transform the faceted attention heads' output into a pattern that is compatible with the original pattern that we had at the input of the attention block.
+Conceptually, the role of the O matrix is to transform the faceted attention heads' output into a pattern that is compatible with the original pattern. The one that we had at the input of the attention block.
 
-Also, it tries to filter out single false attention heads' results, relying upon the results of all attention heads, thus patching the attention flaws. Remember what we talked about in the Q/K block? Here, if the heads produced some redundant information, the O matrix can learn how to use it to extract the useful signal and ignore the "lying" heads. 
+Also, it tries to filter out single false attention heads' results, relying upon the results of all attention heads, thus patching the attention flaws. Remember what we talked about in the Q/K block? If the heads produced some redundant information, the O matrix can learn how to use it to extract the useful signal and ignore the "lying" heads. 
 
 And here, we finally get the required *change* to our original pattern that the attention block has produced. 
 
