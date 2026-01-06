@@ -197,7 +197,7 @@ And that's exactly why we can use it for the understanding and development of *a
 
 Because understanding something means *being able to predict* it. 
 
-To understand something we first analyze it by trying to grasp the specific patterns of the process and then we correctly predict the development of these very patterns over time, which proves we have grasped them adequately. 
+To understand something, we first analyze it by trying to grasp the specific patterns of the process, and then we correctly predict the development of these very patterns over time, which proves we have grasped them adequately. 
 
 If we cannot predict its continuation, it means we do *not* understand something that goes on - we don't see the whole pattern. 
 (or there is no pattern and there is the pure Chaos factor).
@@ -217,39 +217,39 @@ This is valid for *both* the training part when it creates a reflection of data 
 
 Simple, isn't it? You want to have progress? Add dimensions, *add reflection layers*, add update mechanisms.
 
-# Chapter 2: explaining transformers with ponies.
-Now, let's do some understanding of what transformers are. We will talk about decoder-only transformers, the ones that we all use now for text generation.
+# Chapter 2: explaining Transformers with ponies.
+Now, let's try to understand what Transformers are. We will talk about decoder-only Transformers, the ones we all use now for text generation.
 
 In this chapter, we go down a level of abstraction to talk about a specific neural network architecture. It is going to be a bit less abstract and will provide a bit more detail on actual architectural implementation specifics. But we won't go to the level of actual engines implementing the architecture.
 
-First, i believe the term "transformers" itself might sound fun and is correct in the domain of *mathematical implementation*, but it doesn't really help much to understand what they do.
+First, i believe the term "Transformers" itself might sound fun and is correct in the domain of *mathematical implementation*, but it doesn't really help much to understand what they do.
 
-What i would actually call "transformers" is the _incremental associative morphers_. 
+What i would actually call "Transformers" is the _incremental associative morphers_. 
 
 Does it not sound that cool? :) 
-Yet this naming is way closer to what they do at a high level and less confusing. To me, at least - and, i believe, soon for you too.
+Yet this naming is way closer to what they do at a high level and less confusing. At least to me - and, i believe, soon to you too.
 
 So, let's unpack it a bit.
 
 Transformers have three main conceptual blocks:
-1. Input
-2. A copy-pasted group of certain layers repeating over and over - the "repeating" blocks
-3. Output
+1. Input.
+2. A copy-pasted group of certain layers repeating over and over - the "repeating" blocks.
+3. Output.
 
 These blocks play different roles and we will take a good look at each of them.
 
 ### Part 1 - The input block
 The role of the input block is to translate your words into the "brain signals" of the model.
 
-The input just translates each element of the text we send into the patterns your model knows. These patterns define the place of the text element you provided within the grand pattern the model has learned. 
+The input just translates each element of the text we send into the patterns the model knows. These patterns define the place of the text element you provided within the grand pattern the model has learned. 
 
-It's the internal *interpretation* of our data the model has learned. It allows the model to *relate* your text to everything else it has seen and to find a probable continuation to it, something that can *happen next* in your text.
+It's the internal *interpretation* of our data. It allows the model to *relate* your text to everything else it has seen and to find a probable continuation to it, something that can *happen next* in your text.
 
 In text transformers, these input patterns are limited to a *fixed* list after training. So the model has no access to the "raw" sensory data anymore - it can't see anything *new* that it didn't see during training. You can't send a word in an alphabet the model doesn't know. You cannot send an image of handwritten text. It will just have no idea what it means in the grand pattern, where its place is or what goes next. 
 
 Does it mean that the input should *always* be split into fixed pre-learned patterns? 
 
-Nope. For example, for images and sounds it can be different. A brighter image can result in higher values within the input pattern. This way during training the model doesn't have to see every possible combination of brightness to learn how to understand the "brightness". The input becomes variable and the model can still match it because it's still similar to what it has learned. And so it can react to the raw data variations, rather than just having a fixed list of patterns.
+Nope. For example, for images and sounds it can be different. A brighter image can result in higher values within the input pattern. This way during training the model doesn't have to see every possible combination of brightness to learn how to understand the "brightness". The input becomes variable and the model can still match it because it remains similar to what it has learned. It can react to the raw data variations, rather than just having a fixed list of patterns.
 
 #### How do they learn to convert text into.. patterns?
 During training, neural networks learn to represent every possible element we send to them as a specific internal pattern, recorded as a long list of numeric values. Just the way image files are stored as numbers on the inside.
@@ -262,7 +262,7 @@ And *pattern* here is any single numeric representation, be it a vector, a matri
 
 Now that i've triggered the serious ML scientists and they have closed the page, let's go on :).
 
-So we have a text to process and we need to split it into a list of basic elements. 
+So, we have a text to process and we need to split it into a list of basic elements. 
 
 Could we split it per character? Yes, but in the current architecture it produces so many combinations that it becomes too slow and expensive to use. One token on average equals 3-4 characters. If it were 1 character per token the text generation would slow down by at least 3-4 times. Not to mention the training costs! Just imagine how many more combinations it would create!
 
@@ -281,7 +281,7 @@ Each of these basic data elements is called a token.
 Note: i made examples for text-only transformers, but in fact it can be *any* type of data: images (where tokens are typical combinations of pixels), audio (typical frequency combinations), motion (typical coordinate changes) and so on.
 
 ### How is this list of tokens created?
-Before training, special software takes the entire training dataset and splits it up into a list of basic elements that would provide the smallest text representation. So if our whole training consists of the words "Milk" and "Cat", we get only two tokens: "Milk" and "Cat". But if our training dataset also has "Catie" and "Milkie", our token list would get a third token: "ie". 
+Before training, special software takes the entire training dataset and splits it up into a list of basic elements that would provide the smallest text representation. If our whole training consists of the words "Milk" and "Cat", we get only two tokens: "Milk" and "Cat". But if our training dataset also has "Catie" and "Milkie", our token list would get a third token: "ie". 
 
 On the inside, every token consists of a certain list of numbers, where every number has its position (#1, #2, etc). Every position (column) works as a separate axis or, in other words, as a dimension. Since every token has the same amount of values, all tokens together make a single table (matrix) where every row describes one token. 
 
