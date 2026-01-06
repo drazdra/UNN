@@ -366,9 +366,9 @@ That's why tokens are a paradox: on the one hand, neural networks have to use th
 > But more on the tokenization solution later :).
 
 Even so, neural models manage the trick of imitating human-like *concepts*. How?! Why? There are three reasons:
- - tokenizers also contain many full words and word roots which are *our* concepts
- - the attention implementation doesn't process learnt patterns *separately* but rather always mingles these into a single large pattern, working as a *semantic assembler*
- - the amount of statistical data is immense, allowing the model to learn to translate its conceptualization into ours (remember, transformers started as *translation* neural networks)
+ - Tokenizers also contain many full words and word roots which are *our* concepts.
+ - The attention implementation doesn't process learnt patterns *separately* but rather always mingles these into a single large pattern, working as a *semantic assembler*.
+ - The amount of statistical data is immense, allowing the model to learn to translate its conceptualization into ours (remember, transformers started as *translation* neural networks).
 
 These three things partially patch the initial "flaw".
 
@@ -400,7 +400,7 @@ For example, if you end your long garbage string with a single question mark, th
  - ? = "a known pattern related to a typical, normal reply"
  - "garbage+?" = "tokens typically coming in a reply when nothing else familiar is detected". 
 
-If you send a typical *templated* request with garbage, the neural network will generate a sensible reply right away, because the template tokens act in the same way as "?". The model was already trained on how to reply when the only detectable pattern is the template pattern amidst some noise.
+If you send a typical *templated* request with garbage, the neural network will generate a sensible reply right away, because the template tokens act in the same way as "?". The model was already trained on how to reply when the only detectable signal is the template pattern amidst some noise.
 
 And upon this, we finish the "input" block. 
 
