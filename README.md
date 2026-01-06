@@ -289,7 +289,7 @@ If we take all of these tokens of a neural network together, they make *the voca
 
 A numeric list representation of a token is called an "embedding". Further, when i say "token", i usually mean "embedding". But to avoid complicating the story i will just say "tokens". Why? Because "embedding" is just an *internal representation* of a token.
 
-When you send your text, it gets split into these tokens. Then the neural network looks up a tied list of numbers in its vocabulary for every token and just replaces the text with numbers. It puts every token onto a separate row, so instead of a block of text, we get a table/matrix where every row is a single token of our text, represented as a row of numbers.
+When you send your text, it gets split into these tokens. Then the neural network looks up a tied list of numbers in its vocabulary for every token and just replaces the text with numbers. It puts every token onto a separate row, so instead of a block of text, we get a table (matrix) where every row is a single token of our text, represented as a row of numbers.
 
 You can visualize every column (position) of the rows as a separate *axis* of the token's pattern. Like, the first number in the row represents the horizontal coordinate, the second number is the vertical coordinate and so on. 
 
@@ -300,7 +300,7 @@ That's easy. To imagine more dimensions just think about the pages in a book whe
 How many axes/dimensions/pages do these books have? Just as many as developers decide to give them. It's something they decide upon before training, as the more axes you have, the more time you spend training the model, and the more money you have to pay.
 
 #### What do these columns/axes within the tokens actually mean? How are they used?
-And here i could take the easy route and say that every axis has a specific meaning. Like, the first axis represents everything "white", the second axis groups everything "curvy", another one can mark everything related to "names" and so on. And if you have a high value in the first position for a word/token, it would mean it relates strongly to "whiteness", while "blackness" in that same position would have a very low value, showing how far it is from "white". 
+Here i could take the easy route and say that every axis has a specific meaning. Like, the first axis represents everything "white", the second axis groups everything "curvy", another one can mark everything related to "names" and so on. And if you have a high value in the first position for a word/token, it would mean it relates strongly to "whiteness", while "blackness" in that same position would have a very low value, showing how far it is from "white". 
 
 But... it wouldn't really be true :). It's actually a *very* misleading way to explain it. And... just wrong... :)
 
@@ -322,7 +322,7 @@ This means that the *actual* numeric values created during training are not *tha
 
 Once the learning is done, the neural network can then compare these token patterns and see how compatible they are. 
 
-Do not think that every "star"/"pizza"/"circle" pattern is a separate isolated group. No, neural networks have a way to measure how *close* the pattern is to every other token and to decide on its similarity based on that. So we don't really have fixed *groups*, instead we have a way to measure the chance of a token coming based on its *similarity level*. A circle pattern is closer to a pizza pattern than to a star. And each token's pattern has multiple such figures inside.
+Do not think that every "star", "pizza", or "circle" pattern is a separate, isolated group. No, neural networks have a way to measure how *close* a pattern is to every other token and to decide on its similarity based on that. So, we don't really have fixed *groups*. Instead, we have a way to measure the chance of a token coming based on its *similarity level*. A circle pattern is closer to a pizza pattern than to a star. And each token's pattern has multiple such figures within it.
 
 Until learning happens, nobody knows which token groupings will be reflected, nor which patterns the neural network will create to unite them. But after learning, the figures represent the chances for every token to happen next to every other token, and their *similarity* level forms stable token combinations.
 
