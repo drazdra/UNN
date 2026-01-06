@@ -531,7 +531,7 @@ If an attention head detects both:
 
 then these matrices learn to produce *similarly shaped* results - a "green light" signal.
 
-Their similar *shape* expresses their compatibility, while the shapes' combined *size* (the brightness) expresses the *proportions* that the mingled-in patterns should take.
+Their *shape* similarity expresses their compatibility, while the shapes' combined *size* (the brightness) expresses the *proportions* that the mingled-in patterns should take.
 
 > The shape here means that their comparison produces a positive number, while the size/magnitude is a measure of how large this number is. We will talk about it soon.
 
