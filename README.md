@@ -98,7 +98,7 @@ In other words, neural networks do not reflect the data itself the way storage s
 What they store is:
 How closely a kitten is related to "cute" and "milk". How closely snow is related to "cold" and a "blanket". 
 And how closely a blanket is related to coziness and coziness to a cat :). 
-And that is within the context of the winter and within the context of underwater swimming.
+And all of that is within the context of winter and within the context of underwater swimming.
 
 But don't get me wrong, neural networks can go beyond just human ideas or words. They can process any data elements - sounds, syllables, numbers, images, weather, galaxies, anything.
 
