@@ -355,7 +355,7 @@ They don't have *any* experience other than text... They make concepts out of th
 
 We don't just relate the *semantic units* in neural networks, we relate both: meaningless chunks and the proper words that carry the meaning as we mean it :). 
 
-That is, transformers at the raw level often do not manipulate concepts made of *semantically meaningful ideas*, they work with *concepts* made of tokens which may reflect the mere statistical distribution of the *characters*, rather than human *ideas*. It's like humans *partially* trying to form sentences based on most common *sounds* pronounced together, not just on *words*.
+That is, Transformers at the raw level often do not manipulate concepts made of *semantically meaningful ideas*. They work with *concepts* made of tokens which may reflect the mere statistical distribution of *characters*, rather than human *ideas*. It's like humans *partially* trying to form sentences based on the most common *sounds* pronounced together, rather than on actual *words*.
 
 That's why tokens are a paradox: on the one hand, neural networks have to use them to create the clouds of related tokens - to "conceptualize" the data. But on the other hand these tokens are often *not* meaningful as we mean it...
 
