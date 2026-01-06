@@ -446,7 +446,7 @@ Let's talk about the internal parts of the repeating blocks now. Each one consis
 
     The V matrix in each attention head learns a rough idea of how to extract useful data from token patterns, so that their traits can be mingled together in a unique way, without introducing too much distortion. In other words, it determines how to interpret tokens.
     
-    During the training, the Q and K matrices learn to decide upon the compatibility of the tokens within the attention head, which results in measuring the "relatedness" of tokens to one another. 
+    During training, the Q and K matrices learn to decide upon the compatibility of the tokens both with and within the attention head, which results in measuring the "relatedness" of tokens to one another. 
     
     The O matrix sits above these and learns how to extract useful data from the *united results* of all attention heads. In other words, it knows how to create a new single pattern from separate, smaller patterns produced by individual attention heads. This way, after the whole attention block, we have a single mingled representation of data. It also tries to filter out the noise produced by attention heads.
 
