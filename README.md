@@ -809,7 +809,8 @@ This matrix is the final puzzle piece of our attention head triumvirate - the Q/
 Of course, it is not just a copy of these traits from the donor token. It's a *different* pattern based on the input. It has different proportions, values and meaningful *figures*. We can say that if earlier in the tokens we had stars and circles, here we *may* have *ponies and elephants*. But as it actually *needs* information about the very traits it extracts, it shouldn't be just some basic signal, as is the case with Q/K.
 
 This "figures thing" consisting of the traits is a tricky one to understand, so let me repeat everything again. 
-Neural networks do not encode meaning just along a single axis of a pattern. They go an abstract level higher and encode meaning through *combinations* of these axes. And not just with specific combinations of actual values in every axis, but also in the *proportion* of the values. The proportions of the axes just make *figures*. Even more than that, it's not just figures, it's not just a pony, it's also how *skewed* it is. Which rays differ in what way. And so on. This way pattern proportions produce an additional relation on top of just similar single values.
+
+Neural networks do not encode meaning just along a single axis of a pattern. They go an abstraction level higher and encode meaning through *combinations* of these axes. And not just with specific combinations of actual values in every axis, but also in the *proportion* of the values. The proportions of the axes just make *figures*. Even more than that, it's not just figures, it's not just a pony, it's also how *skewed* it is. Which rays differ in what way. And so on. This way pattern proportions produce an additional relation on top of just similar single values.
 
 The relatedness of "white+hare" to "snow" is not because there is some special single "snow" axis. It's *just because some of the new axis proportions in their full combination _relate_ to the "snow" pattern*. 
 
@@ -826,11 +827,11 @@ In simple words, it learns to see a pony in the pattern, including how much the 
 Now let's get back to what actually happens.
 
 As the V matrix extracts the traits it knows per token, from a pair of tokens we get two rows of numbers. What do we do with these? We:
- - multiply each of these numbers by the factor of "relatedness"/compatibility found by our Q/K comparisons<br>
+ - Multiply each of these numbers by the factor of relatedness-compatibility found by our Q/K comparisons<br>
    That is, for target token #2 and donor token #1:<br>
       &nbsp;&nbsp;V1 * comparison of Q2 and K1<br>
       &nbsp;&nbsp;V2 * comparison of Q2 and K2<br>
- - simply sum the resulting numbers of the two rows axis by axis. Yes, we just put one list of numbers over another and sum their values
+ - Simply sum the resulting numbers of the two rows axis by axis. Yes, we just put one list of numbers over another and sum their values.
 
 And here we are - having an updated trait sum, a new figure. It has the same amount of axes, as we only summed the individual columns.
 
@@ -852,8 +853,7 @@ It means that this implementation:
  
 The existing pattern is always biasing everything. The existing context is always a part of the *new pattern*. They are mingled into a single representation. There is no memory of any separate specific isolated part of the context.
 
-
-Another thing i would like you to note here is that we encode the concept of trait "relatedness" in both: ranges of absolute numbers of axis values *and* in the figures they form. 
+Another thing to note here, is that we encode the concept of trait "relatedness" in both: ranges of absolute numbers of axis values *and* in the figures they form. 
 
 The absolute value ranges *do* carry the relatedness concept because we mingle *scaled* patterns and the system has to learn it as another measure of relatedness. If a Q/K pair returns a *low* score, we multiply our V figure by it and make it *smaller* before mingling it into another token's figure. That means that the neural network has to react to both: 
  - The similarity between figures, expressed in proportions between different axes;
