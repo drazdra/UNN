@@ -950,7 +950,7 @@ We have several tasks here in the *current* arch:
 The thing is that the next block (FFN) anyway sees *only* this centered and averaged representation, so it believes this is the ground truth and it learns to extract information from this data version. But it doesn't mean there was no data loss during normalization or that it's not a bottleneck. 
 
 #### Start of the critique
-Let's concentrate on the fact that we introduce two learnt parameters per axis: a value to multiply the ray's length by and a value to add to the ray's length. These are two learned values per axis, and they do the same to *any* token produced by the attention block with *any* figures inside. 
+Let's concentrate on the fact that we introduce two learned parameters per axis: a value to multiply the ray's length by and a value to add to the ray's length. These are two learned values per axis, and they do the same to *any* token produced by the attention block with *any* figures inside. 
 
 Now, let's see the problems it creates. At this point, we already break: 
  - the absolute value range (scale of values)
@@ -965,7 +965,7 @@ The skewing of figures cannot be used, because normalization introduces *uneven*
 
 All of this, as i reason here, should force the model to rely upon figures consisting of *average* similar values, and limit its methods for encoding information. 
 
-So now, the model has to encode relatedness through proportions of specific groups of axes, rather than through all of them, because changing a single axis may change proportions and values of *other* axes. So the most reliable way to ensure the signal passes is to isolate a certain group of axes via some specific gain, so that this specific combination always passes the normalization gate with the same distortion level. The model is forced to tie certain types of figures to certain axes, as they have the specific gain+shift values it finds during training and these are *compatible*, while some other axes might be compatible with other figures.
+So now, the model has to encode relatedness through proportions of specific groups of axes, rather than through all of them, because changing a single axis may change proportions and values of *other* axes. The most reliable way to ensure the signal passes is to isolate a certain group of axes via some specific gain, so that this specific combination always passes the normalization gate with the same distortion level. The model is forced to tie certain types of figures to certain axes, as they have the specific gain+shift values it finds during training and these are *compatible*, while some other axes might be compatible with other figures.
 
 Thus, our normalization layer is a huge noise source, significantly complicating the model's means of delivering its signal to the next block. And it's also a huge bottleneck as it limits the ways for the model to encode the meaning.
 
@@ -1115,14 +1115,14 @@ Once we pass the ReLU filter, we come to the second FFN matrix.
 And here we do a "reverse" operation: we multiply our 2048 axes of a new pattern into the second FFN's matrix. That one has the reverse shape: 2048 columns and 512 rows - so it converts our adjustment pattern into fewer axes, into a *different* representation that is compatible with the input pattern language, so we can mix these.
 
 If:
- - we had only *one* repeating block of attention + ffn
+ - we had only *one* repeating block of Attention + FFN
  - used the original Input block token vocabulary for both input and output matching,
 then here, the model would learn to translate these 2048 parameters back into the representation compatible with what we had in the very beginning. Axes here would mean the same thing they did at the very start in the token vocabulary, the figures would be similar - stars and circles again.
 
 ##### hopeful dreaming
 However, as we have *many* repeating blocks chained together, the model has no need to make this internal representation uniform. It has the freedom to find very different token relatedness traits with each of its blocks. But the closer it is to the end, the closer it has to be to the original vocabulary's pattern language.
 
-So if at the start it marks tokens by stars and circles, in the middle of repeating blocks it may mark tokens with .. circles and stars! Why not? It can choose anything :). It's worth paying for the extra training!
+So, if at the start it marks tokens by stars and circles, in the middle of repeating blocks it may mark tokens with .. circles and stars! Why not? It can choose anything :). It's worth paying for the extra training!
 
 ##### sore reality
 Well, the truth is... it *could*.
@@ -1130,15 +1130,15 @@ Well, the truth is... it *could*.
 In reality, the creators decided that too much freedom is not practical and.. added the results of the original MHA output to the output of the FFN block, as was said in the beginning. 
 
 Thus:
- - They have enforced the use of a somewhat uniform format between these blocks, as data, this way, has to keep more or less similar representation. Otherwise, the addition of the input data would corrupt the output. They have to stay compatible.
- - FFN is freed from the need to keep the original signal in its representation; it can concentrate solely on the tuning and return only the *corrections* to the original signal. Actually this way FFN is forced to do mostly fine-tuning of the existing pattern, because otherwise addition of these two would mess things up.
+ - They have enforced the use of a somewhat uniform format between these blocks, as data, this way, has to keep more or less similar representation. Otherwise, the addition of the input data would corrupt the output of the FFN. They have to stay compatible.
+ - FFN is freed from the need to keep the original signal in its representation; it can concentrate solely on the tuning and return only the *corrections* to the original signal. Actually this way FFN is forced to do mostly fine-tuning of the existing pattern. Otherwise mingling of these two would mess things up.
 
 And they called it a "residual connection". Why not BLEEOR?..<br>
   ..."Be Like Everyone Else, Or else..."
 
 Getting back to the actual process, we have passed the second matrix and.. we add the second bias value. It's just a numeric value the model has learned for each axis. I don't really see any conceptual meaning in this operation, apart from a pure speed-up in training, where the model can just quickly adjust the typical result it gets in some axis without changing the whole similarity representation. Of course, it's a crutch in a way, but it works. 
 
-So, once we have summed up the token data from before the FFN and after it, we again normalize the values. And here you can just reread the section about the normalization happening after the MHA as it's the same operation and the same critique applies. 
+Once we have summed up the token data from before the FFN and after it, we again normalize the values. And here you can just reread the section about the normalization happening after the MHA, as it's the same operation and the same critique applies. 
 
 Finally, we send this result to the *next* repeating block, which starts with its own Attention block, doing it all over again. And again, and again, until the last repeating block is done.
 
