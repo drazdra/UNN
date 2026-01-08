@@ -1162,34 +1162,38 @@ Is it redundant? Yep, it is. First, Attention adjusted tokens, and now the FFN a
 ### Critical thinking. 
 A thing about the FFN is that by adding the residual connection we enforce the *same* token clouds to be used in intermediate repeating blocks. The model cannot develop a different abstract data representation in the middle, because it always has to be largely compatible with its original input format that already has its statistical distribution language. 
 
-And we drag it across all the repeating blocks. What's the result? We need way more repeating layers to give the model a chance to develop critical changes to existing token clouds by introducing them in a step-by-step fashion through the redundant blocks. 
+And we drag it across all the repeating blocks. What's the result? To give the model a chance to develop critical changes to existing token clouds, we need way more repeating layers - where each introduces slight changes in a step-by-step fashion, through these redundant blocks.
 
-And then it has to *reverse* the process to come back to the original pattern language so we can match the pattern against the standard vocabulary with its token clouds. 
+And then it has to *reverse* the process to come back to the original pattern language, so we can match the pattern against the standard vocabulary with its token clouds. 
 
 With the residual connection we cut off the model's chance to efficiently rediscover alternative token clouds, forming a *stable* new representation holding across several repeating blocks. Each repeating block can only step so far from the input data as it can only refine the existing original pattern in the end. 
 
-That means the FFN doesn't really do a parallel abstract understanding, it *tries* to make it emergent but it is left with almost no chance as it's engineered to *refine*, rather than to *restructure*.
+That means the FFN doesn't really create a different, untied from the content, parallel abstract understanding. It *tries* to make it emergent but it is left with almost no chance as it's engineered to *refine* rather than to *restructure*.
 
 Could it develop a different intermediate language if there were no residual connection after the FFN? Probably, yes. But it would certainly require way more resources to train and probably multiple FFN blocks to avoid fast degradation. 
 
 And then we probably still need the residual connection at some point deep within the stack of repeating blocks, to keep its own parallel interpretation stabilized. 
 
-On the other hand, in the current implementation, every next repeating block's Attention grasps different clouds of relatedness. In a way, it *is* a parallel abstraction base happening sequentially. 
+On the other hand, in the current implementation, every next repeating block's Attention can grasp different clouds of relatedness. In a way, it *is* a parallel abstraction base happening sequentially. 
 
 The thing is, that next repeating blocks can operate on compound token clouds assembled in the previous repeating blocks. This way next layers can step up in their abstraction level, already processing not just the word "went" but "red-haired person went" and to tie traits that happen only within this context, related to this cloud of traits. However, its prediction is still limited to the original token sequence distribution statistics and somewhat tied to the original vocabulary. Also, the size of matrices in the next blocks is the same as in the first ones, but the complexity of traits to capture grows, which should be a bottleneck for developing really complex abstraction systems different from the first layers.
 
 ##### end of the critical moment
 
 ### Output block
-When all the repeating blocks have done their work on the pattern, we finally compare it to the vocabulary patterns (output or input layer) to locate the token that resembles our new pattern the most. And that would be the closest set of characters representing our newly produced "idea-Frankenstein" :).
+When all the repeating blocks have done their work on the pattern, we finally compare it to the vocabulary patterns (output or input layer) to locate the token that resembles our new pattern the most. And that will be the closest set of characters representing our newly produced "idea-Frankenstein" :).
 
-This process is a bit trickier than the input as there can be multiple candidates with similar patterns. For example, it can be "ten", "10", "*ten*", "Ten", "_10_" or even.. "9" and "11" :). It can be "Hello", "Hi", "Hey!", "Heya", "Greetings", "What?", "Leave", etc. 
+How do we compare? Well, just as before, we just use dot-product here, matching our result we have got after all repeating blocks to the patterns in the vocabulary that the model has.
 
-And what's more, as explained above, it can simultaneously match a lot of *very different things*, which are totally unrelated according to our common sense, but still "mean" *nearly the same* for the model here: The/My/Every/It/Black/Always/etc. 
+Each of the comparisons produces a matching score - which represents how much the new pattern matches a vocabulary token. This score is called a "logit". 
 
-Each of these has a matching score - which represents how much the new pattern matches each of the vocabulary tokens. This score is called a "logit". 
+As a result we get multiple final reply candidates, which differ only in their level of similarity. 
 
-And here goes the saddest thing about Transformers: samplers. What they do is decide which of the resembling patterns to choose as the actual token. They decide which characters we will see..
+Of course, as explained above, it can simultaneously match a lot of *very different things*, which are totally unrelated according to our common sense, but still "mean" *nearly the same* to the model here: The / My / Every / It / Black / Always / 10 / ten / 11 / etc. 
+
+And here comes the saddest thing about Transformers: samplers. 
+
+Samplers decide which of the resembling patterns to choose as the actual token. They decide which characters we will see..
 
 But how? 
 
