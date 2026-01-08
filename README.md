@@ -1202,7 +1202,7 @@ Samplers are a very ironic thing in the Transformer architecture, as they do a v
 
 Samplers merely take the logit scores for all found, compatible tokens and then choose one according to whatever samplers the user has chosen to apply to the generation process. These samplers are: dry, top_k, typ_p, top_p, min_p, xtc, temperature, and so on. The list is often updated, some new stuff is being added all the time.
 
-The exact order of samplers, their lists and implementations differ across various engines, as i said it's an *engine-level* thing, not part of the neural network. So i won't get into explaining how exactly they work. I will just explain their basic purpose.
+The exact order of samplers, their lists and implementations differ across various engines. As i said it's an *engine-level* thing, not part of the neural network. So i won't get into explaining how exactly they work. I will just explain their basic purpose.
 
 They just do various stuff like normalize the logits with softmax, flatten the scores, filter out tokens that were used too much earlier, remove tokens that have too low scores to be statistically trustworthy and so on and so forth. And then they choose one from the remaining ones... by flipping a coin :). I believe it's the most ironic thing in the whole Transformers implementation :). We first put in a hell of a lot of compute power to detect the most fitting next word and then we just randomly choose one from the candidates :).
 
@@ -1224,7 +1224,7 @@ It just adds up the associations of syllables and words that the model has learn
 
 It's the same as if somebody asked you to say the first word that comes to mind when you hear something. 
 
-Yes, deeper repeating blocks process compound constructions, that is, already associated syllables that form something that is much closer to human concepts. If you remember, i said in the text that this is how it overcomes the tokenization issue. It goes more abstract this way and operates on meta-concepts of assembled tokens. But the key limitation is that it is still limited by the conceptualization (trait clouds) based on token sequences. And whatever deep abstract level it develops, it just has to use the clouds that reflect probable character sequences. It has to stay close to these as we just mingle in the results of every next layer and in the end we expect these to still be compatible with our only truth - the original token clouds reflecting character distributions.
+Yes, deeper repeating blocks process compound constructions, that is, already associated syllables that form something that is much closer to human concepts. If you remember, i said in the text that this is how it overcomes the tokenization issue. It goes more abstract and operates on meta-concepts of assembled tokens. But the key limitation is that it is still limited by the conceptualization (trait clouds) based on token sequences. And whatever deep abstract level it develops, it just has to use the clouds that reflect probable character sequences. It has to stay close to these as we just mingle in the results of every next layer and in the end we expect these to still be compatible with our only truth - the original token clouds reflecting character distributions.
 
 It's like trying to make the model think in quotations from popular verses, yet to make sense of the world.
 
