@@ -1276,7 +1276,7 @@ So, the token patterns have to develop a similarity based on their *meaning*.
 
 See? The very same token pattern should encode two very different things: probable token sequence AND "synonyms" at the same time. So the same pattern has to encompass both; for example, a comma (,) and the word "crimson". As they are both *tied* but one is "*as a synonym*" and the other *as a common next token*.
 
-These are *totally* different classes. And that is exactly why LLMs struggle to develop conceptual understanding. A next token *cannot* be used *conceptually* if it's not a *probable* common letter combination. And conceptually similar tokens can get rendered as something *totally different* just because they do not appear much together and fail to develop similar traits.
+These are *totally* different classes. And that is exactly why LLMs struggle to develop conceptual understanding. A next token *cannot* be used *conceptually* if it's not a *probable* common letter combination. A conceptually sensible continuation can lose just because it does not appear frequently together and fails to develop similar traits in patterns. 
 
 This leaves a *very* narrow slit for models to make sense of things. They can't use *any* word that fits conceptually, they have to use a word that is both conceptually fitting *and* statistically common in the character sequence.
 
